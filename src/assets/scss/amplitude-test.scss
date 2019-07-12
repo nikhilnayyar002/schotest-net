@@ -1,0 +1,19 @@
+/*
+  badges you click on side. Red purple green grey colored they are.
+*/
+
+.mcq-question-badge {
+  font-size: 1rem;
+  width: 44px;
+  height: 44px;
+  padding-top: 14px;
+}
+/*
+    small version of above.
+    badges not in use. Just for information you see at top of side.
+  */
+.mcq-question-badge-small {
+  width: 25px;
+  height: 25px;
+  padding-top: 6px !important;
+}

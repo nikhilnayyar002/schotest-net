@@ -1,0 +1,8 @@
+@import '../../../../data/variables';
+
+.main {
+    display: block;
+    height: calc(100vh - #{ $navbar-height + $nav-height-sections});
+    overflow: auto;
+    padding: 75px 16px 150px;
+}

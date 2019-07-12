@@ -1,0 +1,78 @@
+@import "./input-styles";
+@import "./animations";
+@import "../../data/mixins";
+
+// $page-bg:grey;
+// $hover-color: yellow;
+
+#form-container {
+    // background:$primary-color;
+    padding: 35px;
+    max-width: 500px;
+    margin: auto;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px 0px black;
+    overflow: hidden;
+    @include browser-based-property(animation, fadeInFromNone 0.5s ease-out);
+  
+    input[type="text"],
+    input[type="password"] {
+     font: 16px/16px Arial, sans-serif;
+    //  color:$secondary-color;
+     width: 100%;
+     padding: 10px;
+     outline: none;
+     border: none;
+    //  background:$page-bg;
+    }
+    .slider {
+      @include browser-based-property(animation, 1s ease-out 0s 1 slideInFromLeft);
+      position: relative;
+    }
+    input[type="text"],
+    input[type="password"]:focus {
+      outline: none;
+    }
+    .input-container {
+      display: -ms-flexbox; /* IE10 */
+      display: flex;
+      width: 100%;
+      margin-bottom: 15px;
+      position: relative;
+    }
+    .input-error {
+      margin-bottom: 15px;
+      // color: #ca4444;
+      font-size: 14px;
+      padding: 5px;
+      // display: none;
+    }
+    #form-tab {
+      text-align: center;
+      padding-bottom: 20px;
+      span {
+        // color:$secondary-color;
+        font-size: 1.17em;
+        font-weight: normal;
+        display: inline-block;
+        padding-right: 10px;
+        padding-left: 10px;
+        cursor: pointer;
+      }
+      // span:first-child {
+      //   border-right: 2px solid $secondary-color;
+      // }
+      // span:hover {
+      //   color: $hover-color;
+      // }
+      // .active{
+      //   color: $hover-color;
+      // }
+    }
+  
+    ul {
+      margin-left: 10px;
+    }
+  }
+
+  

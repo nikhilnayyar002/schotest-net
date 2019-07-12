@@ -1,0 +1,27 @@
+@import "../../data/mixins";
+
+  @include  browser-based-animation(slideInFromLeft) {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+
+  @include  browser-based-animation(fadeInFromNone) {
+    0% {
+      display: none;
+      opacity: 0;
+    }
+  
+    1% {
+      display: block;
+      opacity: 0;
+    }
+  
+    100% {
+      display: block;
+      opacity: 1;
+    }
+  }

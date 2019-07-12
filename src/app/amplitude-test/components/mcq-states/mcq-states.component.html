@@ -1,0 +1,5 @@
+<span *ngFor="let q of questions; let i=index"
+  [class]="'mcq-question-badge badge rounded-circle m-1 ' + getBadgeType(q.state)" [ngClass]="{'selected':i==indexOfCurrQ}"
+  (click)="badgeClick($event.target.id)" [id]="'mcq-states-badge:'+i">
+  {{i+1}}
+</span>

@@ -1,0 +1,100 @@
+@import "functions";
+@import "variables";
+@import "mixins";
+@import "~bootstrap/scss/bootstrap.scss";
+
+//color classes for "primary", "secondary", "primary light" that can be inherited
+
+%primary-color {
+  color: return-color($override-primary-color, $primary-color);
+}
+%secondary-color {
+  color: return-color($override-secondary-color, $secondary-color);
+}
+%info-color {
+  color: return-color($override-primary-color, $primary-color);
+}
+
+//setting color of elements. Bootstrap was not found to add matching color
+//given a bg color.
+
+@each $prefix in primary, secondary, info {
+  *[class*="#{$prefix}"]:not([class*="text-"]) {
+    @extend %#{$prefix}-color;
+    & *:not([class*="text-"]) {
+      color: inherit !important;
+    }
+  }
+}
+
+*[class*="primary"] *[class*="secondary"]:not([class*="text-"]),
+*[class*="info"] *[class*="secondary"]:not([class*="text-"]),
+*[class*="primary"] *[class*="info"] *[class*="secondary"]:not([class*="text-"]) {
+  @extend %secondary-color;
+  & *:not([class*="text-"]) {
+    color: inherit !important;
+  }
+}
+*[class*="primary"] *[class*="info"]:not([class*="text-"]){
+  @extend %primary-color;
+  & *:not([class*="text-"])  {
+    color: inherit !important;
+  }
+}
+
+/* ********************* customization for specific html elements ********************* */
+
+// overriding bootstrap "border-<T>" class
+@each $prefix in left, right, top, bottom {
+  .border-#{$prefix} {
+    border-#{$prefix}: 1px solid $primary-bg-color !important;
+  }
+}
+
+// navbar and nav
+.navbar {
+  height: $navbar-height;
+}
+.nav {
+  height: $nav-height-sections;
+}
+
+// setting dropdown and radio
+@include createDropDown($secondary-bg-color);
+@include createCustomRadio($secondary-bg-color);
+@include createCustomToggler($secondary-bg-color);
+
+//more overrides
+.badge-primary {
+  background: #ae10e2;
+}
+
+.badge {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.modal-footer,
+.modal-header,
+.nav-tabs {
+  border: none !important;
+}
+
+.shadow {
+  box-shadow: 0 0 20px 0px black !important;
+}
+
+// customing bootstrap buttons with "sec" attribute set
+
+// button[sec] {
+//     &:focus {
+//         outline: none;
+//         box-shadow: 0 0 1px 4px rgba($secondary-bg-color, 0.4);
+//     }
+//     &:hover {
+//         background-color: darken($secondary-bg-color, 10%) !important;
+//     }
+// }
+
+/* creating a menu toggler w3schools*/

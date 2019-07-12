@@ -1,0 +1,84 @@
+<!-- navbar -->
+<nav class="navbar bg-primary navbar-expand-lg shadow">
+  <!-- logo-->
+  <div
+    class="toggler-container btn btn-sm"
+    (click)="toggleSideBar(null, true)"
+  >
+    <div class="bar1"></div>
+    <div class="bar2"></div>
+    <div class="bar3"></div>
+  </div>
+
+  <!-- buttons in far right-->
+  <form class="form-inline ml-auto">
+    <button
+      type="button"
+      class="btn btn-sm mr-2 btn-secondary"
+      (click)="logout()"
+    >
+      Log-out
+    </button>
+  </form>
+</nav>
+
+<div
+  #fixedOverlay
+  class="overlay overlay-fixed sidebar-overlay"
+  style="display: none;"
+></div>
+
+<div class="main row no-gutters position-relative bg-info">
+  <div #sidebar id="sidebar" class="col-auto sidebar bg-primary shadow">
+    <div class="top">
+      <!-- side toggler          [style.display]="'none'" -->
+      <div
+        class="toggler-container btn btn-sm"
+        (click)="toggleSideBar(null, true)"
+      >
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </div>
+      <a class="navbar-brand" href="#">
+        <span id="nav-bar-logo">{{ configData.company.name }}</span>
+      </a>
+    </div>
+
+    <div class="list-group list-group-flush">
+      <a [routerLink]="[ './' ]"
+        class="list-group-item list-group-item-action"
+        [class.bg-info]="!rla1.isActive"
+        #rla1="routerLinkActive"
+        routerLinkActive="bg-secondary"
+        [routerLinkActiveOptions]="{exact:true}"
+        >
+        category
+      </a>
+      <a [routerLink]="[ './favourite' ]"
+        class="list-group-item list-group-item-action"
+        [class.bg-info]="!rla2.isActive"
+        #rla2="routerLinkActive"
+        routerLinkActive="bg-secondary">
+        favourite
+      </a>
+      <a [routerLink]="[ './paused' ]"
+        class="list-group-item list-group-item-action"
+        [class.bg-info]="!rla3.isActive"
+        #rla3="routerLinkActive"
+        routerLinkActive="bg-secondary">
+        paused
+      </a>
+      <a [routerLink]="[ './completed' ]"
+        class="list-group-item list-group-item-action"
+        [class.bg-info]="!rla4.isActive"
+        #rla4="routerLinkActive"
+        routerLinkActive="bg-secondary">
+        completed
+      </a>
+    </div>
+  </div>
+  <div class="col page">
+    <router-outlet></router-outlet>
+  </div>
+</div>

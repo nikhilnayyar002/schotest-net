@@ -1,0 +1,25 @@
+@import '../../../data/variables';
+
+:host {
+
+  min-height: 100%;
+
+  //making app component re-usable
+  // height: 100vh;
+  
+  position: relative;
+  display: block;
+}
+
+.side {
+    height: calc(100vh - #{ $navbar-height + $nav-height-sections});
+    overflow: auto;
+    padding: 140px 16px 120px;
+    width: $side-width;
+}
+
+.side-toggler {
+  bottom: 150px;
+  position: absolute;
+  left: -55px;
+}

@@ -1,0 +1,41 @@
+//colors
+$dark-color:#1d2331;
+$light-color: white;
+$grey-color:#676464;
+
+//background colors
+$primary-bg-color: #001a39; /*bg-primary*/
+$secondary-bg-color:rgb(253, 200, 0);
+
+//override forground color
+$primary-color:pick-visible-color($primary-bg-color, black, white);
+$secondary-color:pick-visible-color($secondary-bg-color, black, white);
+
+//light variation
+$primary-bg-light:mix($primary-bg-color, #fff,80%);
+
+//wanna override above forground color
+$override-primary-color:null;
+$override-secondary-color:$dark-color;
+
+
+/* ********************* customizing variables for specific html elements ********************* */
+
+
+//nav
+$navbar-height: 53px;
+
+//nav-bar below nav for displaying things like section of question
+$nav-height-sections: 36px;
+
+//side - element
+$side-width:320px;
+$side-width-dashboard:250px;
+
+/* ********************** modify existing colors in bootstrap $theme-colors map  */
+
+$theme-colors: (
+  "primary": $primary-bg-color ,
+  "secondary":$secondary-bg-color ,
+  "info": $primary-bg-light
+);

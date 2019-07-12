@@ -1,0 +1,32 @@
+<div class="table-responsive-lg">
+  <table class="table table-hover table-sm">
+    <thead>
+      <tr class="text-white" prim-lg>
+        <th scope="col">Section</th>
+        <th scope="col">Questions</th>
+        <th scope="col">Answered</th>
+        <th scope="col">Un-Answered</th>
+        <th scope="col">Marked</th>
+        <th scope="col">Marked-Ans</th>
+        <th scope="col">Un-Visited</th>              
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let section of sections">
+            <td> {{section.name}} </td>
+        <ng-container *ngIf="questions">
+            <ng-container *ngIf="rtnTableDetailsForSection(section) as tbData">
+                <td>{{tbData.questions}}</td>
+                <td>{{tbData.answered}}</td>
+                <td>{{tbData.unAnswered}}</td>
+                <td>{{tbData.marked}}</td>
+                <td>{{tbData.markedAnswered}}</td>
+                <td>{{tbData.unVisited}}</td>
+            </ng-container>
+        </ng-container>
+        
+
+      </tr>
+    </tbody>
+  </table>
+ </div>

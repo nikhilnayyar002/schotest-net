@@ -1,0 +1,33 @@
+@import "data/config";
+@import "data/mixins";
+@import "assets/scss/nikoscar.scss";
+@import "assets/scss/amplitude-test.scss";
+@import "assets/scss/nik-react-app.scss";
+
+/* ************ write your own global scss here ********** */
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  line-height: normal;
+
+  /*
+    @overflow
+    Reasons:
+        amplitude-test-component
+            The reason i disabled this for making side hidden on small devices as i was
+            only manipulating its 'left' property not 'display'.
+  */
+  overflow: hidden;
+}
+
+* {
+  box-sizing: border-box;
+  letter-spacing: 1px;
+  font-family: Arial, Helvetica, sans-serif;
+  
+  @include browser-based-property(user-select, none)
+}
+

@@ -1,0 +1,72 @@
+@import "../../../data/config";
+
+
+:host {
+    min-height: 100%;
+    position: relative;
+    display: block;
+}
+
+.sidebar {
+    position: relative;
+    top: (-$navbar-height);
+    left: 0px;
+    padding: 15px;
+    width: $side-width-dashboard;
+    z-index: 25;
+    overflow: hidden;
+
+    // local variables
+    $top-height:150px;
+    $list-group-height:calc(100vh - 150px);
+
+    //transition
+    // transform-origin: 0% 50%;
+    transition: left 1s;
+    .top {
+        height: $top-height;
+        padding: 15px;
+
+        .navbar-brand {
+            display: block;
+            margin: 0px;
+            padding-top: 20px;
+            font-size: 35px;
+        }
+    }
+    .list-group {
+        $padding: 10px;
+        height: $list-group-height;
+        padding: $padding;
+        overflow: auto;
+        .list-group-item {
+            margin-bottom: 5px;
+        }
+    }
+}
+
+.sidebar-closed {
+        left:-$side-width-dashboard;
+        position : absolute;
+}
+
+// .sidebar-opened {
+//     left:0px;
+//     position : relative;
+// }
+
+.page {
+    height: calc(100vh - #{ $navbar-height });
+    transition: width 1s;
+}
+
+// @media screen and (max-width: 900px) {
+//     .sidebar {
+//         left:-$side-width-dashboard;
+//         position : absolute;
+//     }
+//     .sidebar-opened {
+//         left:0px;
+//         position : relative;
+//     }
+// }

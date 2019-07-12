@@ -1,0 +1,325 @@
+<!-- main nav bar -->
+<nav class='navbar bg-primary navbar-expand-lg'>
+    <!-- logo-->
+    <a class="navbar-brand" href="#">
+      <span id="nav-bar-logo">{{ configData.company.name }}</span>
+    </a>
+  
+    <span class="navbar-text ml-auto mr-auto col">
+      <!-- time -->
+      <span
+        class="badge bg-info"
+        style="font-size: 14px"
+      >
+        Time: {{ test.time | timer }}
+      </span>
+    </span>
+  
+    <!-- buttons for Full Screen & Pause-->
+    <form class="form-inline ml-auto">
+      <button 
+        #fullScreenBtn
+        type="button"
+        class="btn btn-sm mr-2 btn-secondary"
+        [style.display]="!mediaMatch ? 'block' : 'none'"
+        (click)="toggleFullScreen()"
+      >
+        Full Screen
+      </button>
+      <button
+        type="button"
+        class="btn btn-sm btn-secondary"
+        data-toggle="modal"
+        data-target="#pauseModal"
+      >
+        Pause
+      </button>
+    </form>
+  </nav>
+  
+  <!-- show sections drop-down-->
+  <ul class="nav nav-tabs bg-info">
+    <!-- current test name -->
+    <li class="nav-item">
+      <span class="nav-link disabled">{{ test?.name }}</span>
+    </li>
+  
+      <!-- choose section -->
+      <li class="nav-item dropdown">
+        <a
+          class="nav-link dropdown-toggle"
+          data-toggle="dropdown"
+          href="#"
+          role="button"
+          aria-haspopup="true"
+          aria-expanded="false"
+          [class.disabled]="isTestOver"
+          >{{ returnSectionOfQuestion() }}</a
+        >
+        <div class="dropdown-menu" *ngIf="!isTestOver">
+          <a
+            *ngFor="let section of test.sections"
+            class="dropdown-item"
+            (click)="sectionClick(section.startQ - 1)"
+          >
+            {{ section.name }}
+          </a>
+        </div>
+      </li>
+  </ul>
+  
+  <!-- main content -->
+  <div class="main row no-gutters position-relative">
+    <!-- overlay for side toggler-->
+    <div
+      class="overlay overlay-absolute"
+      [style.display]="
+        mediaQueryState.isMediaMatched() && sideState.sideStateOpen
+          ? 'block'
+          : 'none'
+      "
+    ></div>
+  
+    <!-- page content (question page) -->
+    <div class="col position-relative">
+      <ng-container appPageSwitch></ng-container>
+    </div>
+  
+    <!-- side content -->
+    <div class="col-auto border-left position-relative" style="z-index:15;">
+      <!-- 
+        arrow for switching side content
+        also added inline styling
+       -->
+      <span
+        class="arrow bg-primary"
+        style="left: -26px; padding: 10px 0;overflow: hidden;width: 26px;"
+        (click)="shortenClick()"
+      >
+        <span
+          [innerHTML]="sideState.shortenArrowText | safeStyle: 'dom'"
+          [style.margin-left]="sideState.shortenArrowMargin"
+          style="font-size: 40px; line-height: 0px;"
+        ></span>
+      </span>
+  
+      <!-- main side content-->
+      <div
+        class="side bg-info"
+        style="background: white;"
+        [style.display]="sideState.sideStateOpen ? 'block' : 'none'"
+      >
+        <!-- X- side toggler -->
+        <div
+          class="container btn btn-primary side-toggler"
+          [style.display]="'none'"
+        >
+          <div class="bar1"></div>
+          <div class="bar2"></div>
+          <div class="bar3"></div>
+        </div>
+  
+        <!-- side top content -->
+        <div
+          class="text-white p-2 pl-3 w-100 position-absolute bg-primary"
+          style="top: 0;left: 0;"
+        >
+          <!-- user image -->
+          <img class="small-image" src="../../../assets/img/no-user.png" />
+  
+          <!-- user name -->
+          <span class="ml-2">Nikhil Nayyar</span>
+  
+          <!-- help about badges (static)-->
+          <div class="pt-2">
+            <div>
+              <span
+                class="mcq-question-badge-small badge rounded-circle m-1
+                badge-success"
+                >1</span
+              >
+              <span style="font-size: 14px;">Answered</span>
+              <span
+                class="mcq-question-badge-small badge rounded-circle m-1
+                badge-danger"
+                >1</span
+              >
+              <span style="font-size: 14px;">Unanswered</span>
+            </div>
+            <div>
+              <span
+                class="mcq-question-badge-small badge rounded-circle m-1
+                badge-primary"
+                >1</span
+              >
+              <span style="font-size: 14px;">Marked</span>
+              <span
+                class="mcq-question-badge-small badge rounded-circle m-1
+                badge-secondary"
+                >1</span
+              >
+              <span style="font-size: 14px;">Unvisited</span>
+            </div>
+          </div>
+        </div>
+  
+        <!-- mcqs states -->
+        <div id="mcq-states">
+          <app-mcq-states></app-mcq-states>
+        </div>
+  
+        <!-- side bottom content-->
+        <div
+          class="d-flex p-3 position-absolute w-100
+          justify-content-center flex-column border-top bg-primary"
+          style="bottom: 0; left:0;"
+        >
+          <!-- Question & Instructions button -->
+          <div>
+            <button
+              type="button"
+              class="btn btn-sm mr-2 btn-secondary"
+              (click)="checkAndLoadComponent('Questions')"
+            >
+              Question Paper
+            </button>
+            <button
+              type="button"
+              class="btn btn-sm btn-secondary"
+              (click)="checkAndLoadComponent('Instructions')"
+            >
+              Instructions
+            </button>
+          </div>
+          <!-- Submit Test button -->
+          <button type="button" class="btn mt-3 btn-sm mr-2 btn-secondary" disabled>
+            Submit Test
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Modals @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-->
+  
+  <!--pause modal-->
+  <div
+    class="modal fade"
+    id="pauseModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="pauseModalLabel"
+    aria-hidden="true"
+    data-backdrop="static"
+    data-keyboard="false"
+  >
+    <!--  -->
+    <div class="modal-dialog" role="document">
+      <div class="modal-content bg-primary">
+        <!--
+            modal-header was here
+          -->
+        <div class="modal-body">
+          Are you sure you want to pause the test?
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            #pauseModalNoBtn
+            class="btn btn-sm btn-info"
+            data-dismiss="modal"
+          >
+            No
+          </button>
+          <button type="button" class="btn btn-sm btn-secondary" (click)="pause()">
+            Yes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!--pause "yes" modal trigger (hidden)-->
+  <button
+    #pauseSubmitBtn
+    style="display: none"
+    data-toggle="modal"
+    data-target="#pauseSubmitModal"
+  ></button>
+  
+  <!--pause "yes" modal-->
+  <div
+    class="modal fade"
+    id="pauseSubmitModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="pauseSubmitModalLabel"
+    aria-hidden="true"
+    data-backdrop="static"
+    data-keyboard="false"
+  >
+    <!--  -->
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content bg-primary">
+        <div class="modal-header">
+          <h5 class="modal-title">Test Paused</h5>
+        </div>
+  
+          <div class="modal-body">
+            <app-overall-test-detail
+              [sections]="test.sections"
+              [questions]="test.questions"
+            >
+            </app-overall-test-detail>
+          </div>
+  
+        <div class="modal-footer">
+  
+            <button
+              type="button"
+              class="btn btn-sm btn-info"
+              data-dismiss="modal"
+              [disabled]="test.time == 0 ? true : false"
+              (click)="start()"
+            >
+              No
+            </button>
+  
+          <button type="button" class="btn btn-sm btn-secondary" disabled>
+            Submit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <!--error modal trigger (hidden)-->
+  <button
+    id="error-btn"
+    style="display: none"
+    data-toggle="modal"
+    data-target="#errorModal"
+  ></button>
+  
+  <!--error modal-->
+  <div
+    class="modal fade"
+    id="errorModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="errorModalLabel"
+    aria-hidden="true"
+    data-backdrop="static"
+    data-keyboard="false"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content bg-danger text-light">
+        <div class="modal-header">
+          <h5 class="modal-title">Error Occured!</h5>
+        </div>
+          <div id="error-message" class="modal-body">
+          </div>
+      </div>
+    </div>
+  </div>

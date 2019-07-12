@@ -1,0 +1,43 @@
+/*------------------------------------------------------ nikoscar.web.app */ 
+  
+  
+  .selected {
+    box-shadow: 0 0 20px 1px #000000;
+  }
+  
+  .small-image {
+      width: 44px;
+      height: 44px;
+      border-radius: 100%;
+      object-fit: cover;
+  }
+  
+  .arrow {
+    position: absolute;
+      top: 50%;
+      left: 0%;
+      font-size: xx-large;
+      display: inline-block;
+      &:hover {
+        cursor: pointer;
+      }
+  }
+  
+  .overlay {
+    top:0;
+    bottom: 0;
+    left:0;
+    right:0;
+    background:#0000008f;
+    cursor: pointer;
+  }
+  
+  .overlay-fixed {
+    position: fixed;
+    z-index: 20;
+  }
+  .overlay-absolute {
+    position: absolute;
+    z-index: 15;
+  }
+  

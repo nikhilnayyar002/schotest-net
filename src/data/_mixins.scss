@@ -1,0 +1,104 @@
+// theming dropdown
+@mixin createDropDown($bg, $color:pick-visible-color($bg,black,white)) {
+    .dropdown {
+        .dropdown-toggle {
+            background:  $bg !important;
+            border:none !important;
+        }
+        .dropdown-menu {
+            padding: 0;
+            border: none;
+            box-shadow: black 0px 3px 8px;
+        }
+        .dropdown-item {
+            background: $bg;
+            padding: 10px 15px;
+            &:hover {
+                background: darken( $bg, 10%);
+            }
+            &:active {
+                background: darken($bg, 10%);
+            }
+        }
+    }
+    .dropdown>*{
+        color:$color !important;
+    }
+}
+
+// theming radio 
+@mixin createCustomRadio($color) {
+    .custom-radio {
+        .custom-control-label {
+            padding-top: 3px;
+            padding-left: 5px;
+        }
+        .custom-control-input:checked ~ .custom-control-label::before {
+            border-color: $color;
+            background-color: darken($color, 10%);
+            box-shadow: 0 0 0px 4px $color;
+        }
+        .custom-control-label::before {
+            border: darken( $color, 10%) solid 1px;
+        }
+    }
+}
+
+@mixin browser-based-property($property, $value) {
+    -webkit-#{$property}: $value;
+    -khtml-#{$property}: $value;
+    -moz-#{$property}: -moz-$value;
+    -o-#{$property}: $value;
+    #{$property}: $value;
+}
+@mixin browser-based-animation($property) {
+    @-webkit-keyframes #{$property} {
+        @content;
+    }
+    @-moz-keyframes #{$property}  {
+        @content;
+    }
+    @-o-keyframes #{$property}  {
+        @content;
+    }
+    @keyframes #{$property}  {
+        @content;
+    }
+}
+
+@mixin createCustomToggler(
+    $color, $bar-color: pick-visible-color($color,darken($color, 50%),lighten($color, 50%))
+    ) {
+    .toggler-container {
+        display: inline-block;
+        cursor: pointer;
+        width: auto;
+        background: $color;
+    
+        //padding 
+        padding-left: 15px;
+        padding-right: 15px;
+    
+        .bar1, .bar2, .bar3 {
+          width: 20px;
+          height: 2px;
+          background-color: $bar-color;
+          margin: 6px 0;
+          transition: 0.4s;
+        }
+        &:hover {
+            box-shadow: 0 0 1px 4px rgba($color, 0.4);
+        }    
+        // .change .bar1 {
+        //   -webkit-transform: rotate(-45deg) translate(-9px, 6px);
+        //   transform: rotate(-45deg) translate(-9px, 6px);
+        // }
+        
+        // .change .bar2 {opacity: 0;}
+        
+        // .change .bar3 {
+        //   -webkit-transform: rotate(45deg) translate(-8px, -8px);
+        //   transform: rotate(45deg) translate(-8px, -8px);
+        // }
+      }
+}
