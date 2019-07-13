@@ -26,6 +26,7 @@ import { AuthService } from "src/app/auth.service";
  * 4. call "createSideBarStateOverlay" to create "toggleSideBar" function
  * 5. Call it through "mediaQueryState" object as : this.toggleSideBar(x, null)
  * 6. Call it through "Toggler Button" as : this.toggleSideBar(null, true)
+ * 7. Optionally set overlay click to : this.toggleSideBar(null, true)
  */
 @Component({
   selector: "app-parent",

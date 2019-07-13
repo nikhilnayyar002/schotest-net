@@ -18,28 +18,23 @@
 //setting color of elements. Bootstrap was not found to add matching color
 //given a bg color.
 
+* {
+  color: inherit !important;
+}
+
 @each $prefix in primary, secondary, info {
-  *[class*="#{$prefix}"]:not([class*="text-"]) {
+  [class*="#{$prefix}"]:not([class*="text-"]) {
     @extend %#{$prefix}-color;
-    & *:not([class*="text-"]) {
-      color: inherit !important;
-    }
   }
 }
 
-*[class*="primary"] *[class*="secondary"]:not([class*="text-"]),
-*[class*="info"] *[class*="secondary"]:not([class*="text-"]),
-*[class*="primary"] *[class*="info"] *[class*="secondary"]:not([class*="text-"]) {
+[class*="primary"] [class*="secondary"]:not([class*="text-"]),
+[class*="info"] [class*="secondary"]:not([class*="text-"]),
+[class*="primary"] [class*="info"] [class*="secondary"]:not([class*="text-"]) {
   @extend %secondary-color;
-  & *:not([class*="text-"]) {
-    color: inherit !important;
-  }
 }
-*[class*="primary"] *[class*="info"]:not([class*="text-"]){
+[class*="primary"] [class*="info"]:not([class*="text-"]) {
   @extend %primary-color;
-  & *:not([class*="text-"])  {
-    color: inherit !important;
-  }
 }
 
 /* ********************* customization for specific html elements ********************* */

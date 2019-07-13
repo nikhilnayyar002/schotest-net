@@ -1,1 +1,14 @@
-<p>page-not-found works!</p>
+<div class="vh-100 bg-primary">
+    <div class="p-5">
+            <h1 class="display-4"> 
+                    <span class="text-secondary pr-2">Page</span> 
+                    <small>not found!</small>
+            </h1>
+            <p class="lead mt-5">
+                Page you are looking cannot be found. You can go to login page
+            </p>
+            <button class="btn btn-secondary" [routerLink]="[ '/login' ]">
+                Login
+            </button>
+    </div>
+</div>

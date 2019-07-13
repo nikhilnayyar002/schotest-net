@@ -5,18 +5,25 @@ import { PausedComponent } from "./paused/paused.component";
 import { CompletedComponent } from "./completed/completed.component";
 import { FavouriteComponent } from "./favourite/favourite.component";
 import { CategoryComponent } from "./category/category.component";
+import { AuthGuard } from '../guards/auth.guard';
 
 const routes: Routes = [
   {
     path: "dashboard",
     component: ParentComponent,
+    canActivate: [AuthGuard],
     children: [
-      { path: 'category',   redirectTo: '', pathMatch: 'full' },
-      { path: "", component: CategoryComponent },
-      { path: "favourite", component: FavouriteComponent },
-      { path: "paused", component: PausedComponent },
-      { path: "completed", component: CompletedComponent },
-
+      {
+        path: '',
+        canActivateChild: [AuthGuard],
+        children:[
+          { path: 'category',   redirectTo: '', pathMatch: 'full' },
+          { path: "", component: CategoryComponent },
+          { path: "favourite", component: FavouriteComponent },
+          { path: "paused", component: PausedComponent },
+          { path: "completed", component: CompletedComponent },
+        ]
+      }
     ]
   }
 ];

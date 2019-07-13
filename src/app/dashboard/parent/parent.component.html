@@ -1,14 +1,19 @@
 <!-- navbar -->
 <nav class="navbar bg-primary navbar-expand-lg shadow">
-  <!-- logo-->
-  <div
-    class="toggler-container btn btn-sm"
-    (click)="toggleSideBar(null, true)"
-  >
+
+  <!--toggler-->
+  <div class="toggler-container btn btn-sm" (click)="toggleSideBar(null, true)">
     <div class="bar1"></div>
     <div class="bar2"></div>
     <div class="bar3"></div>
   </div>
+  <!--toggler overlay-->
+  <div
+    #fixedOverlay
+    class="overlay overlay-fixed sidebar-overlay"
+    style="display: none;"
+    (click)="toggleSideBar(null, true)"
+  ></div>
 
   <!-- buttons in far right-->
   <form class="form-inline ml-auto">
@@ -21,12 +26,6 @@
     </button>
   </form>
 </nav>
-
-<div
-  #fixedOverlay
-  class="overlay overlay-fixed sidebar-overlay"
-  style="display: none;"
-></div>
 
 <div class="main row no-gutters position-relative bg-info">
   <div #sidebar id="sidebar" class="col-auto sidebar bg-primary shadow">
@@ -46,34 +45,41 @@
     </div>
 
     <div class="list-group list-group-flush">
-      <a [routerLink]="[ './' ]"
+      <a
+        [routerLink]="['./']"
         class="list-group-item list-group-item-action"
         [class.bg-info]="!rla1.isActive"
         #rla1="routerLinkActive"
         routerLinkActive="bg-secondary"
-        [routerLinkActiveOptions]="{exact:true}"
-        >
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
         category
       </a>
-      <a [routerLink]="[ './favourite' ]"
+      <a
+        [routerLink]="['./favourite']"
         class="list-group-item list-group-item-action"
         [class.bg-info]="!rla2.isActive"
         #rla2="routerLinkActive"
-        routerLinkActive="bg-secondary">
+        routerLinkActive="bg-secondary"
+      >
         favourite
       </a>
-      <a [routerLink]="[ './paused' ]"
+      <a
+        [routerLink]="['./paused']"
         class="list-group-item list-group-item-action"
         [class.bg-info]="!rla3.isActive"
         #rla3="routerLinkActive"
-        routerLinkActive="bg-secondary">
+        routerLinkActive="bg-secondary"
+      >
         paused
       </a>
-      <a [routerLink]="[ './completed' ]"
+      <a
+        [routerLink]="['./completed']"
         class="list-group-item list-group-item-action"
         [class.bg-info]="!rla4.isActive"
         #rla4="routerLinkActive"
-        routerLinkActive="bg-secondary">
+        routerLinkActive="bg-secondary"
+      >
         completed
       </a>
     </div>
