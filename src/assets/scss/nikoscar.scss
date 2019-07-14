@@ -1,5 +1,6 @@
+@import "../../data/variables";
+
 /*------------------------------------------------------ nikoscar.web.app */ 
-  
   
   .selected {
     box-shadow: 0 0 20px 1px #000000;
@@ -34,10 +35,9 @@
   
   .overlay-fixed {
     position: fixed;
-    z-index: 20;
+    z-index: $z-overlay-fixed;
   }
   .overlay-absolute {
     position: absolute;
-    z-index: 15;
+    z-index: $z-overlay-absolute;
   }
-  

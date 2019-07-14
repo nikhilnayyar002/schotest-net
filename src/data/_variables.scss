@@ -32,6 +32,14 @@ $nav-height-sections: 36px;
 $side-width:320px;
 $side-width-dashboard:250px;
 
+//z-index
+$z-app-load:1240;
+$z-router-material-progress:1230;
+$z-sidebar:1220;
+$z-side:1220;
+$z-overlay-fixed:1210;
+$z-overlay-absolute:1200;
+
 /* ********************** modify existing colors in bootstrap $theme-colors map  */
 
 $theme-colors: (

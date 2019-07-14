@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationError, NavigationCancel } from '@angular/router';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -17,13 +17,14 @@ export class AppComponent {
    */
   navStart:Observable<NavigationStart>;
   navEnd:Observable<any>;
-  animated:HTMLElement
+  @ViewChild('routerProgress', { static: false }) private routerProgress: ElementRef;
 
   constructor(private router: Router) {
-    // Create a new Observable that publishes only the NavigationStart event
+
     this.navStart = router.events.pipe(
       filter(evt => evt instanceof NavigationStart)
     ) as Observable<NavigationStart>;
+    
     this.navEnd = router.events.pipe(
       filter(evt => 
         evt instanceof NavigationEnd ||
@@ -31,20 +32,29 @@ export class AppComponent {
         evt instanceof NavigationCancel
       )
     ) as Observable<any>;
-    this.animated = <HTMLElement>document.querySelector(".animated");
+    
   }
 
-  ngOnInit() {
+  ngAfterViewInit(): void {
+
+    /**
+     * Subscribing to router events
+     */
     this.navStart.subscribe(evt => {
-      this.animated.style.display = "block"
-      this.animated.style.opacity = "1";
+      this.routerProgress.nativeElement.style.opacity = "1"
     });
     this.navEnd.subscribe(evt => {
-      this.animated.style.opacity = "0";
-      setTimeout(() => {
-        this.animated.style.display = "none";
-      }, 500);
+      this.routerProgress.nativeElement.style.opacity = "0"
     });
+
+    /**
+     * Remove the loading animation with transition
+     */
+    let animated = <HTMLElement>document.querySelector(".animated");
+    animated.style.opacity = "0";
+      setTimeout(() => {
+        animated.parentElement.removeChild(animated)
+      }, 500);
   }
   
 }

@@ -18,13 +18,12 @@
         <!--username-->
         <div id="user-name" class="input-container">
           <input
-            class="input-field effect-1 bg-info"
+            class="input-field bg-info"
             type="text"
             placeholder="email"
             name="email"
             formControlName="email"
           />
-          <!-- <span class="focus-border"></span> -->
         </div>
         <ng-container *ngIf="email.invalid && (email.dirty || email.touched)">
           <div
@@ -45,13 +44,12 @@
 
         <div class="input-container">
           <input
-            class="input-field effect-1 bg-info"
+            class="input-field bg-info"
             type="password"
             placeholder="password"
             name="psw"
             formControlName="psw"
           />
-          <!-- <span class="focus-border"></span> -->
         </div>
         <div
           *ngIf="psw.errors && (psw.dirty || psw.touched)"

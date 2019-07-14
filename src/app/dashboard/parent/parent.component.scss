@@ -1,5 +1,5 @@
 @import "../../../data/config";
-
+@import "../../../data/variables";
 
 :host {
     min-height: 100%;
@@ -13,7 +13,7 @@
     left: 0px;
     padding: 15px;
     width: $side-width-dashboard;
-    z-index: 25;
+    z-index: $z-sidebar;
     overflow: hidden;
 
     // local variables
@@ -41,6 +41,12 @@
         overflow: auto;
         .list-group-item {
             margin-bottom: 5px;
+            &:focus {
+                outline: none;
+            }
+            &:hover {
+                box-shadow: 0 0 5px black;
+            }
         }
     }
 }

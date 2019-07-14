@@ -27,14 +27,155 @@ body {
   box-sizing: border-box;
   letter-spacing: 1px;
   font-family: Arial, Helvetica, sans-serif;
-  
-  @include browser-based-property(user-select, none)
+
+  @include browser-based-property(user-select, none);
 }
 
+/* 
+  Purpose:
+    used for showing app bootup animation.
+
+  Usage: 
+      <!-- animate -->
+      <div class="animated overlay overlay-fixed sidebar-overlay bg-primary">
+      <div class="d-flex h-100 align-items-center justify-content-center">
+        <div
+          class="spinner-grow text-info"
+          style="width: 7rem; height: 7rem;"
+        >
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+    </div>
+
+*/
 .animated {
-  display: none;
-  opacity: 0;
-  z-index: 40;
+  // display: none; opacity: 0;
+  z-index: $z-app-load;
   transition: opacity 2s;
+  @include browser-based-property(animation, fadeInFromNone 0.5s ease-out);
 }
 
+/* 
+  material-Progress Bar (https://codepen.io/holdencreative/)
+  Purpose:
+    .
+  Usage:
+  
+    <div class="material-progress bg-primary">
+      <div class="indeterminate bg-secondary"></div>
+    </div>
+
+    <div class="material-progress bg-primary">
+      <div class="determinate bg-secondary" style="width: 70%"></div>
+    </div>    
+*/
+.material-progress {
+  position: relative;
+  height: 4px;
+  display: block;
+  width: 100%;
+  border-radius: 2px;
+  background-clip: padding-box;
+  margin: 0.5rem 0 1rem 0;
+  overflow: hidden;
+}
+.material-progress .determinate {
+  position: absolute;
+  background-color: inherit;
+  top: 0;
+  bottom: 0;
+  transition: width 0.3s linear;
+}
+.material-progress .indeterminate:before {
+  content: "";
+  position: absolute;
+  background-color: inherit;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  will-change: left, right;
+  -webkit-animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395)
+    infinite;
+  animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+}
+.material-progress .indeterminate:after {
+  content: "";
+  position: absolute;
+  background-color: inherit;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  will-change: left, right;
+  -webkit-animation: indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1)
+    infinite;
+  animation: indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1)
+    infinite;
+  -webkit-animation-delay: 1.15s;
+  animation-delay: 1.15s;
+}
+
+@-webkit-keyframes indeterminate {
+  0% {
+    left: -35%;
+    right: 100%;
+  }
+  60% {
+    left: 100%;
+    right: -90%;
+  }
+  100% {
+    left: 100%;
+    right: -90%;
+  }
+}
+@keyframes indeterminate {
+  0% {
+    left: -35%;
+    right: 100%;
+  }
+  60% {
+    left: 100%;
+    right: -90%;
+  }
+  100% {
+    left: 100%;
+    right: -90%;
+  }
+}
+@-webkit-keyframes indeterminate-short {
+  0% {
+    left: -200%;
+    right: 100%;
+  }
+  60% {
+    left: 107%;
+    right: -8%;
+  }
+  100% {
+    left: 107%;
+    right: -8%;
+  }
+}
+@keyframes indeterminate-short {
+  0% {
+    left: -200%;
+    right: 100%;
+  }
+  60% {
+    left: 107%;
+    right: -8%;
+  }
+  100% {
+    left: 107%;
+    right: -8%;
+  }
+}
+/* end: material-Progress Bar */
+
+.custom-material-progress {
+  z-index: $z-router-material-progress;
+  position: fixed;
+  top: 0;
+  transition: opacity 1s;
+}

@@ -44,8 +44,8 @@
       </a>
     </div>
 
-    <div class="list-group list-group-flush">
-      <a
+    <ul class="list-group list-group-flush">
+      <li
         [routerLink]="['./']"
         class="list-group-item list-group-item-action"
         [class.bg-info]="!rla1.isActive"
@@ -54,8 +54,8 @@
         [routerLinkActiveOptions]="{ exact: true }"
       >
         category
-      </a>
-      <a
+    </li>
+      <li
         [routerLink]="['./favourite']"
         class="list-group-item list-group-item-action"
         [class.bg-info]="!rla2.isActive"
@@ -63,8 +63,8 @@
         routerLinkActive="bg-secondary"
       >
         favourite
-      </a>
-      <a
+  </li>
+      <li
         [routerLink]="['./paused']"
         class="list-group-item list-group-item-action"
         [class.bg-info]="!rla3.isActive"
@@ -72,8 +72,8 @@
         routerLinkActive="bg-secondary"
       >
         paused
-      </a>
-      <a
+    </li>
+      <li
         [routerLink]="['./completed']"
         class="list-group-item list-group-item-action"
         [class.bg-info]="!rla4.isActive"
@@ -81,8 +81,8 @@
         routerLinkActive="bg-secondary"
       >
         completed
-      </a>
-    </div>
+    </li>
+    </ul>
   </div>
   <div class="col page">
     <router-outlet></router-outlet>

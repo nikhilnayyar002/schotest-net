@@ -29,7 +29,6 @@ export class LoginResolverService {
              */
             return this.auth.userProfileHandled().pipe(
               map((status: BackendStatus) => {
-                console.log(1);
                 this.store.dispatch(
                   SetAppState({
                     app: {
@@ -49,7 +48,6 @@ export class LoginResolverService {
               .authenticate(appState.cred.email, appState.cred.password)
               .pipe(
                 map((status: BackendStatus) => {
-                  console.log(2);
                   this.store.dispatch(
                     SetAppState({
                       app: {

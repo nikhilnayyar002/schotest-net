@@ -28,7 +28,6 @@ export function createMediaQuery(
 
   /* handling media query */
   let mediaQueryFunction: any = function(x: MediaQueryList) {
-    console.log("matches");
     mediaMatch = x.matches;
     callback(mediaMatch);
     cdr.detectChanges();

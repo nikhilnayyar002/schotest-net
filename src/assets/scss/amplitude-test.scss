@@ -1,5 +1,8 @@
 /*
-  badges you click on side. Red purple green grey colored they are.
+  Purpose:
+    badges you click on side. Red purple green grey colored they are.
+  usage:
+    <span class="mcq-question-badge badge rounded-circle m-1 badge-primary"></span>
 */
 
 .mcq-question-badge {
@@ -9,9 +12,11 @@
   padding-top: 14px;
 }
 /*
-    small version of above.
-    badges not in use. Just for information you see at top of side.
-  */
+  Purpose:
+    small version of above. badges not in use. Just for information to user.
+  usage:
+    <span class="mcq-question-badge-small badge rounded-circle m-1 badge-danger">1</span
+*/
 .mcq-question-badge-small {
   width: 25px;
   height: 25px;

@@ -11,6 +11,9 @@
   display: block;
 }
 
+.side-container {
+  z-index: $z-side;
+}
 .side {
     height: calc(100vh - #{ $navbar-height + $nav-height-sections});
     overflow: auto;
