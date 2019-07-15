@@ -55,24 +55,3 @@
         left:-$side-width-dashboard;
         position : absolute;
 }
-
-// .sidebar-opened {
-//     left:0px;
-//     position : relative;
-// }
-
-.page {
-    height: calc(100vh - #{ $navbar-height });
-    transition: width 1s;
-}
-
-// @media screen and (max-width: 900px) {
-//     .sidebar {
-//         left:-$side-width-dashboard;
-//         position : absolute;
-//     }
-//     .sidebar-opened {
-//         left:0px;
-//         position : relative;
-//     }
-// }

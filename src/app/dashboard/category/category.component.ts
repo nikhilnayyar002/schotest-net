@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { MainService } from '../main.service';
+import { Observable } from 'rxjs';
+import { Category } from 'src/app/modals/category';
 
 @Component({
   selector: 'app-category',
@@ -7,9 +10,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CategoryComponent implements OnInit {
 
-  constructor() { }
+  categories$:Observable<Category[]>
+
+  constructor(
+    private ms:MainService
+  ) {
+    this.categories$ = ms.getCategories()
+  }
 
   ngOnInit() {
+    
   }
 
 }

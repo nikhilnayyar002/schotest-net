@@ -23,7 +23,7 @@ export class AuthService {
     const httpOptions = {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     };
-    let url = "http://localhost:3000/api/authenticate";
+    let url = "http://localhost:3000/auth/authenticate";
     let credentials: Credentials = {
       email,
       password: pass
@@ -63,7 +63,7 @@ export class AuthService {
      })
     };
 
-    let url = "http://localhost:3000/api/userProfile";
+    let url = "http://localhost:3000/auth/userProfile";
     return this.http.get<BackendStatus>(url, httpOptions);
   }
 

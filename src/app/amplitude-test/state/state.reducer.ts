@@ -10,7 +10,8 @@ export const initialTestState:Test = {
     questions:[],
     sections:[],
     time:0,
-    id:0
+    id:0,
+    detail:''
 };
 
 const testReducer = createReducer(

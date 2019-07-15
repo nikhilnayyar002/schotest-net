@@ -1,0 +1,23 @@
+@import "../../../data/variables";
+
+// :host {
+//     position: relative;
+// }
+
+.card {
+    width: 15rem;
+}
+
+.page {
+    height: calc(100vh - #{ $navbar-height });
+    transition: width 1s;
+    overflow: auto;
+}
+
+.header {
+    width: 100%;
+    z-index: 5;
+    top: 0;
+    left: 0;
+    position: absolute;
+}

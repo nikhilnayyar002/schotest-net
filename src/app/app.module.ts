@@ -7,8 +7,10 @@ import { LoginComponent } from './login/login.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { AmplitudeTestModule } from './amplitude-test/amplitude-test.module';
+
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+
 import { appReducer } from './state/state.reducer';
 
 @NgModule({

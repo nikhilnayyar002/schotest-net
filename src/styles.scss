@@ -23,6 +23,10 @@ body {
   overflow: hidden;
 }
 
+body {
+  background: $primary-bg-color;
+}
+
 * {
   box-sizing: border-box;
   letter-spacing: 1px;
@@ -179,3 +183,15 @@ body {
   top: 0;
   transition: opacity 1s;
 }
+
+
+router-outlet + *{
+  display: block;
+  @include browser-based-property(animation, fadeInFromNone 0.5s ease-out);
+}
+
+router-outlet[parent] + *{
+  display: block;
+  @include browser-based-property(animation, slideInFromLeft 0.5s ease-out);
+}
+

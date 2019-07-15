@@ -6,6 +6,7 @@ export interface Test {
     questions:Array<Question>;
     sections:Array<Section>;
     time:number;
+    detail:string;
     
     /*currently for dev. purpose: in-momory-api*/
     id:number;
