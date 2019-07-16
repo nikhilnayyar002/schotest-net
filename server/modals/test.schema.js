@@ -9,6 +9,7 @@ var testSchema = new mongoose.Schema({
     time: { type:Number },
     detail:{type:String},
     _id: { type:Number },
+    categoryID: {type:Number}
 });
 
 module.exports = testSchema

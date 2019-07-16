@@ -1,0 +1,8 @@
+GET  http://localhost:3000/categories/1563272163882
+# Content-Type: application/json
+
+# {
+#     "fullName" : "Nikhil Nayyar",
+#     "email" : "nikhilnayyar002@gmail.com",
+#     "password" : "boss"
+# }

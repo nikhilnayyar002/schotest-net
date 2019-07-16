@@ -1,3 +1,4 @@
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -30,7 +31,10 @@ require('dotenv').config()
 
 mongoose.set('bufferCommands', false);
 //mongoose.set('bufferMaxEntries', 0);
+
+/** Depreciation warnings */
 mongoose.set('useNewUrlParser', true);
+mongoose.set('useCreateIndex', true);
 
 
 
@@ -61,7 +65,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.disable('view cache');
 
-
 app.use(cors());
 app.use(passport.initialize());
 
@@ -75,8 +78,7 @@ app.use(passport.initialize());
 // })
 
 app.use('/auth', authRouter);
-app.all('*',jwtHelper.verifyJwtToken)
-app.use('/tests', testsRouter);
+app.use('/tests', jwtHelper.verifyJwtToken, testsRouter);
 app.use('/categories', categoriesRouter);
 /**
  * catch 404 and forward to error handler

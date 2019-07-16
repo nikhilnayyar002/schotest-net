@@ -1,1 +1,1 @@
-MONGO_DB_URL = mongodb+srv://nikhil_nayyar:dnaagent6@cluster0-x0pfo.mongodb.net/test_online_amplitude?retryWrites=true&w=majority
+MONGO_DB_URL = mongodb://nikhilnayyar:dnaagent6@ds251507.mlab.com:51507/schotest

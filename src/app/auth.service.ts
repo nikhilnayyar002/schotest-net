@@ -139,8 +139,6 @@ export class AuthService {
   
 
   tryWithRefreshIfNecc(url, recipe) {
-
-    
     return this.http.get(url)
       .pipe(
         recipe,
@@ -154,7 +152,7 @@ export class AuthService {
               return this.refreshToken(appState).pipe(
                 switchMapTo(this.http.get(url).pipe(recipe))
               )
-              
+              /**end  */
             })
           )
         )

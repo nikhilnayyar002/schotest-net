@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var CategoryModal = require('../modals/category')
+var TestModal = require('../modals/test')
 const mongoose = require('mongoose');
 
 router.all('*', function(req,res, next) {
@@ -25,7 +26,6 @@ router.all('*', function(req,res, next) {
 })
 
 router.get('/all', function(req, res, next) {
-  let categoryID=req.params.id;
 
   CategoryModal.find({},function (err, categories) {
     if (err) { return next(err); }
@@ -33,6 +33,27 @@ router.get('/all', function(req, res, next) {
   })
  
 });
+
+
+router.get('/:id', function(req, res, next) {
+  let categoryID=req.params.id;
+
+  CategoryModal.findById(categoryID,function (err, category) {
+    if (err) { return next(err); }
+
+    let proms=[];
+    for(t of category.tests)
+      proms.push(TestModal.findById(t).exec())
+    Promise.all(proms).then((docs, err)=>{
+      if(err) 
+        return res.status(500).json({ status:false, message: 'Please try again later.' });
+      else res.json(docs)
+    })
+
+  })
+ 
+});
+
 
 
 module.exports = router;

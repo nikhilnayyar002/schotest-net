@@ -32,14 +32,14 @@ export class MainService {
       map((data:any)=>{
         data.map((category)=>{
           category.id=category._id
-          category.tests.map((test)=>{
-            test.id=test._id;
-            test.questions.map((question)=>{
-              question.id=question._id;
-              return question as Question
-            })
-            return test as Test
-          })
+          // category.tests.map((test)=>{
+          //   test.id=test._id;
+          //   test.questions.map((question)=>{
+          //     question.id=question._id;
+          //     return question as Question
+          //   })
+          //   return test as Test
+          // })
           return category as Category
         })
         return data as Category[]
@@ -52,39 +52,6 @@ export class MainService {
 
     return this.auth.tryWithRefreshIfNecc(url,recipe)
   }
-
-  //catchError(this.handleError)
-
-  private handleError(error: HttpErrorResponse): Observable<never> {
-    if (error.error instanceof ErrorEvent) {
-      // A client-side or network error occurred. Handle it accordingly.
-      console.error('An error occurred:', error.error.message);
-    } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong,
-      console.error(
-        `Backend returned code ${error.status}, ` +
-        `Message: ${error.statusText}`);
-    }
-    // return an observable with a user-facing error message
-    return throwError('Something bad happened; please try reloading the page');
-  };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }
