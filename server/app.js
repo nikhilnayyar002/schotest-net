@@ -11,6 +11,8 @@ const authRouter = require('./routes/auth');
 const cors = require('cors');
 const passport = require('passport');
 
+const jwtHelper = require('./config/jwtHelper');
+
 
 
 const mongoose = require('mongoose');
@@ -73,6 +75,7 @@ app.use(passport.initialize());
 // })
 
 app.use('/auth', authRouter);
+app.all('*',jwtHelper.verifyJwtToken)
 app.use('/tests', testsRouter);
 app.use('/categories', categoriesRouter);
 /**

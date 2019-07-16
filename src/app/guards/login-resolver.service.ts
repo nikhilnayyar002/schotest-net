@@ -2,11 +2,11 @@ import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { GLobalState } from "../shared/global.state";
-import { take, switchMap, map, retry } from "rxjs/operators";
+import { take, switchMap, map, retry, catchError } from "rxjs/operators";
 import { AuthService } from "../auth.service";
 import { BackendStatus } from "../shared/global";
 import { SetAppState } from "../state/state.actions";
-import { of } from "rxjs";
+import { of, observable } from "rxjs";
 
 @Injectable({
   providedIn: "root"
@@ -22,6 +22,7 @@ export class LoginResolverService {
         switchMap(appState => {
 
           if (appState.loggedIn) return of(true);
+
           /* if false means token expired */
           else if (this.auth.isUserPayloadValid())
             /**
@@ -38,28 +39,16 @@ export class LoginResolverService {
                   })
                 );
                 return true;
-              })
+              }),
+              catchError(()=> of(false))
             );
           /**
            * Refresh token and log in if password is there
            */
-          else if (appState.cred && appState.loggedIn)
-            return this.auth
-              .authenticate(appState.cred.email, appState.cred.password)
-              .pipe(
-                map((status: BackendStatus) => {
-                  this.store.dispatch(
-                    SetAppState({
-                      app: {
-                        user: status.user,
-                        loggedIn: status.status
-                      }
-                    })
-                  );
-                  return true;
-                })
-              );
-          else return of(false);
+          else 
+            return this.auth.refreshToken(appState).pipe(
+              catchError(()=> of(false))
+            )
         })
       );
   }

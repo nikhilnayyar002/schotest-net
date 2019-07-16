@@ -4,20 +4,28 @@ import {
   HttpClient,
   HttpErrorResponse
 } from "@angular/common/http";
-import { catchError, tap, mapTo, switchMap, switchMapTo } from "rxjs/operators";
-import { Observable, throwError } from "rxjs";
-import { BackendStatus, Credentials } from './shared/global';
-
-
+import {
+  catchError,
+  tap,
+  mapTo,
+  switchMap,
+  switchMapTo,
+  take,
+  map,
+  retry
+} from "rxjs/operators";
+import { Observable, throwError, of, pipe } from "rxjs";
+import { BackendStatus, Credentials } from "./shared/global";
+import { Store } from "@ngrx/store";
+import { GLobalState } from "./shared/global.state";
+import { SetAppState } from "./state/state.actions";
+import { AppState } from "./state/app.state";
 
 @Injectable({
   providedIn: "root"
 })
 export class AuthService {
-
-  constructor(private http: HttpClient) {
-
-  }
+  constructor(private http: HttpClient, private store: Store<GLobalState>) {}
 
   authenticate(email: string, pass: string): Observable<BackendStatus | Error> {
     const httpOptions = {
@@ -29,20 +37,17 @@ export class AuthService {
       password: pass
     };
 
-    return this.http
-      .post<BackendStatus>(url, credentials, httpOptions)
-      .pipe(
-        /**
-         * Set the token in localstorage
-         */
-        switchMap( (status)=> {
-          localStorage.setItem('token', status.token)
-          return this.userProfile()
-        }),
-        catchError(this.handleError)
-      );
+    return this.http.post<BackendStatus>(url, credentials, httpOptions).pipe(
+      /**
+       * Set the token in localstorage
+       */
+      switchMap(status => {
+        localStorage.setItem("token", status.token);
+        return this.userProfile();
+      }),
+      catchError(this.handleError)
+    );
   }
-
 
   // function isUserPayloadValid() {
   //     let token = localStorage.getItem('token');
@@ -56,20 +61,13 @@ export class AuthService {
   // }
 
   userProfile(): Observable<BackendStatus | Error> {
-    const httpOptions = {
-      headers: new HttpHeaders({ 
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + localStorage.getItem('token')
-     })
-    };
-
     let url = "http://localhost:3000/auth/userProfile";
-    return this.http.get<BackendStatus>(url, httpOptions);
+    return this.http.get<BackendStatus>(url);
   }
 
   userProfileHandled() {
     return this.userProfile().pipe(catchError(this.handleError));
-  } 
+  }
 
   /**
    *
@@ -92,23 +90,83 @@ export class AuthService {
 
     // return an observable with a user-facing error message
     return throwError(
-      error.error?error.error.message:"Something bad happened. Please try again."
+      error.error
+        ? error.error.message
+        : "Something bad happened. Please try again."
     );
   }
 
   isUserPayloadValid() {
-    let token = localStorage.getItem('token');
+    let token = localStorage.getItem("token");
     if (token) {
-        var userPayload:any = atob(token.split('.')[1]);
-        userPayload=JSON.parse(userPayload);
-        if (userPayload && (userPayload.exp > Date.now() / 1000))
-        return true;
+      var userPayload: any = atob(token.split(".")[1]);
+      userPayload = JSON.parse(userPayload);
+      if (userPayload && userPayload.exp > Date.now() / 1000) return true;
     }
     return false;
   }
 
   logout() {
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
   }
+
+  getAuthorizationToken() {
+    return localStorage.getItem("token");
+  }
+
+  refreshToken(appState: AppState,) {
+
+    if (appState.cred && appState.loggedIn)
+      return this.authenticate(
+        appState.cred.email,
+        appState.cred.password
+      ).pipe(
+        map((status: BackendStatus) => {
+          this.store.dispatch(
+            SetAppState({
+              app: {
+                user: status.user,
+                loggedIn: status.status
+              }
+            })
+          );
+          return true;
+        }),
+        retry(1)
+      );
+    else return throwError("Please re-login");
+  }
+  
+
+  tryWithRefreshIfNecc(url, recipe) {
+
+    
+    return this.http.get(url)
+      .pipe(
+        recipe,
+        catchError(() => 
+          this.store.select(state=> state.app).pipe(
+            take(1),
+            switchMap(appState => {
+              /**
+               * Refresh token and use original recipe
+               */
+              return this.refreshToken(appState).pipe(
+                switchMapTo(this.http.get(url).pipe(recipe))
+              )
+              
+            })
+          )
+        )
+      )
+  }
+
+
+
+
+
+
+
+
 
 }

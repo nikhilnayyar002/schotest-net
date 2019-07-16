@@ -1,5 +1,6 @@
 import { ChangeDetectorRef } from "@angular/core";
 import { User } from '../modals/user';
+import { HttpHeaders } from "@angular/common/http";
 
 export interface MediaQueryState {
   dispose: () => void;
@@ -17,6 +18,7 @@ export interface Credentials {
   email: string;
   password: string;
 };
+
 
 export function createMediaQuery(
   queryStr,

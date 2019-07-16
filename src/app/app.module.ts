@@ -12,6 +12,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 
 import { appReducer } from './state/state.reducer';
+import { httpInterceptorProviders } from './interceptors';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,12 @@ import { appReducer } from './state/state.reducer';
     AmplitudeTestModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [
+    /**
+     * Interceptor 
+     */
+      httpInterceptorProviders
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

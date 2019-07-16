@@ -13,7 +13,7 @@ const reducer = createReducer(
     initialAppState,
     on(AppActions.SetLoginState ,(state,action)=>({ ...state, loggedIn:action.state})),
     on(AppActions.SetUserState ,(state,action)=>({ ...state, user:action.user})),
-    on(AppActions.SetAppState ,(state,action)=>(action.app)),
+    on(AppActions.SetAppState ,(state,action)=>({ ...state, ...action.app})),
 );
 
 export function appReducer (state:AppState|undefined,action:Action) {
