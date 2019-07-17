@@ -13,6 +13,7 @@ import { StoreModule } from '@ngrx/store';
 
 import { appReducer } from './state/state.reducer';
 import { httpInterceptorProviders } from './interceptors';
+import { RequestCache, RequestCacheWithMap } from './request-cache.service';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,8 @@ import { httpInterceptorProviders } from './interceptors';
     /**
      * Interceptor 
      */
+      { provide: RequestCache, useClass: RequestCacheWithMap },
+
       httpInterceptorProviders
   ],
   bootstrap: [AppComponent]

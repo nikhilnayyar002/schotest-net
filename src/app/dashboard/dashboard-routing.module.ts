@@ -1,30 +1,27 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { ParentComponent } from "./parent/parent.component";
-import { PausedComponent } from "./paused/paused.component";
-import { CompletedComponent } from "./completed/completed.component";
-import { FavouriteComponent } from "./favourite/favourite.component";
-import { CategoryComponent } from "./category/category.component";
 import { AuthGuard } from '../guards/auth.guard';
+import { categoryRoutes } from "./category/category-routing.module";
 
 const routes: Routes = [
   {
     path: "dashboard",
     component: ParentComponent,
     canActivate: [AuthGuard],
-    children: [
-      {
-        path: '',
-        canActivateChild: [AuthGuard],
-        children:[
-          { path: 'category',   redirectTo: '', pathMatch: 'full' },
-          { path: "", component: CategoryComponent },
-          { path: "favourite", component: FavouriteComponent },
-          { path: "paused", component: PausedComponent },
-          { path: "completed", component: CompletedComponent },
-        ]
-      }
-    ]
+    // children:[
+    //   {
+    //     path:'',
+    //     canActivateChild:[AuthGuard],
+    //     children:[
+    //       {
+    //         path:'category',
+    //         children:categoryRoutes
+    //       }
+    //     ]
+    //   }
+    // ]
+    
   }
 ];
 
