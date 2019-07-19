@@ -1,16 +1,16 @@
 import { Component, ChangeDetectorRef, ComponentFactoryResolver, ViewChild, ElementRef } from '@angular/core';
 import { take } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
-import config from 'src/data/config';
 import { PageService } from '../page/page.service';
 import { TestState } from '../state/test.state';
-import { createMediaQuery, MediaQueryState, toggleFullScreen } from 'src/app/shared/global';
 import { GetTest, TestOver, SetIndex, PauseTestServer } from '../state/state.actions';
 import { PageItem } from '../page/page-items';
 import { PageSwitchDirective } from '../page-switch.directive';
 import { PageComponent } from '../page/page-component.modal';
 import { SideState, checkAndGetQuestionState } from '../shared/global';
 import { Test } from '../modals/test';
+import  config  from '../../../data/config'
+import { MediaQueryState, createMediaQuery, toggleFullScreen } from '../../shared/global';
 
 @Component({
   selector: 'app-parent',
@@ -73,7 +73,7 @@ export class ParentComponent {
     /**
      * load questions from backend
      */
-    this.store.dispatch(GetTest({ id: 1 }))
+    this.store.dispatch(GetTest({ id: 1563271643432 }))
     this.store.pipe(select((state) => state.test)).subscribe((test) => {
       this.test = test
       if (test.questions.length) {

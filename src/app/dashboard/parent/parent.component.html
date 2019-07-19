@@ -27,7 +27,7 @@
   </form>
 </nav>
 
-<div class="main row no-gutters position-relative bg-info">
+<div class="row no-gutters position-relative bg-info">
   <div #sidebar id="sidebar" class="col-auto sidebar bg-primary shadow">
     <div class="top">
       <!-- side toggler          [style.display]="'none'" -->
@@ -47,17 +47,16 @@
     <ul class="list-group list-group-flush">
       <li
         [routerLink]="['./category']"
-        class="list-group-item list-group-item-action"
+        class="list-group-item list-group-item-action rounded-sm"
         [class.bg-info]="!rla1.isActive"
         #rla1="routerLinkActive"
         routerLinkActive="bg-secondary"
-        [routerLinkActiveOptions]="{ exact: true }"
       >
         category
     </li>
       <li
         [routerLink]="['./favourite']"
-        class="list-group-item list-group-item-action"
+        class="list-group-item list-group-item-action rounded-sm"
         [class.bg-info]="!rla2.isActive"
         #rla2="routerLinkActive"
         routerLinkActive="bg-secondary"
@@ -66,7 +65,7 @@
   </li>
       <li
         [routerLink]="['./paused']"
-        class="list-group-item list-group-item-action"
+        class="list-group-item list-group-item-action rounded-sm"
         [class.bg-info]="!rla3.isActive"
         #rla3="routerLinkActive"
         routerLinkActive="bg-secondary"
@@ -75,7 +74,7 @@
     </li>
       <li
         [routerLink]="['./completed']"
-        class="list-group-item list-group-item-action"
+        class="list-group-item list-group-item-action rounded-sm"
         [class.bg-info]="!rla4.isActive"
         #rla4="routerLinkActive"
         routerLinkActive="bg-secondary"
@@ -84,7 +83,7 @@
     </li>
     </ul>
   </div>
-  <div class="col position-relative">
+  <div class="main col position-relative">
     <router-outlet></router-outlet>
   </div>
 </div>

@@ -52,8 +52,6 @@ function sendRequest(
   next: HttpHandler,
   cache: RequestCache): Observable<HttpEvent<any>> {
 
-    console.log(req.url)
-
 //    No headers allowed in npm search request
 //   const noHeaderReq = req.clone({ headers: new HttpHeaders() });
 

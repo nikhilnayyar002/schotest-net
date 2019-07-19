@@ -1,0 +1,21 @@
+@import '../../../../data/variables';
+
+.main {
+
+  $top-height:34px;
+  $bottom-height:64px;
+
+  $total-nav-height: $navbar-height + $nav-height-sections;
+  height: calc(100vh - #{$total-nav-height});
+
+  &-top {
+    height: $top-height;
+  }
+  &-bottom {
+    height: $bottom-height;
+  }
+  .page-content {
+    height: calc(100vh - #{$total-nav-height + $bottom-height + $top-height});
+  }
+}
+

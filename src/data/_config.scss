@@ -40,11 +40,11 @@
 /* ********************* customization for specific html elements ********************* */
 
 // overriding bootstrap "border-<T>" class
-@each $prefix in left, right, top, bottom {
-  .border-#{$prefix} {
-    border-#{$prefix}: 1px solid $primary-bg-color !important;
-  }
-}
+// @each $prefix in left, right, top, bottom {
+//   .border-#{$prefix} {
+//     border-#{$prefix}: 1px solid $primary-bg-color !important;
+//   }
+// }
 
 // navbar and nav
 .navbar {

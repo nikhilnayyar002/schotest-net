@@ -4,7 +4,7 @@ import { McqPageComponent } from './mcq-page/mcq-page.component';
 import { OverallTestDetailComponent } from './overall-test-detail/overall-test-detail.component';
 import { FormsModule} from '@angular/forms'
 import { McqStatesComponent } from './mcq-states/mcq-states.component';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   declarations: [McqPageComponent, OverallTestDetailComponent, McqStatesComponent],

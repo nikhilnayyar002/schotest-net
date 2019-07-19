@@ -4,7 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { Question } from './modals/question';
 import { catchError, tap, map } from 'rxjs/operators';
 import { Test } from './modals/test';
-import config from 'src/data/config';
+import config from '../../data/config';
 import { QuestionStateDB } from './shared/indexDB';
 
 @Injectable({

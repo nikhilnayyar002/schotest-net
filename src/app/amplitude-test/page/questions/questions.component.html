@@ -1,14 +1,12 @@
 <div class="main bg-info">
-
   <!--
       Heading: Eg: Question No. 1, Instructions, Questions
     -->
-  <div class="bg-primary text-white p-2 pl-3 w-100 position-absolute d-flex" style="top:0;left: 0;">
+  <div class="bg-primary text-white p-2 pl-3 w-100 d-flex">
     <!-- main heading -->
     <span class="m-auto">
       Question Paper
     </span>
-
   </div>
 
   <!--
@@ -16,25 +14,25 @@
       Basically <MCQ component> should be placed inside here.
     -->
   <!-- suppressing error (dev only)-->
-    <div class="page-content">
-
-      <ul class="list-unstyled">
-        <li *ngFor="let question of questions;let i=index">
-          <p class="font-weight-bold">Question No. {{i+1}}</p>
-          <p [innerHTML]="question.content | safeStyle:'dom'"></p>
-        </li>
-      </ul>
-
-    </div>
+  <div class="page-content">
+    <ul class="list-unstyled">
+      <li *ngFor="let question of questions; let i = index">
+        <p class="font-weight-bold">Question No. {{ i + 1 }}</p>
+        <p [innerHTML]="question.content | safeStyle: 'dom'"></p>
+      </li>
+    </ul>
+  </div>
   <!--
       page footer. basically contains buttons.
     -->
 
-  <div class="d-flex p-3 position-absolute w-100 bg-primary border-top" style="bottom:0; left: 0;">
-
-    <button type="button" class="btn btn-sm btn-secondary m-auto" (click)="closeTheComponent()">Back</button>
-
+  <div class="d-flex p-3 w-100 bg-primary border-top border-primary">
+    <button
+      type="button"
+      class="btn btn-sm btn-secondary m-auto"
+      (click)="closeTheComponent()"
+    >
+      Back
+    </button>
   </div>
-
-
 </div>

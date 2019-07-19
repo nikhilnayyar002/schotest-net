@@ -5,16 +5,16 @@ $mcq-page-image-max-height: 300px;
 $mcq-page-image-margin: 25px 0;
 
 .page-content {
-    display: block;
-    height: calc(100vh - #{ $navbar-height + $nav-height-sections});
+    height: 100%;
     overflow: auto;
-    padding: 75px 16px 150px !important;
+    padding: 0px 16px !important;
+    background: white !important;
+    color: black !important;
 
     em{
         margin-bottom: 20px;
         display: block;
     }
-
     img {
         max-width: $mcq-page-image-max-width;
         max-height: $mcq-page-image-max-height;

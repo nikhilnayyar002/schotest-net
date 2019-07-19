@@ -25,7 +25,9 @@ import { AppState } from "./state/app.state";
   providedIn: "root"
 })
 export class AuthService {
-  constructor(private http: HttpClient, private store: Store<GLobalState>) {}
+  constructor(private http: HttpClient, private store: Store<GLobalState>) {
+    console.log("auth created")
+  }
 
   authenticate(email: string, pass: string): Observable<BackendStatus | Error> {
     const httpOptions = {

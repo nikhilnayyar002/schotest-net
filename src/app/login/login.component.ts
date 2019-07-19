@@ -3,7 +3,7 @@ import config from "src/data/config";
 import { FormBuilder, Validators, FormControl } from "@angular/forms";
 import { AuthService } from "../auth.service";
 import { BackendStatus } from "../shared/global";
-import { Store, select } from "@ngrx/store";
+import { Store } from "@ngrx/store";
 import { GLobalState } from "../shared/global.state";
 import { SetAppState } from "../state/state.actions";
 import { Router, ActivatedRoute } from "@angular/router";
@@ -24,14 +24,28 @@ export class LoginComponent {
     psw: ["", [Validators.required]]
   });
 
+  redirectURL:String = '/dashboard';
+
   constructor(
     private fb: FormBuilder,
     private ms: AuthService,
     private store: Store<GLobalState>,
     private router: Router,
-    private route:ActivatedRoute
+    private route: ActivatedRoute
   ) {
-
+    /**
+     * Resolving
+     */
+    this.store
+      .select(state => state.app.redirectURL)
+      .pipe(take(1))
+      .subscribe(redirectURL => {
+        this.redirectURL = redirectURL
+        let data = this.route.snapshot.data;
+        if (redirectURL && data.status) {
+          this.router.navigate([redirectURL]);
+        }
+    });    
   }
 
   get email(): any {
@@ -41,29 +55,14 @@ export class LoginComponent {
     return this.form.get("psw") as FormControl;
   }
 
-  ngOnInit(): void {
-    /**
-     * Resolving
-     */
-      this.route.data
-        .pipe()
-        .subscribe((data: { status: boolean }) => {
-          if(data.status)  {
-            this.router.navigate(["/dashboard"]);
-          }
-        });
-  }
-
   submit() {
     this.loggingIn = true;
     this.ms
       .authenticate(this.email.value, this.psw.value)
-      .pipe(
-        take(1),
-      )
+      .pipe(take(1))
       .subscribe(
         (status: BackendStatus) => {
-          this.loggingIn = false  /** set logged in to false */
+          this.loggingIn = false; /** set logged in to false */
           this.store.dispatch(
             SetAppState({
               app: {
@@ -73,7 +72,7 @@ export class LoginComponent {
               }
             })
           );
-          this.router.navigate(["/dashboard"]);
+          this.router.navigate([this.redirectURL]);
         },
         (error: string) => {
           this.loggingIn = false; /** set logged in to false */

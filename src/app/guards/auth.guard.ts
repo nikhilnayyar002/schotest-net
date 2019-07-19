@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot,CanActivateChild } from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot,CanActivateChild, NavigationExtras } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService} from '../auth.service';
 import { Router , UrlTree}   from '@angular/router';
 import { Store } from '@ngrx/store';
 import { GLobalState } from '../shared/global.state';
 import { take } from 'rxjs/operators';
+import { SetRedirectURL } from '../state/state.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -17,15 +18,16 @@ export class AuthGuard implements CanActivate, CanActivateChild  {
       ){
   }		
   canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): any{
-        
+    activatedRoute: ActivatedRouteSnapshot,
+    routerState: RouterStateSnapshot): any{
 
         return new Observable(subscriber => {
             this.store.select(state => state.app.loggedIn)
                 .pipe(take(1)).subscribe((state)=>{
-                    if(!state) 
-                        this.router.navigate(["/login"]);
+                    if(!state) {
+                      this.store.dispatch(SetRedirectURL({ redirectURL:routerState.url}))
+                      this.router.navigate(["/login"]);
+                    }
                     subscriber.next(state)
                 })
 

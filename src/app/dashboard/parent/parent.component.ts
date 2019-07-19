@@ -1,21 +1,17 @@
 import {
   Component,
-  OnInit,
   ViewChild,
   ElementRef,
   ChangeDetectorRef
 } from "@angular/core";
-import config from "src/data/config";
-import {
-  MediaQueryState,
-  createMediaQuery,
-  createSideBarStateOverlay
-} from "src/app/shared/global";
-import { Router } from "@angular/router";
+import config from "../../../data/config";
+import { createMediaQuery, MediaQueryState, createSideBarStateOverlay } from "../../shared/global";
+import { GLobalState } from "../../shared/global.state";
 import { Store } from "@ngrx/store";
-import { GLobalState } from "src/app/shared/global.state";
-import { SetAppState } from "src/app/state/state.actions";
-import { AuthService } from "src/app/auth.service";
+import { AuthService } from "../../auth.service";
+import { SetAppState } from "../../state/state.actions";
+import { Router} from "@angular/router"
+
 
 /**
  * @Creating_the_sidebar
@@ -27,6 +23,7 @@ import { AuthService } from "src/app/auth.service";
  * 5. Call it through "mediaQueryState" object as : this.toggleSideBar(x, null)
  * 6. Call it through "Toggler Button" as : this.toggleSideBar(null, true)
  * 7. Optionally set overlay click to : this.toggleSideBar(null, true)
+ * 8. Also find in components html where things are being worked.
  */
 @Component({
   selector: "app-parent",

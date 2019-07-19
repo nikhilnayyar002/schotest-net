@@ -1,8 +1,10 @@
-@import '../../../../data/variables';
-
 .main {
-    display: block;
-    height: calc(100vh - #{ $navbar-height + $nav-height-sections});
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .page-content {
+    flex: 1;
     overflow: auto;
-    padding: 75px 16px 150px;
+  }
 }

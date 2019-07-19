@@ -10,6 +10,9 @@ module.exports.register = (req, res, next) => {
     user.email = req.body.email;
     user.password = req.body.password;
     user._id = (new Date()).getTime();
+    user.favourites = []
+    user.tests - []
+    
     user.save((err, doc) => {
         if (!err)
             res.send(doc);

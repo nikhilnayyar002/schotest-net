@@ -25,7 +25,7 @@ router.all('*', function(req,res, next) {
   next();
 })
 
-router.get('/all', function(req, res, next) {
+router.get('/', function(req, res, next) {
 
   CategoryModal.find({},function (err, categories) {
     if (err) { return next(err); }
@@ -47,7 +47,13 @@ router.get('/:id', function(req, res, next) {
     Promise.all(proms).then((docs, err)=>{
       if(err) 
         return res.status(500).json({ status:false, message: 'Please try again later.' });
-      else res.json(docs)
+      else 
+        res.json(
+          docs.map((doc)=>{
+            doc.questions = null
+            return doc
+          })
+        )
     })
 
   })

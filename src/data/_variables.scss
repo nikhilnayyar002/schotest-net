@@ -40,6 +40,20 @@ $z-side:1220;
 $z-overlay-fixed:1210;
 $z-overlay-absolute:1200;
 
+//bootstrap
+$zindex-modal-backdrop:    1250 ;
+$zindex-modal:             1260 ;
+$zindex-popover:           1270 ;
+$zindex-tooltip:           1280 ;
+
+$zindex-dropdown:          1000 ;
+$zindex-sticky:            1020 ;
+$zindex-fixed:             1030 ;
+
+
+
+
+
 /* ********************** modify existing colors in bootstrap $theme-colors map  */
 
 $theme-colors: (

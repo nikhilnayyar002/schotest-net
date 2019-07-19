@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Category } from '../../../modals/category';
 import { MainService } from '../../main.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-parent',
@@ -10,12 +11,15 @@ import { MainService } from '../../main.service';
 })
 export class ParentComponent  {
 
-  categories$:Observable<Category[]>
+  categories:Category[]
 
   constructor(
-    private ms:MainService
+    private route:ActivatedRoute
   ) {
-    this.categories$ = ms.getCategories()
+  }
+
+  ngOnInit(): void {
+    this.categories = <Category[]> this.route.snapshot.data.categories
   }
 
 }

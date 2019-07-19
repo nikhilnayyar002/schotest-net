@@ -1,12 +1,11 @@
-@import '../../../data/variables';
+@import "../../../data/variables";
 
 :host {
-
   min-height: 100%;
 
   //making app component re-usable
   // height: 100vh;
-  
+
   position: relative;
   display: block;
 }
@@ -14,15 +13,34 @@
 .side-container {
   z-index: $z-side;
 }
-.side {
-    height: calc(100vh - #{ $navbar-height + $nav-height-sections});
-    overflow: auto;
-    padding: 140px 16px 120px;
-    width: $side-width;
+
+.main {
+  height: calc(100vh - #{ $navbar-height + $nav-height-sections});
 }
 
-.side-toggler {
-  bottom: 150px;
-  position: absolute;
-  left: -55px;
+// .side {
+//   $total-nav-height: $navbar-height + $nav-height-sections;
+//   $side-bottom-height: 108px;
+
+//   height: calc(100vh - #{$total-nav-height});
+//   overflow: auto;
+//   width: $side-width;
+
+//   &-bottom {
+//     height: $side-bottom-height;
+//   }
+//    {
+//     height: calc(100vh - #{$total-nav-height + $side-bottom-height});
+//   }
+// }
+
+.side {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  #mcq-states {
+    flex: 1;
+    overflow: auto;
+  }
 }

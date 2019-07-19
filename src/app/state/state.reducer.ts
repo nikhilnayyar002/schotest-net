@@ -6,14 +6,16 @@ import { AppState } from './app.state';
 export const initialAppState:AppState = {
     loggedIn:false,
     user:null,
-    cred:null
+    cred:null,
+    redirectURL:null
 };
 
 const reducer = createReducer(
     initialAppState,
     on(AppActions.SetLoginState ,(state,action)=>({ ...state, loggedIn:action.state})),
-    on(AppActions.SetUserState ,(state,action)=>({ ...state, user:action.user})),
+    on(AppActions.SetUserState ,(state,action)=>({ ...state, ...action})),
     on(AppActions.SetAppState ,(state,action)=>({ ...state, ...action.app})),
+    on(AppActions.SetRedirectURL ,(state,action)=>({ ...state, ...action})),
 );
 
 export function appReducer (state:AppState|undefined,action:Action) {

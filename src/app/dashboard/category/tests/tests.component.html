@@ -1,1 +1,50 @@
-<p>tests works!</p>
+<div class="header bg-info py-4">
+  <h1 class="mb-4">
+    Tests
+  </h1>
+  <p>
+    Click to pop down details of particular test in given list of tests.
+  </p>
+</div>
+
+<div class="accordion page-content bg-info" id="accordionTests">
+  <div
+    *ngFor="let test of tests; let i = index"
+    class="card bg-primary border-bottom border-info rounded-sm"
+  >
+    <div
+      class="card-header position-relative"
+      id="heading{{ i }}"
+      data-toggle="collapse"
+      attr.data-target="#collapse{{ i }}"
+      aria-expanded="false"
+      attr.aria-controls="collapse{{ i }}"
+      (click)="onCardHeaderCLick($event.currentTarget)"
+    >
+   
+      <h6 class="mb-0 font-weight-bold">
+        {{ test.name }}
+      </h6>
+      <div class="card-status-container">
+        <span class="card-status">&larr;</span>
+      </div>
+
+    </div>
+    <div
+      id="collapse{{ i }}"
+      class="collapse"
+      attr.aria-labelledby="heading{{ i }}"
+      data-parent="#accordionTests"
+    >
+      <div class="card-body bg-white text-dark">
+        <p class="font-weight-bold">Intro</p>
+        <p>{{test.detail}}</p>
+        <p class="font-weight-bold">Details</p>
+        <p>No. of Questions: {{ test.sections[test.sections.length - 1].endQ }}</p>
+        <p>No. of Sections: {{test.sections.length}}</p>
+        <p>Time Limit: {{test.time | timer}}</p>
+        <button class="btn btn-secondary">Start</button>
+      </div>
+    </div>
+  </div>
+</div>

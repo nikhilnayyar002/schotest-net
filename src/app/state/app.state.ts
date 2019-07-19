@@ -6,4 +6,5 @@ export interface AppState {
     loggedIn:boolean;
     user:User;
     cred?:Credentials;
+    redirectURL?:string;
 }

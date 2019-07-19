@@ -2,56 +2,60 @@
 @import "../../../data/variables";
 
 :host {
-    min-height: 100%;
-    position: relative;
-    display: block;
+  min-height: 100%;
+  position: relative;
+  display: block;
 }
 
 .sidebar {
-    position: relative;
-    top: (-$navbar-height);
-    left: 0px;
+  position: relative;
+  top: (-$navbar-height);
+  left: 0px;
+  padding: 15px;
+  width: $side-width-dashboard;
+  z-index: $z-sidebar;
+  overflow: hidden;
+
+  // local variables
+  $top-height: 150px;
+  $list-group-height: calc(100vh - 150px);
+
+  //transition
+  // transform-origin: 0% 50%;
+  transition: left 1s;
+  .top {
+    height: $top-height;
     padding: 15px;
-    width: $side-width-dashboard;
-    z-index: $z-sidebar;
-    overflow: hidden;
 
-    // local variables
-    $top-height:150px;
-    $list-group-height:calc(100vh - 150px);
-
-    //transition
-    // transform-origin: 0% 50%;
-    transition: left 1s;
-    .top {
-        height: $top-height;
-        padding: 15px;
-
-        .navbar-brand {
-            display: block;
-            margin: 0px;
-            padding-top: 20px;
-            font-size: 35px;
-        }
+    .navbar-brand {
+      display: block;
+      margin: 0px;
+      padding-top: 20px;
+      font-size: 35px;
     }
-    .list-group {
-        $padding: 10px;
-        height: $list-group-height;
-        padding: $padding;
-        overflow: auto;
-        .list-group-item {
-            margin-bottom: 5px;
-            &:focus {
-                outline: none;
-            }
-            &:hover {
-                box-shadow: 0 0 5px black;
-            }
-        }
+  }
+  .list-group {
+    $padding: 10px;
+    height: $list-group-height;
+    padding: $padding;
+    overflow: auto;
+    .list-group-item {
+      margin-bottom: 5px;
+      &:focus {
+        outline: none;
+      }
+      &:hover {
+        box-shadow: 0 0 5px black;
+      }
     }
+  }
 }
 
 .sidebar-closed {
-        left:-$side-width-dashboard;
-        position : absolute;
+  left: -$side-width-dashboard;
+  position: absolute;
+}
+
+.main {
+  height: calc(100vh - #{$navbar-height});
 }

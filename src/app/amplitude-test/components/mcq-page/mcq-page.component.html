@@ -1,9 +1,9 @@
 
 <ng-container *ngIf="question.isComprehension; else normalTemplate">
-  <div class="row no-gutters">
+  <div class="row no-gutters h-100">
 
     <!--Comprehension-->
-    <div class="col page-content bg-info border-right">
+    <div class="col page-content border-right border-primary">
       <em><u>Comprehension</u></em>
 
        <!--content-->
@@ -12,7 +12,7 @@
     </div>
 
     <!--Question-->
-    <div class="col page-content bg-info">
+    <div class="col page-content">
       <em><u>Question</u></em>
 
       <!--content-->
@@ -36,7 +36,7 @@
 <ng-template #normalTemplate>
 
   <!--Question-->
-  <div class="page-content bg-info">
+  <div class="page-content">
 
     <!--content-->
     <p [innerHTML]="question.content | safeStyle:'dom'"></p>

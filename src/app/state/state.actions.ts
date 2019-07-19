@@ -21,3 +21,8 @@ export const SetAppState = createAction(
   '[App] Set',
   props<{app:AppState}>()
 );
+
+export const SetRedirectURL = createAction(
+  '[RedirectURL] Set',
+  props<{redirectURL:string}>()
+);

@@ -19,6 +19,7 @@ const jwtHelper = require('./config/jwtHelper');
 const mongoose = require('mongoose');
 var testsRouter = require('./routes/tests');
 var categoriesRouter = require('./routes/categories');
+var userDataRouter = require('./routes/userData');
 /**
  * setup dev environment (part 1)
  * 
@@ -78,8 +79,9 @@ app.use(passport.initialize());
 // })
 
 app.use('/auth', authRouter);
-app.use('/tests', jwtHelper.verifyJwtToken, testsRouter);
+app.use('/tests', /** jwtHelper.verifyJwtToken, */ testsRouter);
 app.use('/categories', categoriesRouter);
+app.use('/userData', userDataRouter);
 /**
  * catch 404 and forward to error handler
  */

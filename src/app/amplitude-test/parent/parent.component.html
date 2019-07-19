@@ -69,7 +69,7 @@
   </ul>
   
   <!-- main content -->
-  <div class="main row no-gutters position-relative">
+  <div class="row no-gutters position-relative">
     <!-- overlay for side toggler-->
     <div
       class="overlay overlay-absolute"
@@ -81,12 +81,12 @@
     ></div>
   
     <!-- page content (question page) -->
-    <div class="col position-relative">
+    <div class="main col position-relative">
       <ng-container appPageSwitch></ng-container>
     </div>
   
     <!-- side content -->
-    <div class="col-auto side-container border-left position-relative">
+    <div class="col-auto side-container border-left border-primary position-relative">
       <!-- 
         arrow for switching side content
         also added inline styling
@@ -107,22 +107,12 @@
       <div
         class="side bg-info"
         style="background: white;"
-        [style.display]="sideState.sideStateOpen ? 'block' : 'none'"
+        [style.display]="sideState.sideStateOpen ? 'flex' : 'none'"
       >
-        <!-- X- side toggler -->
-        <div
-          class="container btn btn-primary side-toggler"
-          [style.display]="'none'"
-        >
-          <div class="bar1"></div>
-          <div class="bar2"></div>
-          <div class="bar3"></div>
-        </div>
   
         <!-- side top content -->
         <div
-          class="text-white p-2 pl-3 w-100 position-absolute bg-primary"
-          style="top: 0;left: 0;"
+          class="side-top text-white p-2 pl-3 w-100 bg-primary"
         >
           <!-- user image -->
           <img class="small-image" src="../../../assets/img/no-user.png" />
@@ -164,15 +154,14 @@
         </div>
   
         <!-- mcqs states -->
-        <div id="mcq-states">
+        <div id="mcq-states" class="p-2">
           <app-mcq-states></app-mcq-states>
         </div>
   
         <!-- side bottom content-->
         <div
-          class="d-flex p-3 position-absolute w-100
-          justify-content-center flex-column border-top bg-primary"
-          style="bottom: 0; left:0;"
+          class="side-bottom d-flex p-3 w-100
+          justify-content-center flex-column bg-primary"
         >
           <!-- Question & Instructions button -->
           <div>

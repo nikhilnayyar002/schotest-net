@@ -190,8 +190,8 @@ router-outlet + *{
   @include browser-based-property(animation, fadeInFromNone 0.5s ease-out);
 }
 
-router-outlet[parent] + *{
-  display: block;
-  @include browser-based-property(animation, slideInFromLeft 0.5s ease-out);
-}
+// router-outlet[parent] + *{
+//   display: block;
+//   @include browser-based-property(animation, slideInFromLeft 0.5s ease-out);
+// }
 
