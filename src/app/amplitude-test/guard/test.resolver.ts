@@ -1,17 +1,18 @@
 import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
-import { DashboardModule } from '../dashboard.module';
 import { MainService } from '../main.service';
 import { Store } from '@ngrx/store';
 import { GLobalState } from 'src/app/shared/global.state';
-import { take, switchMap, catchError } from 'rxjs/operators';
+import { take, switchMap, catchError, map } from 'rxjs/operators';
 import { SetTest } from '../state/state.actions';
-import { of } from 'rxjs';
+import { of, forkJoin } from 'rxjs';
+import { onTestNotFetched } from '../shared/global';
+import { AmplitudeTestModule } from '../amplitude-test.module';
 
 @Injectable({
-  providedIn: DashboardModule
+  providedIn: AmplitudeTestModule
 })
-export class DashboardResolverService {
+export class TestResolverService {
   constructor(
     private ms:MainService,
     private store:Store<GLobalState>
@@ -20,34 +21,24 @@ export class DashboardResolverService {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    let testID = +route.paramMap.get("id")
-    return this.ms.getTest(testID).pipe(
+    let testID = +route.paramMap.get("id"),
+        arr = [
+          this.ms.getTest(testID)
+        ]
+        
+    return forkJoin(arr).pipe(
       take(1),
+      map(()=>),
       switchMap((test)=>{
         this.store.dispatch(SetTest({ test }))
-        of(true)
+        return of(true)
       }),
-      catchError(()=>{
+      catchError((error)=>{
         onTestNotFetched(error as string)
+        return of(false)
       })
     )
   }
 
 }
 
-GetTest$: Observable<Action> = createEffect(
-  () =>
-    this.actions$.pipe(
-      ofType(TestActions.GetTest),
-      tap(action =>
-        this.ms
-          .getTest(action.id)
-          .pipe(take(1))
-          .subscribe(
-            test => ,
-            error => 
-          )
-      )
-    ),
-  { dispatch: false }
-);
