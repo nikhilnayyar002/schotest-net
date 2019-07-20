@@ -27,18 +27,26 @@ router.all('*', function(req,res, next) {
   next();
 })
 
+/**
+ * @GET USER -> details @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ */
+
 router.get('/:id', function(req, res, next) {
     let id=req.params.id;
     UserModal.findById(id,function (err, doc) {
         if (err) { return next(err); }
         if(doc) {
             let t = _.pick(doc,['favourites','tests']);
-            t.status = true
             res.json(t);
         }
         else res.status(400).json({ status:false, message: 'Failed' });
     })
 })   
+
+/**
+ * @GET USER -> favourites @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ */
+
 
 router.get('/:id/favourites', function(req, res, next) {
     let id=req.params.id;
@@ -46,12 +54,15 @@ router.get('/:id/favourites', function(req, res, next) {
         if (err) { return next(err); }
         if(doc) {
             let t = _.pick(doc,['favourites']);
-            t.status = true
-            res.json(t);
+            res.json(t.favourites);
         }
         else res.status(400).json({ status:false, message: 'Failed' });
     })
 })   
+
+/**
+ * @POST USER -> favourites @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ */
 
 
 router.post('/:id/favourites', function(req, res, next) {
@@ -68,25 +79,56 @@ router.post('/:id/favourites', function(req, res, next) {
     )
 }) 
 
+/**
+ * @GET TEST's @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ */
+
+
 router.get('/:id/tests', function(req, res, next) {
     let id=req.params.id;
     UserModal.findById(id,function (err, doc) {
         if (err) { return next(err); }
         if(doc) {
             let t = _.pick(doc,['tests']);
-            t.status = true
-            res.json(t);
+            res.json(t.tests);
         }
         else res.status(400).json({ status:false, message: 'Failed' });
     })
 })   
 
+/**
+ * @GET TEST @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ */
+
+
+router.get('/:id/tests/:tID', function(req, res, next) {
+    let id=req.params.id, tID=req.params.tID;
+    UserModal.findById(id,function (err, doc) {
+        if (err) { return next(err); }
+        if(doc) {
+            if(doc.tests[tID]) res.json(doc.tests[tID]);
+            else
+                res.status(400).json({status:false, message:"Failed"});   
+        }
+        else res.status(400).json({ status:false, message: 'No record' });
+    })
+})   
+
+
+/**
+ * @POST TEST  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ */
+
+
 router.post('/:id/tests', function(req, res, next) {
     let id=req.params.id
 
+    let newObj = {}, keyName = Object.keys(req.body)[0];
+    newObj[`tests.${req.body._id}`] = req.body
+
     UserModal.updateOne(
         { "_id": id },
-        { "$push": { "tests": req.body.test }},
+        { "$set": newObj},
         function (err, doc) {
             if (err) { return next(err); }
             if(doc) res.json({status:true, message:"Success"});
@@ -95,35 +137,68 @@ router.post('/:id/tests', function(req, res, next) {
     )
 })  
 
+
+
+/**
+ * @POST QUESTION @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ */
+
 router.post('/:id/tests/q', function(req, res, next) {
-    let id=req.params.id
+    let id=req.params.id, tID=req.body.id
 
     UserModal.findById(id, function(err, doc){
         if (err) { return next(err); }
         if (doc) {
-            let i=0;
-            for(i=0; i < doc.tests.length; ++i) {
-                let test = doc.tests[i]
-                if(test && test._id == req.body.id ) break
+            if(doc.tests[tID]) {
+                let newObj = {}, keyName = Object.keys(req.body.question)[0];
+                newObj[`tests.${tID}.questions.${keyName}`] = req.body.question[keyName]
+                UserModal.updateOne(
+                    { "_id": id },
+                    { "$set": newObj},
+                    function (err, doc) {
+                        if (err) { return next(err); }
+                        if(doc) res.json({status:true, message:"Success"});
+                        else res.status(400).json({status:false, message:"Failed"});
+                    }
+                )
             }
-            if(i == doc.tests.length) 
-                res.status(400).json({status:false, message:"Failed"});
-            let newObj = {};
-            newObj[`tests.${i}.questions`] = req.body.questions
-            UserModal.updateOne(
-                { "_id": id },
-                { "$set": newObj},
-                function (err, doc) {
-                    if (err) { return next(err); }
-                    if(doc) res.json({status:true, message:"Success"});
-                    else res.status(400).json({status:false, message:"Failed"});
-                }
-            )
+            else
+                res.status(400).json({status:false, message:"Failed"});  
         }
     })
 
+})  
+
+/**
+ * @POST TIME @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ */
+
+router.post('/:id/tests/t', function(req, res, next) {
+    let id=req.params.id, tID=req.body.id
+
+    UserModal.findById(id, function(err, doc){
+        if (err) { return next(err); }
+        if (doc) {
+            if(doc.tests[tID]) {
+                let newObj = {}
+                newObj[`tests.${tID}.time`] = req.body.time
+                UserModal.updateOne(
+                    { "_id": id },
+                    { "$set": newObj},
+                    function (err, doc) {
+                        if (err) { return next(err); }
+                        if(doc) res.json({status:true, message:"Success"});
+                        else res.status(400).json({status:false, message:"Failed"});
+                    }
+                )
+            }
+            else
+                res.status(400).json({status:false, message:"Failed"});  
+        }
+    })
 
 })  
+
 
 
 

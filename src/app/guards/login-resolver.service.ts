@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
+import { ActivatedRouteSnapshot, RouterStateSnapshot, Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { GLobalState } from "../shared/global.state";
-import { take, switchMap, map, retry, catchError } from "rxjs/operators";
+import { take, switchMap, map, retry, catchError, tap } from "rxjs/operators";
 import { AuthService } from "../auth.service";
 import { BackendStatus } from "../shared/global";
 import { SetAppState } from "../state/state.actions";
@@ -12,7 +12,11 @@ import { of, observable } from "rxjs";
   providedIn: "root"
 })
 export class LoginResolverService {
-  constructor(private store: Store<GLobalState>, private auth: AuthService) {}
+  constructor(
+    private store: Store<GLobalState>,
+    private auth: AuthService,
+    private router:Router
+  ) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     return this.store
@@ -21,7 +25,10 @@ export class LoginResolverService {
         take(1),
         switchMap(appState => {
 
-          if (appState.loggedIn) return of(true);
+          if (appState.loggedIn) {
+            this.router.navigate([this.auth.lastUrlLoaded])
+            return of(true);
+          }
 
           /* if false means token expired */
           else if (this.auth.isUserPayloadValid())
@@ -38,6 +45,7 @@ export class LoginResolverService {
                     }
                   })
                 );
+                this.router.navigate([this.auth.lastUrlLoaded])
                 return true;
               }),
               catchError(()=> of(false))
@@ -47,6 +55,7 @@ export class LoginResolverService {
            */
           else 
             return this.auth.refreshToken(appState).pipe(
+              tap(()=> this.router.navigate([this.auth.lastUrlLoaded]) ),
               catchError(()=> of(false))
             )
         })

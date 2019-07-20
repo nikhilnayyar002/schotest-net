@@ -2,6 +2,7 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationError, NavigationCancel } from '@angular/router';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { AuthService } from './auth.service';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class AppComponent {
   navEnd:Observable<any>;
   @ViewChild('routerProgress', { static: false }) private routerProgress: ElementRef;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private auth:AuthService) {
 
     this.navStart = router.events.pipe(
       filter(evt => evt instanceof NavigationStart)
@@ -45,6 +46,7 @@ export class AppComponent {
     });
     this.navEnd.subscribe(evt => {
       this.routerProgress.nativeElement.style.opacity = "0"
+      this.auth.lastUrlLoaded = evt.url
     });
 
     /**

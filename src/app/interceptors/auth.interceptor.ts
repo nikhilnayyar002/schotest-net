@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpInterceptor, HttpRequest, HttpHandler } from "@angular/common/http";
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpHeaders } from "@angular/common/http";
 import { AuthService } from "../auth.service";
 
  
@@ -16,7 +16,11 @@ export class AuthInterceptor implements HttpInterceptor {
 
     if(req.url != ignoreUrl) {
         req = req.clone({
-          headers: req.headers.set('Authorization', "Bearer "+this.auth.getAuthorizationToken())
+          headers: new HttpHeaders({
+            'x-refresh':  'true',
+            'Authorization': "Bearer "+this.auth.getAuthorizationToken()
+          })
+
         });
     }
     return next.handle(req);

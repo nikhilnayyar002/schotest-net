@@ -1,7 +1,52 @@
+
+GET   http://localhost:3000/userData/1563274945715/tests/12347
+
+###
+
+
+GET   http://localhost:3000/userData/1563274945715/tests
+
+###
+
+POST   http://localhost:3000/userData/1563274945715/tests/t
+Content-Type: application/json
+
+{
+    "id": 12347,
+    "time": 49
+}
+
+###
+
 POST   http://localhost:3000/userData/1563274945715/tests/q
 Content-Type: application/json
 
 {
-    "id": 12345,
-    "questions":[8,5,9]
+    "id": 12347,
+    "question": {
+        "80999": "the king is too great" 
+    }
 }
+
+###
+
+POST   http://localhost:3000/userData/1563274945715/tests
+Content-Type: application/json
+
+{
+    "_id": 12347,
+    "questions":{ 
+        "hi":"bye"
+    },
+    "time":3600
+}
+
+###
+
+GET   http://localhost:3000/categories/1563272163882?email=nikhilnayyar002@gmail.com
+
+###
+
+GET   http://localhost:3000/categories
+
+###

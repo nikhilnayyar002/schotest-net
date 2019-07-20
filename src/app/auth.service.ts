@@ -29,6 +29,8 @@ export class AuthService {
     console.log("auth created")
   }
 
+  lastUrlLoaded:string='/';
+
   authenticate(email: string, pass: string): Observable<BackendStatus | Error> {
     const httpOptions = {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
@@ -155,7 +157,8 @@ export class AuthService {
                 switchMapTo(this.http.get(url).pipe(recipe))
               )
               /**end  */
-            })
+            }),
+            catchError(()=> of(null))
           )
         )
       )

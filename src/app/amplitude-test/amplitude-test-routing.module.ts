@@ -4,7 +4,7 @@ import { ParentComponent } from './parent/parent.component';
 
 const routes: Routes = [
   {
-    path: 'app',
+    path: 'test/:id',
     component: ParentComponent
   }
 ];

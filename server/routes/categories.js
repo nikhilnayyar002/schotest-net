@@ -4,6 +4,8 @@ var CategoryModal = require('../modals/category')
 var TestModal = require('../modals/test')
 const mongoose = require('mongoose');
 
+var UserModal = mongoose.model('User');
+
 router.all('*', function(req,res, next) {
 
   /**
@@ -41,19 +43,30 @@ router.get('/:id', function(req, res, next) {
   CategoryModal.findById(categoryID,function (err, category) {
     if (err) { return next(err); }
 
-    let proms=[];
+    let proms=[]
     for(t of category.tests)
       proms.push(TestModal.findById(t).exec())
     Promise.all(proms).then((docs, err)=>{
       if(err) 
         return res.status(500).json({ status:false, message: 'Please try again later.' });
-      else 
-        res.json(
-          docs.map((doc)=>{
-            doc.questions = null
-            return doc
-          })
-        )
+      else {
+        UserModal.find({email:req.query.email}, (err, doc)=>{
+          if (err) { return next(err); }
+          else {
+            doc=doc[0]
+            if(doc && doc.tests)
+              docs = docs.map((test)=>{
+                let t=doc.tests[test._id]
+
+                if(t) test.time = t.time
+                test.questions = null
+                return test
+              })
+            res.json(docs)
+          }
+        })
+      }
+
     })
 
   })

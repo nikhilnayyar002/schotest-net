@@ -36,22 +36,27 @@ export class MainService {
         return data as Category[];
       })
     );
-
     return this.auth.tryWithRefreshIfNecc(url, recipe);
   }
 
   getTests(categoryID: string): Observable<Test[] | any> {
-    let url = `${config.api.base}/categories/${categoryID}`;
-    let recipe = pipe(
-      map((tests: any) => {
-        tests.map(test => {
-          test.id = test._id;
-          return test as Test;
-        });
-        return tests as Test[];
-      })
-    );
-
-    return this.auth.tryWithRefreshIfNecc(url, recipe);
+    return this.store
+      .select(state => state.app.user)
+      .pipe(
+        take(1),
+        switchMap(user => {
+          let url = `${config.api.base}/categories/${categoryID}?email=${user.email}`;
+          let recipe = pipe(
+            map((tests: any) => {
+              tests.map(test => {
+                test.id = test._id;
+                return test as Test;
+              });
+              return tests as Test[];
+            })
+          );
+          return this.auth.tryWithRefreshIfNecc(url, recipe);
+        })
+      );
   }
 }

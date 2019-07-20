@@ -2,13 +2,17 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+// var testSchema = new mongoose.Schema({
+//     _id:{type:Number},
+//      questions: mongoose.Mixed,
+//      time:Number
+// });
+
 var testSchema = new mongoose.Schema({
     _id:{type:Number},
-     questions:[Number],
+     questions: mongoose.Mixed,
      time:Number
 });
-
-mongoose.model('UserTest', testSchema);
 
 var userSchema = new mongoose.Schema({
     fullName: {
@@ -30,7 +34,7 @@ var userSchema = new mongoose.Schema({
         type:Number
     },
     favourites:{ type: [Number]},
-    tests:{ type: [testSchema] }
+    tests:mongoose.Mixed
 });
 
 
@@ -42,6 +46,7 @@ userSchema.path('email').validate((val) => {
 
 // Events
 userSchema.pre('save', function (next) {
+    console.log("@@@@@@@@ bcrypt worked !!!!!!!")
     bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(this.password, salt, (err, hash) => {
             this.password = hash;

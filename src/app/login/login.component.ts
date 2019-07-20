@@ -40,11 +40,11 @@ export class LoginComponent {
       .select(state => state.app.redirectURL)
       .pipe(take(1))
       .subscribe(redirectURL => {
-        this.redirectURL = redirectURL
+        this.redirectURL = redirectURL?redirectURL:'/dashboard'
         let data = this.route.snapshot.data;
-        if (redirectURL && data.status) {
-          this.router.navigate([redirectURL]);
-        }
+
+        if (data.status) 
+          this.router.navigate([this.redirectURL]);
     });    
   }
 
