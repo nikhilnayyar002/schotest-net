@@ -3,8 +3,8 @@ import { Store, select } from '@ngrx/store';
 import {SubSink} from 'subsink'
 import { TestState } from '../../state/test.state';
 import { SetQuestionState, SetIndex } from '../../state/state.actions';
+import { Test } from 'server/src/modal/test';
 import { QuestionState, checkAndGetQuestionState } from '../../shared/global';
-import { Question } from '../../modals/question';
 
 @Component({
   selector: 'app-mcq-states',
@@ -13,8 +13,9 @@ import { Question } from '../../modals/question';
 })
 export class McqStatesComponent {
 
-  questions:Question[];
-  indexOfCurrQ:number=0;
+  questions:string[];
+  id:string;
+  test:Test;
   private isTestOver=false;
   
   subs=new SubSink();
@@ -24,12 +25,12 @@ export class McqStatesComponent {
   ) { 
     this.subs.add(
       store.pipe(select(state=>state.testOther)).subscribe(other => {
-        this.indexOfCurrQ=other.index;
+        this.id=other.id;
         this.isTestOver=other.isTestOver;
       })
     )
     this.subs.add(
-      this.store.pipe(select(state=>state.test.questions)).subscribe((questions)=>this.questions=questions)
+      this.store.pipe(select(state=>state.test)).subscribe((test)=>this.test=test)
     )
   }
 
@@ -59,12 +60,11 @@ export class McqStatesComponent {
   /**
    * click the badge and get a question selected.
    */
-  badgeClick(value: string) {
+  badgeClick(id: string) {
     if(this.isTestOver) return
-    let i = +value.split(':')[1]
-    let state=checkAndGetQuestionState(this.questions[this.indexOfCurrQ])
-    this.store.dispatch(SetQuestionState({state:state, index:this.indexOfCurrQ}))
-    this.store.dispatch(SetIndex({index:i}))
+    let state=checkAndGetQuestionState(this.test.questions[this.id])
+    this.store.dispatch(SetQuestionState({state:state, id:this.id}))
+    this.store.dispatch(SetIndex({id}))
   }
 
 

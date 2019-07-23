@@ -8,25 +8,19 @@
         <th scope="col">Un-Answered</th>
         <th scope="col">Marked</th>
         <th scope="col">Marked-Ans</th>
-        <th scope="col">Un-Visited</th>              
+        <th scope="col">Un-Visited</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let section of sections">
-            <td> {{section.name}} </td>
-        <ng-container *ngIf="questions">
-            <ng-container *ngIf="rtnTableDetailsForSection(section) as tbData">
-                <td>{{tbData.questions}}</td>
-                <td>{{tbData.answered}}</td>
-                <td>{{tbData.unAnswered}}</td>
-                <td>{{tbData.marked}}</td>
-                <td>{{tbData.markedAnswered}}</td>
-                <td>{{tbData.unVisited}}</td>
-            </ng-container>
-        </ng-container>
-        
-
+        <td>{{ test.sections[section] }}</td>
+        <td>{{ tbDatas[section].questions }}</td>
+        <td>{{ tbDatas[section].answered }}</td>
+        <td>{{ tbDatas[section].unAnswered }}</td>
+        <td>{{ tbDatas[section].marked }}</td>
+        <td>{{ tbDatas[section].markedAnswered }}</td>
+        <td>{{ tbDatas[section].unVisited }}</td>
       </tr>
     </tbody>
   </table>
- </div>
+</div>

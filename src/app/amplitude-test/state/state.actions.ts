@@ -8,7 +8,7 @@ import { QuestionState } from '../shared/global';
  */
 export const SetQuestionState = createAction(
   '[Question] State',
-  props<{state:QuestionState, index:number}>()
+  props<{state:QuestionState, id:string}>()
 );
 
 /**
@@ -17,7 +17,7 @@ export const SetQuestionState = createAction(
  */
 export const GetTest = createAction(
     '[Test] Get',
-    props<{id:number}>()
+    props<{id:string}>()
 );
 
 /**
@@ -35,7 +35,7 @@ export const SetTest = createAction(
  */
 export const SetIndex = createAction(
   '[Index] Set',
-  props<{index:number}>()
+  props<{id:string}>()
 );
 
 /**

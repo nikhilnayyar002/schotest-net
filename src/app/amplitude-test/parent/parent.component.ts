@@ -2,28 +2,33 @@ import { Component, ChangeDetectorRef, ComponentFactoryResolver, ViewChild, Elem
 import { take } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 import { PageService } from '../page/page.service';
-import { TestState } from '../state/test.state';
-import { GetTest, TestOver, SetIndex, PauseTestServer } from '../state/state.actions';
+import {  TestOtherState } from '../state/test.state';
+import {  TestOver, SetIndex, PauseTestServer } from '../state/state.actions';
 import { PageItem } from '../page/page-items';
 import { PageSwitchDirective } from '../page-switch.directive';
 import { PageComponent } from '../page/page-component.modal';
-import { SideState, checkAndGetQuestionState } from '../shared/global';
+import { SideState } from '../shared/global';
 import { Test } from '../modals/test';
 import  config  from '../../../data/config'
 import { MediaQueryState, createMediaQuery, toggleFullScreen } from '../../shared/global';
+import { GLobalState } from 'src/app/shared/global.state';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AutoUnsubscribe, takeWhileAlive} from 'take-while-alive';
+import { User } from 'src/app/modals/user';
 
 @Component({
   selector: 'app-parent',
   templateUrl: './parent.component.html',
   styleUrls: ['./parent.component.scss']
 })
+@AutoUnsubscribe()
 export class ParentComponent {
 
-  //new variables
   test: Test;
-  index: number;
-  isTestOver: boolean = false;
+  otherState:TestOtherState;
   isFullScreenEnabled: boolean = false;
+  sections:string[];
+  user:User;
 
   //local config
   configData = config;
@@ -33,7 +38,9 @@ export class ParentComponent {
     private cdr: ChangeDetectorRef,
     private componentFactoryResolver: ComponentFactoryResolver,
     private ps: PageService,
-    private store: Store<TestState>
+    private store: Store<GLobalState>,
+    private route:ActivatedRoute,
+    private router:Router
   ) { }
 
   // media state and side toggler state
@@ -46,7 +53,6 @@ export class ParentComponent {
     this.sideState.toggler(null, this.mediaQueryState.isMediaMatched())
   }
 
-
   /* ng methods ****************************************************************/
 
   @ViewChild('fullScreenBtn', { static: false }) private fullScreenBtn: ElementRef<HTMLButtonElement>;
@@ -56,10 +62,8 @@ export class ParentComponent {
   }
 
   ngOnDestroy(): void {
-
     /* handling media object disposal*/
     this.mediaQueryState.dispose()
-
     /** Clear the timer */
     this.clearTimer();
   }
@@ -70,32 +74,16 @@ export class ParentComponent {
     */
     this.pageItems = this.ps.getPages();
     this.loadComponent('');
-    /**
-     * load questions from backend
-     */
-    this.store.dispatch(GetTest({ id: 1563271643432 }))
-    this.store.pipe(select((state) => state.test)).subscribe((test) => {
-      this.test = test
-      if (test.questions.length) {
-        if (this.test.time) this.start()
-        else
-          /**
-           *  one tick after the first ng check.
-           */
-          setTimeout(() => {
-            this.store.dispatch(TestOver());
-            this.pause();
-          }, 0);
-      }
-
-    })
-    this.store.pipe(select((state) => state.testOther)).subscribe((other) => {
-      this.index = other.index;
-      this.isTestOver = other.isTestOver;
-    })
-
+    this.test = <Test> this.route.snapshot.data.test
+    if(this.test) {
+      this.start(); 
+      this.sections = Object.keys(this.test.sections)
+    }
+    this.store.pipe(takeWhileAlive(this),select((state) => state.testOther))
+      .subscribe((other) => this.otherState = other)
+    this.store.pipe(take(1),select((state) => state.app.user))
+      .subscribe((user) => this.user = user)
   }
-
 
   /* Loading the pages dyamically ****************************************** */
 
@@ -139,24 +127,11 @@ export class ParentComponent {
   /**
    * section dropdown items click handler
    */
-  sectionClick(index: number) {
-    let state = checkAndGetQuestionState(this.test.questions[this.index])
-    this.store.dispatch(SetIndex({ index: index }))
+  sectionClick(section: string) {
+    this.store.dispatch(SetIndex({ id: this.test.sections[section] }))
     return false
   }
-  /**
-   * return the section given question
-   */
-  returnSectionOfQuestion() {
-    let sectionName = '', index = (this.index + 1)
-    for (let section of this.test.sections) {
-      if (index >= section.startQ && index <= section.endQ) {
-        sectionName = section.name
-        break
-      }
-    }
-    return sectionName
-  }
+
 
   /**
    * Timer things over here ***********************************************

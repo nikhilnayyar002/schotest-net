@@ -40,8 +40,8 @@
         <p class="font-weight-bold">Intro</p>
         <p>{{test.detail}}</p>
         <p class="font-weight-bold">Details</p>
-        <p>No. of Questions: {{ test.sections[test.sections.length - 1].endQ }}</p>
-        <p>No. of Sections: {{test.sections.length}}</p>
+        <p>No. of Questions: {{ test.questions }}</p>
+        <p>No. of Section: {{ test.sections }}</p>
         <p>Time Limit: {{test.time | timer}}</p>
         <button class="btn btn-secondary">Start</button>
       </div>

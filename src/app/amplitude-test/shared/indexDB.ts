@@ -3,14 +3,14 @@ import { Question } from '../modals/question';
 
 interface IDbItem {
     state:QuestionState;
-    id:number;
+    id:string;
 }
 
 export const QuestionStateDB =  {
 
     db:null,
     testID:null,
-    setup:function (questions:Question[]){
+    setup:function (questions:{[index:string]:Question}){
         let request = window.indexedDB.open('states', 1);
         request.onerror = ()=>{
             console.log("error creating db")
@@ -31,7 +31,7 @@ export const QuestionStateDB =  {
         };
     },
 
-    addData:function(state:QuestionState, id:number) {
+    addData:function(state:QuestionState, id:string) {
         let newItem:IDbItem = { state , id:id};
         let transaction = this.db.transaction([`${this.testID}`], 'readwrite');
         let objectStore = transaction.objectStore(`${this.testID}`);
@@ -43,7 +43,7 @@ export const QuestionStateDB =  {
         transaction.onerror = function () { console.log('Transac.failed due to error'); };
     },
 
-    updateData:function(state:QuestionState, id:number){
+    updateData:function(state:QuestionState, id:string){
       
         var objectStore = this.db.transaction([`${this.testID}`], "readwrite").objectStore(`${this.testID}`);
         var objectStoreTitleRequest = objectStore.get(id);
@@ -66,7 +66,7 @@ export const QuestionStateDB =  {
             // Get a reference to the cursor
             let cursor:IDBCursorWithValue = e.target.result;
             if (cursor) {
-                questions[cursor.value.id-1].state = cursor.value.state;
+                questions[cursor.value.id].state = cursor.value.state;
                 cursor.continue();
             }
             else ;

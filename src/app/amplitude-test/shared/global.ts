@@ -32,11 +32,9 @@ export function checkAndGetQuestionState(question: Question) {
  * returns next question @index relative to current index
  *
  */
-export function getNextQuestionIndex(
-  questions: Question[],
-  index: number
-): number {
-  return index < questions.length - 1 ? index + 1 : 0;
+export function getNextQuestionIndex(questions:{[index:string]:Question}, id:string): string {
+  let keys = Object.keys(questions), nextIndex = keys.indexOf(id) +1
+   return keys[nextIndex]; 
 }
 
 /**

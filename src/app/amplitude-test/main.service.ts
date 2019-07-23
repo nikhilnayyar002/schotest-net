@@ -1,65 +1,75 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { Question } from './modals/question';
 import { catchError, tap, map } from 'rxjs/operators';
 import { Test } from './modals/test';
 import config from '../../data/config';
 import { QuestionStateDB } from './shared/indexDB';
+import { Store } from '@ngrx/store';
+import { GLobalState } from '../shared/global.state';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MainService {
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private store:Store<GLobalState>
+    ) { }
 
   /**
    * Fetches questions and sets the questions array locally
    */
-  getTest(id:number): Observable<Test> {
+  getTest(id:string): Observable<Test> {
 
     let url=`${config.api.base}/tests/${id}`
     return this.http.get(url)
       .pipe(
-        map((data:any)=>{
-          data.id=data._id
-          data.questions.map((question)=>{
-            question.id=question._id
-            return question as Question
-          })
-          return data as Test
-        }),
+        map((data: {status:boolean; test:Test; }) => data.test),
         tap((test)=>{
-          QuestionStateDB.testID=test.id
+          QuestionStateDB.testID=test._id
           QuestionStateDB.setup(test.questions)
         }),
         catchError(this.handleError)
       )
   }
 
-  updateQuestion(testID:number, questionID: number, optionIndex:number) {
+  /**
+   * Fetches questions and sets the questions array locally
+   */
+  getUserTest(uid:string,id:string): Observable<Test> {
+    let url=`${config.api.base}/userData/${uid}/tests/${id}`
+    return this.http.get(url)
+      .pipe(
+        map((data: {status:boolean; test:Test; }) => data.test),
+        catchError(this.handleError)
+      )
+  } 
+
+  updateQuestion(uid:string, tid: string, qid:string, ans:string) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
+    let data = { id:tid, question:{}}
+    data.question[qid] = ans
 
-    let url=`${config.api.base}/tests/${testID}/questions/${questionID}`
-    return this.http.post<{index:number}>( url, { data:optionIndex},  httpOptions).pipe(
+    let url=`${config.api.base}/userData/${uid}/tests/q`
+    return this.http.post( url, data,  httpOptions).pipe(
       catchError(this.handleError)
     );
   }
 
-  updateTime(testID:number, time:number) {
+  updateTime(uid:string, tid: string, time:number) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
-
-    let url = config.api.base + '/tests/' + testID +'/time';
-    return this.http.post<{index:number}>( url, { data:time},  httpOptions).pipe(
+    let data = { id:tid, time}
+    let url=`${config.api.base}/userData/${uid}/tests/t`
+    return this.http.post( url, data,  httpOptions).pipe(
       catchError(this.handleError)
     );
   }
-
 
   private handleError(error: HttpErrorResponse): Observable<never> {
     if (error.error instanceof ErrorEvent) {

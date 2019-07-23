@@ -7,10 +7,10 @@ import { QuestionStateDB } from '../shared/indexDB';
 
 export const initialTestState:Test = {
     name:'',
-    questions:[],
-    sections:[],
+    questions:null,
+    sections:null,
     time:0,
-    id:0,
+    _id:'',
     detail:''
 };
 
@@ -18,11 +18,11 @@ const testReducer = createReducer(
     initialTestState,
     on(TestActions.SetTest,(state,action)=>(action.test)),
     on(TestActions.SetQuestionState, (state, action)=>{
-        QuestionStateDB.updateData(action.state, action.index+1);
-        state.questions[action.index].state=action.state
+        QuestionStateDB.updateData(action.state, action.id);
+        state.questions[action.id].state=action.state
         if(action.state==QuestionState.Unvisited)
-            state.questions[action.index].checkedAnswerIndex=null
-        state.questions=state.questions.slice()
+            state.questions[action.id].checkedAnswerIndex=null
+        state.questions={...state.questions}
         return state
     }),
     on(TestActions.SetQuestion, (state,action)=> {
@@ -31,7 +31,7 @@ const testReducer = createReducer(
          * Anywhere this primitive property i referenced, there changes will be reflected
          * For eg: the checkbox value property in mcq component 
          */
-        state.questions[action.question.id]=action.question
+        state.questions[action.question._id]=action.question
         return state
     }),
     on(TestActions.PauseTest, (state,action)=> {
@@ -53,13 +53,13 @@ export function tReducer (state:Test|undefined,action:Action) {
  * index of currently selected question 
  */
 const intialOtherState:TestOtherState={
-    index:0,
+    id:'',
     isTestOver:false
 };
 
 const otherStateReducer = createReducer(
     intialOtherState,
-    on(TestActions.SetIndex,(state,action)=>({...state,index:action.index})),
+    on(TestActions.SetIndex,(state,action)=>({...state,index:action.id})),
     on(TestActions.TestOver,(state)=>{
         /** Note this the function name has not the usual meaning
          *  it was created for error. but is reusable for

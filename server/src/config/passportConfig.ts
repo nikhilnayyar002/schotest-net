@@ -1,14 +1,12 @@
-const passport = require('passport');
-const localStrategy = require('passport-local').Strategy;
-const mongoose = require('mongoose');
-
-var User = mongoose.model('User');
+import * as passport from 'passport';
+import * as localStrategy from 'passport-local';
+import { UserModal, User } from '../modal/user';
 
 passport.use(
-    new localStrategy({ usernameField: 'email' },
-        (username, password, done) => {
-            User.findOne({ email: username },
-                (err, user) => {
+    new localStrategy.Strategy({ usernameField: 'email' },
+        (username, password, done:any) => {
+            UserModal.findOne({ email: username },
+                (err, user:User) => {
                     if (err)
                         return done(err);
                     // unknown user

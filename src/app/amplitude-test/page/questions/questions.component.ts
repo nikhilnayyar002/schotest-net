@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { TestState } from '../../state/test.state';
 import { Question } from '../../modals/question';
+import { Test } from '../../modals/test';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-questions',
@@ -12,18 +14,20 @@ import { Question } from '../../modals/question';
 })
 export class QuestionsComponent extends PageComponent{
 
-  questions:Question[];
-  subsQ:Subscription;
+  questions:string[];
+  test:Test;
+  id:string;
 
   constructor(
     private store:Store<TestState>
   ) { 
     super()
-    this.subsQ=this.store.pipe(select(state=>state.test.questions)).subscribe((questions)=>this.questions=questions)
-  }
-
-  ngOnDestroy(): void {
-    this.subsQ.unsubscribe()
+    this.store.pipe(take(1),select(state=>state)).subscribe((state)=>{
+      this.test = state.test
+      this.questions = Object.keys(this.test.questions);
+      this.id = state.testOther.id
+    })
+  
   }
 
 

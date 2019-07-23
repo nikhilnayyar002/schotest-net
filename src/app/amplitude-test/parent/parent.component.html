@@ -53,16 +53,16 @@
           role="button"
           aria-haspopup="true"
           aria-expanded="false"
-          [class.disabled]="isTestOver"
-          >{{ returnSectionOfQuestion() }}</a
+          [class.disabled]="otherState.isTestOver"
+          >{{ test.questions[otherState.id].section }}</a
         >
         <div class="dropdown-menu" *ngIf="!isTestOver">
           <a
-            *ngFor="let section of test.sections"
+            *ngFor="let section of sections"
             class="dropdown-item"
-            (click)="sectionClick(section.startQ - 1)"
+            (click)="sectionClick(test.sections[section])"
           >
-            {{ section.name }}
+            {{ test.sections[section] }}
           </a>
         </div>
       </li>
@@ -73,11 +73,7 @@
     <!-- overlay for side toggler-->
     <div
       class="overlay overlay-absolute"
-      [style.display]="
-        mediaQueryState.isMediaMatched() && sideState.sideStateOpen
-          ? 'block'
-          : 'none'
-      "
+      [style.display]="mediaQueryState.isMediaMatched() && sideState.sideStateOpen? 'block': 'none'"
     ></div>
   
     <!-- page content (question page) -->
@@ -105,11 +101,8 @@
   
       <!-- main side content-->
       <div
-        class="side bg-info"
-        style="background: white;"
-        [style.display]="sideState.sideStateOpen ? 'flex' : 'none'"
+        class="side bg-info" [style.display]="sideState.sideStateOpen ? 'flex' : 'none'"
       >
-  
         <!-- side top content -->
         <div
           class="side-top text-white p-2 pl-3 w-100 bg-primary"
@@ -118,7 +111,7 @@
           <img class="small-image" src="../../../assets/img/no-user.png" />
   
           <!-- user name -->
-          <span class="ml-2">Nikhil Nayyar</span>
+          <span class="ml-2">{{user.fullName}}</span>
   
           <!-- help about badges (static)-->
           <div class="pt-2">
@@ -255,11 +248,7 @@
         </div>
   
           <div class="modal-body">
-            <app-overall-test-detail
-              [sections]="test.sections"
-              [questions]="test.questions"
-            >
-            </app-overall-test-detail>
+            <app-overall-test-detail></app-overall-test-detail>
           </div>
   
         <div class="modal-footer">

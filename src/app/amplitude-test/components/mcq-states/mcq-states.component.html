@@ -1,5 +1,6 @@
-<span *ngFor="let q of questions; let i=index"
-  [class]="'mcq-question-badge badge rounded-circle m-1 ' + getBadgeType(q.state)" [ngClass]="{'selected':i==indexOfCurrQ}"
-  (click)="badgeClick($event.target.id)" [id]="'mcq-states-badge:'+i">
+<span *ngFor="let q of questions;let i=index"
+  [class]="'mcq-question-badge badge rounded-circle m-1 ' + getBadgeType(test.questions[q].state)"
+  [ngClass]="{'selected':test.questions[q]._id==id}"
+  (click)="badgeClick(test.questions[q]._id)">
   {{i+1}}
 </span>

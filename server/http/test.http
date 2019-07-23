@@ -1,0 +1,187 @@
+# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ User @@@@@@@@@@@@@@@@@@@@@
+
+###Gives error
+# {
+#   "status": false,
+#   "message": "Invalid path"
+# }
+GET http://localhost:3000/
+
+### Aunthenticate
+# {
+#   "status": true,
+#   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjE1NjMyNzQ5NDU3MTUsImlhdCI6MTU2Mzg1Nzc5MCwiZXhwIjoxNTYzODU5NTkwfQ._DyAVYRcp9t8h3B39ckRAl9jlRFjNNtnaFdsS48QYdA"
+# }
+POST http://localhost:3000/auth/authenticate
+Content-Type: application/json
+
+{
+    "email": "nikhilnayyar002@gmail.com",
+    "password": "boss"
+}
+
+### userProfile
+# {
+#   "status": true,
+#   "user": {
+#     "fullName": "Nikhil Nayyar",
+#     "email": "nikhilnayyar002@gmail.com"
+#   }
+# }
+
+GET http://localhost:3000/auth/userProfile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjE1NjMyNzQ5NDU3MTUsImlhdCI6MTU2Mzg1NzY3MSwiZXhwIjoxNTYzODU5NDcxfQ.5htGA15d5Mr-k5QcJPS7pIcb2SMZ0AlSEeBOw_maSuA
+
+### register
+# {
+#   "status": true,
+#   "user": {
+#     "favourites": [],
+#     "fullName": "Yo Yo",
+#     "email": "dynamonagestro2@gmail.com",
+#     "password": "$2a$10$R37y0OLvxweAfRO2roOQb.uQEZ5DPGNiMvtTbJFMvn50w55sF4wpq",
+#     "_id": 1563870538160,
+#     "saltSecret": "$2a$10$R37y0OLvxweAfRO2roOQb.",
+#     "__v": 0
+#   }
+# }
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+    "fullName":"Nikhil Nayyar",
+    "email": "nikhilnayyar002@gmail.com",
+    "password": "boss"
+}
+
+### @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Test @@@@@@@@@@@@@@@@@@@@@
+
+### Post test
+POST http://localhost:3000/tests
+Content-Type: application/json
+
+ {    
+    "_id":"12348",
+    "name":"mockedTest",
+    "sections":{
+        "Section A":"123456",
+        "Section B":"123458"     
+    },
+    "questions":{
+        "123456":{
+            "content":"<p>Answer the following question according to the information given below.</p><p>If a, b, c are the s_ides of a triangle, and a2 + b2 + c2 = bc + ca + ab, then the triangle is</p>",
+            "image":"",
+            "isComprehension":false,
+            "comprehensionContent":"",
+            "answers":["equilateral","isosceles","right angled", "obtuse angled"],
+            "_id":"123456",
+            "section":"Section A"
+        },
+        "123457":{
+            "content":"<p>Answer the following question according to the information</p>",
+            "image":"http://www.puzzles9.com/wp-content/uploads/2016/09/puz581.png",
+            "isComprehension":false,
+            "comprehensionContent":"",
+            "answers":["equilateral","isosceles","right angled", "obtuse angled"],
+            "_id":"123457",
+            "section":"Section A"            
+        },
+        "123459":{
+            "content":"<p>Hello there!!</p>",
+            "image":"https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Westerner_and_Arab_practicing_geometry_15th_century_manuscript.jpg/250px-Westerner_and_Arab_practicing_geometry_15th_century_manuscript.jpg",
+            "isComprehension":true,
+            "comprehensionContent":"<p>Hello there!!</p><p>Hello there!!</p><p>Hello there!!</p><p>Hello there!!</p><p>Hello there!!</p>",
+            "answers":["equilateral","isosceles","right angled", "obtuse angled"],
+            "_id":"123458",
+            "section":"Section B"   
+        }              
+    },
+    "time":10,
+    "detail":"Simple mocked Test"
+}
+
+### Get Test
+GET http://localhost:3000/tests/12347
+
+
+### @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Category @@@@@@@@@@@@@@@@@@@@@
+
+### Post Category
+POST http://localhost:3000/categories
+Content-Type: application/json
+
+{
+    "name":"mockedCategory1",
+    "tests": ["12347"],
+    "lastUpdated": "2019-07-23T05:37:45.006Z",
+    "_id":"12349",
+    "syllabus":"<p>You know well</p>"
+}
+
+### Get category 
+GET  http://localhost:3000/categories/12349
+
+
+### Get category tests (matched with user if possible)
+GET  http://localhost:3000/categories/12349/tests?email=dynamonagestro2@gmail.com
+
+
+
+### @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ userData @@@@@@@@@@@@@@@@@@@@@
+
+# {
+#   "status": true,
+#   "user": {
+#     "favourites": []
+#   }
+# }
+GET  http://localhost:3000/userData/1563870538160
+
+###
+GET  http://localhost:3000/userData/1563870538160/favourites
+###
+POST   http://localhost:3000/userData/1563870538160/favourites
+Content-Type: application/json
+
+{
+    "id":"12349"
+}
+
+###
+GET  http://localhost:3000/userData/1563870538160/tests
+
+###
+POST  http://localhost:3000/userData/1563870538160/tests
+Content-Type: application/json
+
+{
+    "_id": 12347,
+    "questions":{ 
+        "hi":"bye"
+    },
+    "time":3600
+}
+
+###
+GET  http://localhost:3000/userData/1563870538160/tests/12347
+
+###
+POST   http://localhost:3000/userData/1563870538160/tests/t
+Content-Type: application/json
+
+{
+    "id": 12347,
+    "time": 49
+}
+
+###
+POST   http://localhost:3000/userData/1563870538160/tests/q
+Content-Type: application/json
+
+{
+    "id": 12347,
+    "question": {
+        "80999": "the king is too great" 
+    }
+}
+

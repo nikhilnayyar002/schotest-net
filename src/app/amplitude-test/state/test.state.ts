@@ -1,7 +1,10 @@
 import { Test } from '../modals/test';
 
 export interface TestOtherState {
-    index:number;
+    /**
+     * id of currently selected question
+     */
+    id:string;
     /**
      *  mcq-states.component used it
      */

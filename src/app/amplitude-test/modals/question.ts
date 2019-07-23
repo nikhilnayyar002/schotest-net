@@ -6,10 +6,11 @@ export interface Question {
     isComprehension:boolean;
     comprehensionContent:string;
     answers:Array<string>;
+    /** It will store the state of Question*/
     state:QuestionState;
+    /** It will note the current checked answer index */
     checkedAnswerIndex:number;
-
-    /*currently for dev. purpose: in-momory-api*/
-    id:number; 
+    _id:string; 
+    section:string;
     
 }

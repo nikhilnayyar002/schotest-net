@@ -17,7 +17,9 @@ export class AppComponent {
    * 
    */
   navStart:Observable<NavigationStart>;
-  navEnd:Observable<any>;
+  navEnd:Observable<NavigationEnd>;
+
+
   @ViewChild('routerProgress', { static: false }) private routerProgress: ElementRef;
 
   constructor(private router: Router, private auth:AuthService) {

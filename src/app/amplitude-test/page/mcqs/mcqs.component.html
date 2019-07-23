@@ -2,7 +2,7 @@
   <!-- Heading: Eg: Question No. 1, Instructions, Questions -->
   <div class="main-top p-2 pl-3 w-100 d-flex bg-primary">
     <!-- main heading -->
-    <span> Question No. {{ index != null ? index + 1 : "" }} </span>
+    <span> Question No. {{ id ? questions.indexOf(id) : "" }} </span>
 
     <div class="bg-info px-1 ml-auto bg-info">
       <small>Marks:</small>
@@ -13,8 +13,8 @@
 
   <div class="page-content">
     <app-mcq-page
-      *ngIf="index != undefined && questions.length"
-      [question]="questions[index]"
+      *ngIf="id && questions.length"
+      [question]="test.questions[id]"
       (emit)="onEmit($event)"
     >
     </app-mcq-page>

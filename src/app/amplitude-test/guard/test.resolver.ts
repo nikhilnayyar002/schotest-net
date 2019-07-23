@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
+import { ActivatedRouteSnapshot, RouterStateSnapshot, Router } from "@angular/router";
 import { MainService } from '../main.service';
 import { Store } from '@ngrx/store';
 import { GLobalState } from 'src/app/shared/global.state';
@@ -15,27 +15,36 @@ import { AmplitudeTestModule } from '../amplitude-test.module';
 export class TestResolverService {
   constructor(
     private ms:MainService,
-    private store:Store<GLobalState>
+    private store:Store<GLobalState>,
+    private router:Router
     ) {
 
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    let testID = +route.paramMap.get("id"),
+    let testID = route.paramMap.get("id"),
         arr = [
-          this.ms.getTest(testID)
+          this.ms.getTest(testID),
+          this.store.select(s=>s.app.user).pipe(
+            take(1),
+            switchMap(user => this.ms.getUserTest(user.id, testID))
+          )
         ]
         
     return forkJoin(arr).pipe(
       take(1),
-      map(()=>),
+      map((tests)=>({ ...tests[0], ...tests[1]})),
       switchMap((test)=>{
+        if(!test.time) {
+          this.router.navigate(['/dashboard/completed/'+test._id])
+          return of(null)
+        }
         this.store.dispatch(SetTest({ test }))
-        return of(true)
+        return of(test)
       }),
       catchError((error)=>{
         onTestNotFetched(error as string)
-        return of(false)
+        return of(null)
       })
     )
   }

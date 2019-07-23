@@ -3,8 +3,8 @@ import { Test } from '../amplitude-test/modals/test';
 
 export interface Category {
     name:string;
-    tests:Array<Number>;
+    tests:string[];
     lastUpdated:Date;
     syllabus:string;
-    id:number;
+    _id:string;
 }

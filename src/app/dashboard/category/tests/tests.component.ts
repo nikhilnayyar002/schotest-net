@@ -25,7 +25,8 @@ export class TestsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.tests = <Test[]> this.route.snapshot.data.tests
+    console.log()
+    this.tests = <any[]> this.route.snapshot.data.tests
   }
 
 }

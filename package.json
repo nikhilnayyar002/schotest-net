@@ -24,6 +24,7 @@
     "bootstrap": "^4.3.1",
     "rxjs": "~6.4.0",
     "subsink": "^1.0.0",
+    "take-while-alive": "^1.2.4",
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1"
   },

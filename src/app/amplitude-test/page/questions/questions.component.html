@@ -18,7 +18,7 @@
     <ul class="list-unstyled">
       <li *ngFor="let question of questions; let i = index">
         <p class="font-weight-bold">Question No. {{ i + 1 }}</p>
-        <p [innerHTML]="question.content | safeStyle: 'dom'"></p>
+        <p [innerHTML]="test.questions[id].content | safeStyle: 'dom'"></p>
       </li>
     </ul>
   </div>
