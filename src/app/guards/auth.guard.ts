@@ -18,7 +18,11 @@ import { SetRedirectURL } from "../state/state.actions";
   providedIn: "root"
 })
 export class AuthGuard implements CanActivate, CanActivateChild {
-  constructor(private router: Router, private store: Store<GLobalState>) {}
+  constructor(
+    private router: Router,
+    private store: Store<GLobalState>,
+    private auth:AuthService
+    ) {}
   canActivate(
     activatedRoute: ActivatedRouteSnapshot,
     routerState: RouterStateSnapshot
@@ -29,9 +33,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         .pipe(take(1))
         .subscribe(state => {
           if (!state) {
-            this.store.dispatch(
-              SetRedirectURL({ redirectURL: routerState.url })
-            );
+            this.auth.lastUrlLoaded = routerState.url
             this.router.navigate(["/login"]);
           }
           subscriber.next(state);

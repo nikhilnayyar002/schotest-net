@@ -5,7 +5,7 @@ import { tap, take } from "rxjs/operators";
 import { MainService } from "../main.service";
 import { Observable } from "rxjs";
 import { Action, Store, select } from "@ngrx/store";
-import { GLobalState } from 'src/app/shared/global.state';
+import { GLobalState } from "src/app/shared/global.state";
 
 @Injectable({
   providedIn: "root"
@@ -20,23 +20,17 @@ export class TestEffect {
   updateQuestion: Observable<Action> = createEffect(
     () =>
       this.actions$.pipe(
-        take(1),
         ofType(TestActions.UpdateQuestion),
-        tap(action => 
+        tap(action =>
           this.store.pipe(take(1)).subscribe(globalState => {
-            this.ms.updateQuestion(
+            this.ms
+              .updateQuestion(
                 globalState.app.user.id,
                 globalState.test._id,
                 action.question._id,
                 action.question.answers[action.question.checkedAnswerIndex]
-            ).subscribe(() => 
-                this.store.dispatch(
-                  TestActions.SetQuestion({
-                      question: action.question
-                  })
-                ),
-              error => console.log(error)
-            );
+              )
+              .subscribe(null, error => console.log(error));
           })
         )
       ),
@@ -44,20 +38,19 @@ export class TestEffect {
   );
 
   clearResponse$: Observable<Action> = createEffect(
-    () => this.actions$.pipe(
-        take(1),
+    () =>
+      this.actions$.pipe(
         ofType(TestActions.ClearResponse),
-        tap(action => 
+        tap(action =>
           this.store.pipe(take(1)).subscribe(globalState => {
-            this.ms.updateQuestion(
+            this.ms
+              .updateQuestion(
                 globalState.app.user.id,
                 globalState.test._id,
                 action.question._id,
                 null
-            ).subscribe(() => 
-              null,
-              error => console.log(error)
-            );
+              )
+              .subscribe(() => null, error => console.log(error));
           })
         )
       ),
@@ -67,27 +60,21 @@ export class TestEffect {
   pauseTest$: Observable<Action> = createEffect(
     () =>
       this.actions$.pipe(
-        take(1),
         ofType(TestActions.PauseTestServer),
-        tap(action => 
+        tap(action =>
           this.store.pipe(take(1)).subscribe(globalState => {
-            this.ms.updateTime(
+            this.ms
+              .updateTime(
                 globalState.app.user.id,
                 globalState.test._id,
                 action.time
-            ).subscribe(
-              () => this.store.dispatch(
-                TestActions.PauseTest({ time: action.time })
-              ),
-              error => console.log(error)
-            );
+              ).subscribe(() => null, error => console.log(error));
           })
         )
       ),
     { dispatch: false }
   );
 }
-
 
 /**
  * Version one
@@ -102,22 +89,22 @@ export class TestEffect {
 //     catchError(()=>of(TestActions.GetError()))
 // ));
 
-  /**
-   * This is version 2.
-   */
-  // GetTest$: Observable<Action> = createEffect(
-  //   () =>
-  //     this.actions$.pipe(
-  //       ofType(TestActions.GetTest),
-  //       tap(action =>
-  //         this.ms
-  //           .getTest(action.id)
-  //           .pipe(take(1))
-  //           .subscribe(
-  //             test => this.store.dispatch(TestActions.SetTest({ test })),
-  //             error => onTestNotFetched(error as string)
-  //           )
-  //       )
-  //     ),
-  //   { dispatch: false }
-  // );
+/**
+ * This is version 2.
+ */
+// GetTest$: Observable<Action> = createEffect(
+//   () =>
+//     this.actions$.pipe(
+//       ofType(TestActions.GetTest),
+//       tap(action =>
+//         this.ms
+//           .getTest(action.id)
+//           .pipe(take(1))
+//           .subscribe(
+//             test => this.store.dispatch(TestActions.SetTest({ test })),
+//             error => onTestNotFetched(error as string)
+//           )
+//       )
+//     ),
+//   { dispatch: false }
+// );

@@ -3,8 +3,8 @@ import { Store, select } from '@ngrx/store';
 import {SubSink} from 'subsink'
 import { TestState } from '../../state/test.state';
 import { SetQuestionState, SetIndex } from '../../state/state.actions';
-import { Test } from 'server/src/modal/test';
 import { QuestionState, checkAndGetQuestionState } from '../../shared/global';
+import { Test } from '../../modals/test';
 
 @Component({
   selector: 'app-mcq-states',
@@ -30,7 +30,10 @@ export class McqStatesComponent {
       })
     )
     this.subs.add(
-      this.store.pipe(select(state=>state.test)).subscribe((test)=>this.test=test)
+      this.store.pipe(select(state=>state.test)).subscribe((test)=>{
+        this.test=test
+        if(test) this.questions = Object.keys(test.questions)
+      })
     )
   }
 
@@ -53,7 +56,7 @@ export class McqStatesComponent {
        */
       case QuestionState.Markedanswered: return "badge-primary"
       case QuestionState.Unvisited: return "badge-secondary"
-      default: return ''
+      default: return "badge-secondary"
     }
   }
 
@@ -65,6 +68,11 @@ export class McqStatesComponent {
     let state=checkAndGetQuestionState(this.test.questions[this.id])
     this.store.dispatch(SetQuestionState({state:state, id:this.id}))
     this.store.dispatch(SetIndex({id}))
+  }
+
+  checkIfMarkedAnswered(state:QuestionState) {
+    if(state ==QuestionState.Markedanswered) return true
+    else return false
   }
 
 

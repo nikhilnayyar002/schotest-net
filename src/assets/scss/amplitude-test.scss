@@ -10,6 +10,19 @@
   width: 44px;
   height: 44px;
   padding-top: 14px;
+  position: relative;
+  .tick-mark {
+    display: inline-block;
+    width: 15px;
+    height: 10px;
+    border-left: 4px solid #28a745;
+    border-bottom: 4px solid #28a745;
+    position: absolute;
+    top: 3px;
+    right: 0px;
+    -webkit-transform: rotate(-48deg);
+    transform: rotate(-48deg);
+  }
 }
 /*
   Purpose:

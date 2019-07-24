@@ -42,8 +42,8 @@ export class MainService {
     let url=`${config.api.base}/userData/${uid}/tests/${id}`
     return this.http.get(url)
       .pipe(
-        map((data: {status:boolean; test:Test; }) => data.test),
-        catchError(this.handleError)
+         map((data: {status:boolean; test:Test; }) => data.test),
+         catchError(this.handleError)
       )
   } 
 
@@ -53,7 +53,7 @@ export class MainService {
     };
     let data = { id:tid, question:{}}
     data.question[qid] = ans
-
+    
     let url=`${config.api.base}/userData/${uid}/tests/q`
     return this.http.post( url, data,  httpOptions).pipe(
       catchError(this.handleError)

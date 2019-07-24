@@ -5,14 +5,15 @@ import { TestOtherState } from './test.state';
 import { QuestionState, onTestNotFetched } from '../shared/global';
 import { QuestionStateDB } from '../shared/indexDB';
 
-export const initialTestState:Test = {
-    name:'',
-    questions:null,
-    sections:null,
-    time:0,
-    _id:'',
-    detail:''
-};
+export const initialTestState:Test = null
+// {
+//     name:'',
+//     questions:null,
+//     sections:null,
+//     time:0,
+//     _id:'',
+//     detail:''
+// };
 
 const testReducer = createReducer(
     initialTestState,
@@ -35,11 +36,6 @@ const testReducer = createReducer(
         return state
     }),
     on(TestActions.PauseTest, (state,action)=> {
-        /**
-         * Actually the question.checkedAnswerIndex primitive property has changed
-         * Anywhere this primitive property i referenced, there changes will be reflected
-         * For eg: the checkbox value property in mcq component 
-         */
         state.time=action.time
         return state
     }),
@@ -53,13 +49,13 @@ export function tReducer (state:Test|undefined,action:Action) {
  * index of currently selected question 
  */
 const intialOtherState:TestOtherState={
-    id:'',
+    id:null,
     isTestOver:false
 };
 
 const otherStateReducer = createReducer(
     intialOtherState,
-    on(TestActions.SetIndex,(state,action)=>({...state,index:action.id})),
+    on(TestActions.SetIndex,(state,action)=>({...state,id:action.id})),
     on(TestActions.TestOver,(state)=>{
         /** Note this the function name has not the usual meaning
          *  it was created for error. but is reusable for

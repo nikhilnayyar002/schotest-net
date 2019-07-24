@@ -1,6 +1,8 @@
 <span *ngFor="let q of questions;let i=index"
   [class]="'mcq-question-badge badge rounded-circle m-1 ' + getBadgeType(test.questions[q].state)"
   [ngClass]="{'selected':test.questions[q]._id==id}"
-  (click)="badgeClick(test.questions[q]._id)">
+  (click)="badgeClick(test.questions[q]._id)"
+  >
   {{i+1}}
+  <span class="tick-mark" *ngIf="checkIfMarkedAnswered(test.questions[q].state)" ></span>
 </span>

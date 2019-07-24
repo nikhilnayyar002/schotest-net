@@ -54,6 +54,11 @@
   height: $nav-height-sections;
 }
 
+//table
+.table thead th {
+  vertical-align: middle;
+}
+
 // setting dropdown and radio
 @include createDropDown($secondary-bg-color);
 @include createCustomRadio($secondary-bg-color);

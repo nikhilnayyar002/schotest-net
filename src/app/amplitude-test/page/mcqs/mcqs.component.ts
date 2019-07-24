@@ -3,7 +3,7 @@ import { PageComponent } from '../page-component.modal';
 import { select, Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
 import { TestState } from '../../state/test.state';
-import { UpdateQuestion, SetQuestionState, SetIndex, ClearResponse } from '../../state/state.actions';
+import { UpdateQuestion, SetQuestionState, SetIndex, ClearResponse, SetQuestion } from '../../state/state.actions';
 import { checkAndGetQuestionState, QuestionState, getNextQuestionIndex } from '../../shared/global';
 import { Question } from '../../modals/question';
 import { Test } from '../../modals/test';
@@ -31,7 +31,7 @@ export class McqsComponent extends PageComponent{
     this.subs.add(
       this.store.pipe(select(state=>state.test)).subscribe((test)=>{
         this.test = test
-        this.questions = Object.keys(test.questions);
+        if(this.test) this.questions = Object.keys(test.questions);
       })
     )
   }
@@ -42,18 +42,22 @@ export class McqsComponent extends PageComponent{
 
   onEmit(question:Question) {
    this.store.dispatch(UpdateQuestion({question:question}))
+   this.store.dispatch(SetQuestion({question:question}))
   }
 
   next() {
     let state=checkAndGetQuestionState(this.test.questions[this.id])
-    if(state == QuestionState.Markedanswered)  state=QuestionState.Answered
     this.store.dispatch(SetQuestionState({state:state, id:this.id}))
     let id=getNextQuestionIndex(this.test.questions,this.id)
     this.store.dispatch(SetIndex({id}))
   }
 
   mark() {
-    this.store.dispatch(SetQuestionState({state:QuestionState.Marked, id:this.id}))
+    let state:QuestionState;
+    console.log(this.test.questions[this.id].checkedAnswerIndex)
+    if(this.test.questions[this.id].checkedAnswerIndex) state=QuestionState.Markedanswered
+    else state=QuestionState.Marked
+    this.store.dispatch(SetQuestionState({state, id:this.id}))
     let id=getNextQuestionIndex(this.test.questions,this.id)
     this.store.dispatch(SetIndex({id}))
   }
@@ -61,10 +65,6 @@ export class McqsComponent extends PageComponent{
   clear() {
     this.store.dispatch(ClearResponse({question:this.test.questions[this.id]})) 
     this.store.dispatch(SetQuestionState({state:QuestionState.Unvisited, id:this.id})) 
-  }
-
-  getQNo() {
-
   }
 
 }

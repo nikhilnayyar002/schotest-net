@@ -13,16 +13,17 @@ export enum QuestionState {
  * This method is to be called before @setQuestionSelected
  */
 export function checkAndGetQuestionState(question: Question) {
-  let state: QuestionState;
+  let state: QuestionState = QuestionState.Markedanswered;
+  if(question.state == undefined) return QuestionState.Unanswered
   if (question.checkedAnswerIndex != null) {
     if (question.state == QuestionState.Marked)
       state = QuestionState.Markedanswered;
-    if (question.state != QuestionState.Markedanswered)
+    else if (question.state != QuestionState.Markedanswered)
       state = QuestionState.Answered;
   } else {
     if (question.state == QuestionState.Markedanswered)
       state = QuestionState.Marked;
-    if (question.state != QuestionState.Marked)
+    else if (question.state != QuestionState.Marked)
       state = QuestionState.Unanswered;
   }
   return state;
@@ -33,7 +34,8 @@ export function checkAndGetQuestionState(question: Question) {
  *
  */
 export function getNextQuestionIndex(questions:{[index:string]:Question}, id:string): string {
-  let keys = Object.keys(questions), nextIndex = keys.indexOf(id) +1
+  let keys = Object.keys(questions), 
+    nextIndex = keys.indexOf(id) != (keys.length - 1)?(keys.indexOf(id)+1):0
    return keys[nextIndex]; 
 }
 
@@ -47,7 +49,9 @@ export function onTestNotFetched(error: string, isTestOverNotif = false) {
     (<HTMLButtonElement>document.querySelector("#error-btn")).click();
   }
   let btns = document.querySelectorAll('[type="button"]');
-  btns.forEach(btn => ((<HTMLButtonElement>btn).disabled = true));
+    btns.forEach(btn => ((<HTMLButtonElement>btn).disabled = true));
+  let radios = document.querySelectorAll('[type="radio"]');
+    radios.forEach(radio => ((<HTMLButtonElement>radio).disabled = true));
 }
 
 export class SideState {

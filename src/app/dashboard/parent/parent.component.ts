@@ -7,10 +7,13 @@ import {
 import config from "../../../data/config";
 import { createMediaQuery, MediaQueryState, createSideBarStateOverlay } from "../../shared/global";
 import { GLobalState } from "../../shared/global.state";
-import { Store } from "@ngrx/store";
+import { Store, select } from "@ngrx/store";
 import { AuthService } from "../../auth.service";
 import { SetAppState } from "../../state/state.actions";
 import { Router} from "@angular/router"
+import { User } from 'src/app/modals/user';
+import { takeWhileAlive, AutoUnsubscribe } from 'take-while-alive';
+import { Observable } from 'rxjs';
 
 
 /**
@@ -30,11 +33,13 @@ import { Router} from "@angular/router"
   templateUrl: "./parent.component.html",
   styleUrls: ["./parent.component.scss"]
 })
+@AutoUnsubscribe()
 export class ParentComponent {
   configData = config;
   @ViewChild("fixedOverlay", { static: false })
   private fixedOverlay: ElementRef;
   @ViewChild("sidebar", { static: false }) private sidebar: ElementRef;
+  user:Observable<User> = this.store.select(state => state.app.user);
 
   mediaQueryState: MediaQueryState = createMediaQuery(
     "(max-width: 900px)",

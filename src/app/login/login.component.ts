@@ -31,21 +31,15 @@ export class LoginComponent {
     private ms: AuthService,
     private store: Store<GLobalState>,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private auth:AuthService
   ) {
     /**
      * Resolving
      */
-    this.store
-      .select(state => state.app.redirectURL)
-      .pipe(take(1))
-      .subscribe(redirectURL => {
-        this.redirectURL = redirectURL?redirectURL:'/dashboard'
-        let data = this.route.snapshot.data;
-
-        if (data.status) 
-          this.router.navigate([this.redirectURL]);
-    });    
+    let data = this.route.snapshot.data;
+    if (data.status) 
+      this.router.navigate([this.auth.lastUrlLoaded]);  
   }
 
   get email(): any {

@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PageComponent } from '../page-component.modal';
-import { Subscription } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { TestState } from '../../state/test.state';
-import { Question } from '../../modals/question';
 import { Test } from '../../modals/test';
 import { take } from 'rxjs/operators';
 

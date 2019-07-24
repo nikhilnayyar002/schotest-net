@@ -3,11 +3,11 @@ import { take } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 import { PageService } from '../page/page.service';
 import {  TestOtherState } from '../state/test.state';
-import {  TestOver, SetIndex, PauseTestServer } from '../state/state.actions';
+import {  TestOver, SetIndex, PauseTestServer, PauseTest } from '../state/state.actions';
 import { PageItem } from '../page/page-items';
 import { PageSwitchDirective } from '../page-switch.directive';
 import { PageComponent } from '../page/page-component.modal';
-import { SideState } from '../shared/global';
+import { SideState, onTestNotFetched } from '../shared/global';
 import { Test } from '../modals/test';
 import  config  from '../../../data/config'
 import { MediaQueryState, createMediaQuery, toggleFullScreen } from '../../shared/global';
@@ -25,10 +25,14 @@ import { User } from 'src/app/modals/user';
 export class ParentComponent {
 
   test: Test;
-  otherState:TestOtherState;
+  otherState:TestOtherState = {
+    isTestOver:false,
+    id:null
+  };
   isFullScreenEnabled: boolean = false;
   sections:string[];
   user:User;
+  testPaused:boolean = false;
 
   //local config
   configData = config;
@@ -41,7 +45,8 @@ export class ParentComponent {
     private store: Store<GLobalState>,
     private route:ActivatedRoute,
     private router:Router
-  ) { }
+  ) {
+  }
 
   // media state and side toggler state
   sideState = new SideState();
@@ -77,7 +82,12 @@ export class ParentComponent {
     this.test = <Test> this.route.snapshot.data.test
     if(this.test) {
       this.start(); 
+      //set index
+      this.store.dispatch(SetIndex({ id:  Object.keys(this.test.questions)[0] }))
       this.sections = Object.keys(this.test.sections)
+    }
+    else {
+      onTestNotFetched("There is problem fetching test!")
     }
     this.store.pipe(takeWhileAlive(this),select((state) => state.testOther))
       .subscribe((other) => this.otherState = other)
@@ -140,9 +150,10 @@ export class ParentComponent {
   intervalId = 0;
 
   clearTimer() { clearInterval(this.intervalId); }
-  start() { this.countDown(); }
+  start() { this.countDown(); this.testPaused = false;}
   stop() {
     this.clearTimer();
+    this.testPaused = true;
   }
 
   private countDown() {
@@ -163,9 +174,12 @@ export class ParentComponent {
   @ViewChild('pauseSubmitBtn', { static: false }) private pauseSubmitBtn: ElementRef;
 
   pause() {
+    /** First close pause modal */
     this.pauseModalNoBtn.nativeElement.click();
+    /** Then open submit modal */
     this.pauseSubmitBtn.nativeElement.click();
     this.stop();
+    this.store.dispatch(PauseTest({ time: this.test.time }))
     this.store.dispatch(PauseTestServer({ time: this.test.time }))
   }
 
@@ -175,6 +189,29 @@ export class ParentComponent {
   toggleFullScreen() {
     this.isFullScreenEnabled ? toggleFullScreen(false) : toggleFullScreen(true);
     this.isFullScreenEnabled = !this.isFullScreenEnabled;
+  }
+
+  /** Submit test */
+  submitTest(fromModal = false) {
+    this.stop();
+    this.store.dispatch(PauseTest({ time: this.test.time }))
+    this.store.dispatch(PauseTestServer({ time: this.test.time }))
+    if(!fromModal)
+      /** Then open submit modal */
+      this.pauseSubmitBtn.nativeElement.click();
+    else {
+      this.test.time = 0
+      this.store.dispatch(TestOver());
+      this.store.dispatch(PauseTestServer({ time: this.test.time }))
+
+      /**This fixed elem remains being part of submit Modal
+       * I need to remove it.
+        */
+      let elem = document.querySelector(".modal-backdrop");
+      elem.parentElement.removeChild(elem)
+      /** navigate to completed component */
+      this.router.navigate(['/dashboard/completed/'+this.test._id])
+    }
   }
 
 }

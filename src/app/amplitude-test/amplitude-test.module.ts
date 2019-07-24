@@ -15,6 +15,7 @@ import { AmplitudeTestRoutingModule } from './amplitude-test-routing.module';
 import { ParentComponent } from './parent/parent.component';
 import { SharedModule } from '../shared/shared.module';
 import { tReducer, oReducer } from './state/state.reducer';
+import { TestResolverService } from './guard/test.resolver';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { tReducer, oReducer } from './state/state.reducer';
      */
     EffectsModule.forFeature([TestEffect])
   ],
+  providers:[TestResolverService, TestEffect],
   entryComponents:[McqsComponent,QuestionsComponent,InstructionsComponent]
 })
 export class AmplitudeTestModule { }

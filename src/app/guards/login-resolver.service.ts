@@ -17,8 +17,7 @@ export class LoginResolverService {
     private auth: AuthService,
     private router:Router
   ) {
-    if(this.auth.lastUrlLoaded == '/login' || this.auth.lastUrlLoaded == '/')
-      this.auth.lastUrlLoaded = '/dashboard'
+
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
@@ -27,6 +26,8 @@ export class LoginResolverService {
       .pipe(
         take(1),
         switchMap(appState => {
+          if(this.auth.lastUrlLoaded == '/login' || this.auth.lastUrlLoaded == '/')
+            this.auth.lastUrlLoaded = '/dashboard'
 
           if (appState.loggedIn) {
             console.log(1, this.auth.lastUrlLoaded )

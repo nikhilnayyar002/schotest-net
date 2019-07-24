@@ -43,7 +43,7 @@
         <p>No. of Questions: {{ test.questions }}</p>
         <p>No. of Section: {{ test.sections }}</p>
         <p>Time Limit: {{test.time | timer}}</p>
-        <button class="btn btn-secondary">Start</button>
+        <button [routerLink]="[ '/test', test._id  ]" class="btn btn-secondary">Start</button>
       </div>
     </div>
   </div>

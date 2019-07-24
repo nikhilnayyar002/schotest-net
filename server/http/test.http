@@ -49,8 +49,8 @@ POST http://localhost:3000/auth/register
 Content-Type: application/json
 
 {
-    "fullName":"Nikhil Nayyar",
-    "email": "nikhilnayyar002@gmail.com",
+    "fullName":"Suraj Sharma",
+    "email": "surajsharma@gmail.com",
     "password": "boss"
 }
 

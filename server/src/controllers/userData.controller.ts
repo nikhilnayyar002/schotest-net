@@ -52,7 +52,12 @@ export const getUserTest:express.RequestHandler = (req,res,next) =>{
     UserModal.findById(id,function (err, user:User) {
         console.log(user)
         if (err) { return next(err); }
-        if(user && user.tests[tID]) return res.json({status:true, test:user.tests[tID]});
+        if(user) {
+            if(user.tests && user.tests[tID]) 
+                return res.json({status:true, test:user.tests[tID]});
+            else 
+                return res.json({status:true, test:null});                
+        }
         else next(new Record404Exception())
     })
 }
@@ -76,7 +81,7 @@ export const postUserTestQ:express.RequestHandler = (req,res,next) =>{
     let id=req.params.userID, tID=req.body.id
     UserModal.findById(id, function(err, user:User){
         if (err) { return next(err); }
-        if (user && user.tests[tID]) {
+        if (user) {
             let newObj = {}, keyName = Object.keys(req.body.question)[0];
             newObj[`tests.${tID}.questions.${keyName}`] = req.body.question[keyName]
             UserModal.updateOne(
@@ -97,7 +102,7 @@ export const postUserTestT:express.RequestHandler = (req,res,next) =>{
     let id=req.params.userID, tID=req.body.id
     UserModal.findById(id, function(err, user:User){
         if (err) { return next(err); }
-        if (user && user.tests[tID]) {
+        if (user) {
             let newObj = {}
             newObj[`tests.${tID}.time`] = req.body.time
             UserModal.updateOne(

@@ -58,7 +58,7 @@ export const getCategoryTests:express.RequestHandler = (req,res,next) =>{
                         if(user.length && user[0] && user[0].tests) {
                             let docs = tests.map((test)=>{
                               let t=user[0].tests[test._id]
-                              if(t) test.time = t.time
+                              if(t && t.time) test.time = t.time
                               return test
                             })
                             res.json({ status:true, tests:docs})

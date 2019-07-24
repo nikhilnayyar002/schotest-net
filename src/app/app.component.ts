@@ -47,6 +47,7 @@ export class AppComponent {
       this.routerProgress.nativeElement.style.opacity = "1"
     });
     this.navEnd.subscribe(evt => {
+      console.log(evt.url)
       this.routerProgress.nativeElement.style.opacity = "0"
       this.auth.lastUrlLoaded = evt.url
     });
