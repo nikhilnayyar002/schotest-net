@@ -37,13 +37,23 @@
       data-parent="#accordionTests"
     >
       <div class="card-body bg-white text-dark">
+
         <p class="font-weight-bold">Intro</p>
         <p>{{test.detail}}</p>
-        <p class="font-weight-bold">Details</p>
-        <p>No. of Questions: {{ test.questions }}</p>
-        <p>No. of Section: {{ test.sections }}</p>
-        <p>Time Limit: {{test.time | timer}}</p>
-        <button [routerLink]="[ '/test', test._id  ]" class="btn btn-secondary">Start</button>
+
+        <span class="p-1 px-2 bg-info d-inline-block mr-2 small rounded-sm">Questions: {{ test.questions.length }} </span>
+        <span class="p-1 px-2 bg-info d-inline-block mr-2 small rounded-sm">Marks: {{ test.questions.marks }}</span>
+        <span class="p-1 px-2 bg-info d-inline-block mr-2 small rounded-sm">Time: {{ test.oTime | timer }}</span>
+        <hr>
+        <ng-container *ngIf="getSections(test) as sections">
+          <p class="font-weight-bold">Sections:</p>
+          <ul><li *ngFor="let section of sections">{{section}}</li></ul>
+        </ng-container>
+
+        <button [routerLink]="[ '/test', test._id  ]" class="btn btn-secondary">
+          {{test.hasTestStarted ? 'Continue':'Start'}}
+        </button>            
+        
       </div>
     </div>
   </div>

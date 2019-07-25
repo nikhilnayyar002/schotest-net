@@ -71,6 +71,12 @@ export class ParentComponent {
     this.mediaQueryState.dispose()
     /** Clear the timer */
     this.clearTimer();
+
+    /**This fixed elem remains being part of submit Modal or pause Modal
+     * I need to remove it.
+      */
+     let elem = document.querySelector(".modal-backdrop");
+     if(elem) elem.parentElement.removeChild(elem)    
   }
 
   ngOnInit() {
@@ -204,11 +210,6 @@ export class ParentComponent {
       this.store.dispatch(TestOver());
       this.store.dispatch(PauseTestServer({ time: this.test.time }))
 
-      /**This fixed elem remains being part of submit Modal
-       * I need to remove it.
-        */
-      let elem = document.querySelector(".modal-backdrop");
-      elem.parentElement.removeChild(elem)
       /** navigate to completed component */
       this.router.navigate(['/dashboard/completed/'+this.test._id])
     }

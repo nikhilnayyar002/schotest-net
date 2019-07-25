@@ -8,6 +8,12 @@ export class SafeStylePipe implements PipeTransform {
 
   constructor(private sanitizer: DomSanitizer) {}
 
+  /**
+   * 
+   * Usages:
+   * 
+   * 1. [innerHTML] = "data | safeStyle:'dom'"
+   */
   transform(value: any, type:string): any {
     
     if(type=="dom")

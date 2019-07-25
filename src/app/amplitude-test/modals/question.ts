@@ -12,5 +12,6 @@ export interface Question {
     checkedAnswerIndex:number;
     _id:string; 
     section:string;
-    
+    /** marks */
+    marks:number;
 }

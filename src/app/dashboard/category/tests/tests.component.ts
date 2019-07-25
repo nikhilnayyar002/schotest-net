@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Test } from 'src/app/amplitude-test/modals/test';
+import { BackendTestResponse } from 'src/app/amplitude-test/modals/test';
 import { ActivatedRoute } from '@angular/router';
+import { createAccordianState } from 'src/app/shared/global';
+
 
 @Component({
   selector: 'app-tests',
@@ -9,24 +11,22 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class TestsComponent implements OnInit {
 
-  tests:Test[];
-
+  tests:BackendTestResponse[];
+  sections:string[];
   constructor(
     private route:ActivatedRoute
   ) {
   }
 
-  onCardHeaderCLick(elem:HTMLElement) {
-    let ct = <HTMLElement> elem.querySelector(".card-status-container")
-    if(ct.style.transform == "rotate(90deg)")
-      ct.style.transform = "rotate(-90deg)"
-    else
-      ct.style.transform = "rotate(90deg)"
-  }
+  onCardHeaderCLick = createAccordianState();
 
   ngOnInit(): void {
-    console.log()
     this.tests = <any[]> this.route.snapshot.data.tests
+  }
+
+  getSections(test:BackendTestResponse) {
+    if(test.sections) return Object.keys(test.sections)
+    else return null
   }
 
 }

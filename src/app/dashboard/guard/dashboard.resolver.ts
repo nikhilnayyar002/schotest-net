@@ -16,6 +16,8 @@ export class DashboardResolverService {
     switch(state.url) {
       case "/dashboard/category" : return this.ms.getCategories()
       case `/dashboard/category/${catID}` : return this.ms.getTests(catID)
+      case "/dashboard/paused" : return this.ms.getPausedTests()    
+      case "/dashboard/completed" : return this.ms.getCompletedTests()     
     } 
   }
 

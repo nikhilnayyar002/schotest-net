@@ -23,8 +23,31 @@
             >Last updated: {{ category.lastUpdated | date: "mediumDate" }}
           </small>
         </p>
-        <a [routerLink]="[ './' ]" class="btn btn-secondary btn-sm mr-3">Syllabus</a>
+        <button 
+          class="btn btn-secondary btn-sm mr-3"
+          data-toggle="modal" data-target="#syllabusModal"
+          (click)="syllabusHTML = category.syllabus"
+          >Syllabus
+        </button>
         <a [routerLink]="[ './', category._id ]" class="btn btn-secondary btn-sm">Visit</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="syllabusModal" tabindex="-1" role="dialog" aria-labelledby="syllabusModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content bg-info">
+      <div class="modal-header">
+        <h4 class="modal-title" id="syllabusModalTitle">Syllabus</h4>
+      </div>
+      <div class="modal-body" [innerHTML]="syllabusHTML | safeStyle:'dom'">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

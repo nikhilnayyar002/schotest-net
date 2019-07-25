@@ -61,11 +61,11 @@ POST http://localhost:3000/tests
 Content-Type: application/json
 
  {    
-    "_id":"12348",
+    "_id":"12347",
     "name":"mockedTest",
     "sections":{
-        "Section A":"123456",
-        "Section B":"123458"     
+        "English":"123456",
+        "Mathematics":"123458"     
     },
     "questions":{
         "123456":{
@@ -75,7 +75,8 @@ Content-Type: application/json
             "comprehensionContent":"",
             "answers":["equilateral","isosceles","right angled", "obtuse angled"],
             "_id":"123456",
-            "section":"Section A"
+            "section":"English",
+            "marks":1
         },
         "123457":{
             "content":"<p>Answer the following question according to the information</p>",
@@ -84,7 +85,8 @@ Content-Type: application/json
             "comprehensionContent":"",
             "answers":["equilateral","isosceles","right angled", "obtuse angled"],
             "_id":"123457",
-            "section":"Section A"            
+            "section":"English",
+            "marks":1                        
         },
         "123459":{
             "content":"<p>Hello there!!</p>",
@@ -93,11 +95,13 @@ Content-Type: application/json
             "comprehensionContent":"<p>Hello there!!</p><p>Hello there!!</p><p>Hello there!!</p><p>Hello there!!</p><p>Hello there!!</p>",
             "answers":["equilateral","isosceles","right angled", "obtuse angled"],
             "_id":"123458",
-            "section":"Section B"   
+            "section":"Mathematics",
+            "marks":2               
         }              
     },
-    "time":10,
-    "detail":"Simple mocked Test"
+    "time":3600,
+    "detail":"Simple mocked Test",
+    "oTime":3600,
 }
 
 ### Get Test
@@ -123,8 +127,7 @@ GET  http://localhost:3000/categories/12349
 
 
 ### Get category tests (matched with user if possible)
-GET  http://localhost:3000/categories/12349/tests?email=dynamonagestro2@gmail.com
-
+GET  http://localhost:3000/categories/12349/tests?email=nikhilnayyar002@gmail.com
 
 
 ### @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ userData @@@@@@@@@@@@@@@@@@@@@
@@ -184,4 +187,10 @@ Content-Type: application/json
         "80999": "the king is too great" 
     }
 }
+
+###
+GET  http://localhost:3000/userData/1563870538160/tests/paused
+
+###
+GET  http://localhost:3000/userData/1563870538160/tests/completed
 

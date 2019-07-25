@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { BackendTestResponse } from 'src/app/amplitude-test/modals/test';
+import { createAccordianState } from 'src/app/shared/global';
 
 @Component({
   selector: 'app-parent',
@@ -7,9 +10,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ParentComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private route:ActivatedRoute
+  ) { }
 
-  ngOnInit() {
+  tests:BackendTestResponse[];
+  sections:string[];
+
+  onCardHeaderCLick = createAccordianState();
+
+  ngOnInit(): void {
+    this.tests = <any[]> this.route.snapshot.data.tests
+  }
+
+  getSections(test:BackendTestResponse) {
+    if(test.sections) return Object.keys(test.sections)
+    else return null
   }
 
 }

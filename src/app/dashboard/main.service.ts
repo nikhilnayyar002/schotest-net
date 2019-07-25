@@ -7,7 +7,7 @@ import config from "../../data/config";
 import { AuthService } from "../auth.service";
 import { Store } from "@ngrx/store";
 import { GLobalState } from "../shared/global.state";
-import { Test } from "../amplitude-test/modals/test";
+import { Test, BackendTestResponse } from "../amplitude-test/modals/test";
 
 @Injectable({
   providedIn: "root"
@@ -32,7 +32,7 @@ export class MainService {
     return this.auth.tryWithRefreshIfNecc(url, recipe);
   }
 
-  getTests(categoryID: string): Observable<Test[]> {
+  getTests(categoryID: string): Observable<BackendTestResponse[]> {
     return this.store
       .select(state => state.app.user)
       .pipe(
@@ -46,4 +46,35 @@ export class MainService {
         })
       );
   }
+
+  getPausedTests(): Observable<BackendTestResponse[]> {
+    return this.store
+      .select(state => state.app.user)
+      .pipe(
+        take(1),
+        switchMap(user => {
+          let url = `${config.api.base}/userData/${user.id}/tests/paused`;
+          let recipe = pipe(
+            map((data: {status:boolean; tests:Test[]; }) =>data.tests )
+          );
+          return this.auth.tryWithRefreshIfNecc(url, recipe);
+        })
+      );
+  }
+
+  getCompletedTests(): Observable<BackendTestResponse[]> {
+    return this.store
+      .select(state => state.app.user)
+      .pipe(
+        take(1),
+        switchMap(user => {
+          let url = `${config.api.base}/userData/${user.id}/tests/completed`;
+          let recipe = pipe(
+            map((data: {status:boolean; tests:Test[]; }) =>data.tests )
+          );
+          return this.auth.tryWithRefreshIfNecc(url, recipe);
+        })
+      );
+  }
+
 }

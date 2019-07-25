@@ -12,6 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 export class ParentComponent  {
 
   categories:Category[]
+  syllabusHTML:string = '';
 
   constructor(
     private route:ActivatedRoute

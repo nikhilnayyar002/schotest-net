@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ParentComponent } from './parent/parent.component';
-import { AuthGuard} from '../../guards/auth.guard';
+import { DashboardResolverService } from '../guard/dashboard.resolver';
 
 const routes: Routes = [
   {
     path: "",
     component: ParentComponent,
-    canActivate: [AuthGuard ],
+    resolve:{
+      tests:DashboardResolverService
+    }
   }
 ];
 

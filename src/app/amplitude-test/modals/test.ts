@@ -1,10 +1,34 @@
-import { Question } from './question';
+import { Question } from "./question";
 
-export interface Test {
-    name:string;
-    questions:{[index:string]:Question};
-    sections:{[index:string]:string};
+export interface TestBase {
+  name: string;
+  sections: { [index: string]: string };
+  detail: string;
+  _id: string;
+  time:number;
+  /**
+   * if test has been started by the user (determined by checking time
+   * property of test in user->tests) then it will be true.
+   * The category->tests component will then show "continue" button.
+   *
+   * Also need to be pointed that if time property is zero then
+   * "test over" should be shown instead of "continue" button
+   */
+  hasTestStarted: boolean;
+  /**
+   * it stores the original time. It is equal to initial value of "time" 
+   */
+  oTime:number;  
+}
+
+export interface Test extends TestBase {
+  questions: { [index: string]: Question };
+}
+
+export interface BackendTestResponse extends TestBase {
+  questions: {
+    length: number;
+    marks: number;
     time:number;
-    detail:string;
-    _id:string;
+  };
 }

@@ -122,3 +122,23 @@ export function createSideBarStateOverlay(
   };
 }
 
+
+/**
+ * callback code for special accordian click.
+ * Also does state management
+ */
+export function createAccordianState() {
+  let prevAccorElem:HTMLElement=null,
+  callback = (elem:HTMLElement) => {
+    let ct = <HTMLElement>elem.querySelector(".card-status-container")
+    if(ct.style.transform == "rotate(90deg)")
+      ct.style.transform = "rotate(-90deg)"
+    else
+      ct.style.transform = "rotate(90deg)"
+    //code for prevAccorElem
+    if(prevAccorElem && prevAccorElem.style.transform == "rotate(90deg)")
+      prevAccorElem.style.transform = "rotate(-90deg)"
+    prevAccorElem = ct
+  }
+  return callback;
+}

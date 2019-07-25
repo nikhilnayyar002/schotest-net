@@ -195,3 +195,35 @@ router-outlet + *{
 //   @include browser-based-property(animation, slideInFromLeft 0.5s ease-out);
 // }
 
+/* 
+See how dashboard->category->tests component look cool!!
+
+@.card-status-container
+@.card-status 
+*/
+
+.card {
+  border: none;
+  * {
+    border: none;
+  }
+  .card-status-container {
+
+    position: absolute;
+    overflow: hidden;
+    transform: rotate(-90deg);
+    transition: transform 0.5s ease 0s;
+
+    top: 20%;
+    height: 22px;
+    width: 22px;
+    right: 20px;
+
+    .card-status {
+      position: relative;
+      font-size: 42px;
+      top: -21px;
+      left: -5px;
+    }
+  }
+}
