@@ -5,8 +5,8 @@ import { SubSink } from 'subsink';
 import { TestState } from '../../state/test.state';
 import { UpdateQuestion, SetQuestionState, SetIndex, ClearResponse, SetQuestion } from '../../state/state.actions';
 import { checkAndGetQuestionState, QuestionState, getNextQuestionIndex } from '../../shared/global';
-import { Question } from '../../modals/question';
-import { Test } from '../../modals/test';
+import { UserQuestion } from '../../modals/question';
+import { TestWithFeatures } from '../../modals/test';
 
 @Component({
   selector: 'app-mcqs',
@@ -17,7 +17,7 @@ export class McqsComponent extends PageComponent{
 
   questions:string[];
   id:string;
-  test:Test;
+  test:TestWithFeatures;
 
   subs=new SubSink();
 
@@ -40,7 +40,7 @@ export class McqsComponent extends PageComponent{
     this.subs.unsubscribe()
   }
 
-  onEmit(question:Question) {
+  onEmit(question:UserQuestion) {
    this.store.dispatch(UpdateQuestion({question:question}))
    this.store.dispatch(SetQuestion({question:question}))
   }

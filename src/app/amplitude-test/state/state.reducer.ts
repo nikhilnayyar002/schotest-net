@@ -1,19 +1,11 @@
-import { Test } from '../modals/test';
 import * as TestActions from "./state.actions";
 import { createReducer, on, Action } from '@ngrx/store';
 import { TestOtherState } from './test.state';
 import { QuestionState, onTestNotFetched } from '../shared/global';
 import { QuestionStateDB } from '../shared/indexDB';
+import { TestWithFeatures } from '../modals/test';
 
-export const initialTestState:Test = null
-// {
-//     name:'',
-//     questions:null,
-//     sections:null,
-//     time:0,
-//     _id:'',
-//     detail:''
-// };
+export const initialTestState:TestWithFeatures = null
 
 const testReducer = createReducer(
     initialTestState,
@@ -41,20 +33,22 @@ const testReducer = createReducer(
     }),
 );
 
-export function tReducer (state:Test|undefined,action:Action) {
+export function tReducer (state:TestWithFeatures|undefined,action:Action) {
     return testReducer(state,action)
 }
 
 /**
  * index of currently selected question 
  */
-const intialOtherState:TestOtherState={
+export const intialOtherState:TestOtherState={
     id:null,
-    isTestOver:false
+    isTestOver:false,
+    submittingTest:false
 };
 
 const otherStateReducer = createReducer(
     intialOtherState,
+    on(TestActions.InitializeTestOtherState,(state)=>intialOtherState),
     on(TestActions.SetIndex,(state,action)=>({...state,id:action.id})),
     on(TestActions.TestOver,(state)=>{
         /** Note this the function name has not the usual meaning
@@ -63,7 +57,8 @@ const otherStateReducer = createReducer(
          */
         onTestNotFetched(null,true);
         return {...state,isTestOver:true}
-    }) 
+    }),
+    on(TestActions.TestSubmitting,(state,action)=>({...state,submittingTest:action.submittingTest}))
 );
 
 export function oReducer (state:TestOtherState|undefined,action:Action) {

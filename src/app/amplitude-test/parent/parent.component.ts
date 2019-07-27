@@ -8,13 +8,14 @@ import { PageItem } from '../page/page-items';
 import { PageSwitchDirective } from '../page-switch.directive';
 import { PageComponent } from '../page/page-component.modal';
 import { SideState, onTestNotFetched } from '../shared/global';
-import { Test } from '../modals/test';
 import  config  from '../../../data/config'
 import { MediaQueryState, createMediaQuery, toggleFullScreen } from '../../shared/global';
 import { GLobalState } from 'src/app/shared/global.state';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AutoUnsubscribe, takeWhileAlive} from 'take-while-alive';
-import { User } from 'src/app/modals/user';
+import { intialOtherState } from '../state/state.reducer';
+import { TestWithFeatures } from '../modals/test';
+import { UserProfile } from 'server/src/modal/user';
 
 @Component({
   selector: 'app-parent',
@@ -24,14 +25,11 @@ import { User } from 'src/app/modals/user';
 @AutoUnsubscribe()
 export class ParentComponent {
 
-  test: Test;
-  otherState:TestOtherState = {
-    isTestOver:false,
-    id:null
-  };
+  test: TestWithFeatures;
+  otherState:TestOtherState = intialOtherState;
   isFullScreenEnabled: boolean = false;
   sections:string[];
-  user:User;
+  user:UserProfile;
   testPaused:boolean = false;
 
   //local config
@@ -85,7 +83,7 @@ export class ParentComponent {
     */
     this.pageItems = this.ps.getPages();
     this.loadComponent('');
-    this.test = <Test> this.route.snapshot.data.test
+    this.test = <TestWithFeatures> this.route.snapshot.data.test
     if(this.test) {
       this.start(); 
       //set index
@@ -206,12 +204,8 @@ export class ParentComponent {
       /** Then open submit modal */
       this.pauseSubmitBtn.nativeElement.click();
     else {
-      this.test.time = 0
-      this.store.dispatch(TestOver());
-      this.store.dispatch(PauseTestServer({ time: this.test.time }))
-
-      /** navigate to completed component */
-      this.router.navigate(['/dashboard/completed/'+this.test._id])
+      // this.store.dispatch(TestOver());
+      this.store.dispatch(PauseTestServer({ time: this.test.time, isTestOver:true }))
     }
   }
 

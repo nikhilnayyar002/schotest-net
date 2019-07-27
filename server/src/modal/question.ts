@@ -1,6 +1,5 @@
-import { QuestionState } from "../shared/global";
 
-export interface QuestionOriginal {
+export interface Question {
   content: string;
   image: string;
   isComprehension: boolean;
@@ -11,9 +10,16 @@ export interface QuestionOriginal {
   marks: number;
 }
 
-export interface UserQuestion extends QuestionOriginal {
+export interface UserQuestion extends Question {
     /** It will store the state of Question*/
-    state: QuestionState;
+    state: string;
     /** It will note the current checked answer index */
     checkedAnswerIndex: number;
 }
+
+// answers: { 
+//   [index: string]: {
+//     value:string,
+//     data:string;
+//   }
+// };

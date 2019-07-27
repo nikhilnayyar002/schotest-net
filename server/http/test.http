@@ -33,18 +33,6 @@ GET http://localhost:3000/auth/userProfile
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjE1NjMyNzQ5NDU3MTUsImlhdCI6MTU2Mzg1NzY3MSwiZXhwIjoxNTYzODU5NDcxfQ.5htGA15d5Mr-k5QcJPS7pIcb2SMZ0AlSEeBOw_maSuA
 
 ### register
-# {
-#   "status": true,
-#   "user": {
-#     "favourites": [],
-#     "fullName": "Yo Yo",
-#     "email": "dynamonagestro2@gmail.com",
-#     "password": "$2a$10$R37y0OLvxweAfRO2roOQb.uQEZ5DPGNiMvtTbJFMvn50w55sF4wpq",
-#     "_id": 1563870538160,
-#     "saltSecret": "$2a$10$R37y0OLvxweAfRO2roOQb.",
-#     "__v": 0
-#   }
-# }
 POST http://localhost:3000/auth/register
 Content-Type: application/json
 
@@ -76,7 +64,7 @@ Content-Type: application/json
             "answers":["equilateral","isosceles","right angled", "obtuse angled"],
             "_id":"123456",
             "section":"English",
-            "marks":1
+            "marks":1            
         },
         "123457":{
             "content":"<p>Answer the following question according to the information</p>",
@@ -86,7 +74,7 @@ Content-Type: application/json
             "answers":["equilateral","isosceles","right angled", "obtuse angled"],
             "_id":"123457",
             "section":"English",
-            "marks":1                        
+            "marks":1                      
         },
         "123459":{
             "content":"<p>Hello there!!</p>",
@@ -96,12 +84,11 @@ Content-Type: application/json
             "answers":["equilateral","isosceles","right angled", "obtuse angled"],
             "_id":"123458",
             "section":"Mathematics",
-            "marks":2               
+            "marks":2                   
         }              
     },
-    "time":3600,
     "detail":"Simple mocked Test",
-    "oTime":3600,
+    "oTime":3600
 }
 
 ### Get Test
@@ -154,18 +141,6 @@ Content-Type: application/json
 GET  http://localhost:3000/userData/1563870538160/tests
 
 ###
-POST  http://localhost:3000/userData/1563870538160/tests
-Content-Type: application/json
-
-{
-    "_id": 12347,
-    "questions":{ 
-        "hi":"bye"
-    },
-    "time":3600
-}
-
-###
 GET  http://localhost:3000/userData/1563870538160/tests/12347
 
 ###
@@ -184,7 +159,7 @@ Content-Type: application/json
 {
     "id": 12347,
     "question": {
-        "80999": "the king is too great" 
+        "123457": "equilateral" 
     }
 }
 

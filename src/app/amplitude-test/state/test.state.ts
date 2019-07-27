@@ -1,4 +1,4 @@
-import { Test } from '../modals/test';
+import { TestWithFeatures } from '../modals/test';
 
 export interface TestOtherState {
     /**
@@ -9,9 +9,15 @@ export interface TestOtherState {
      *  mcq-states.component used it
      */
     isTestOver:boolean;
+    /**
+     *  used for showing status like spinner. When it is true spinner is shown instead of
+     *  submit button in "submit modal". If error occurs it is set to false. To disable the spinner.
+     *  Yeah! it is not something cool. 
+     */
+    submittingTest?:boolean;
 }
 
 export interface TestState {
-    test:Test;
+    test:TestWithFeatures;
     testOther:TestOtherState;
 }

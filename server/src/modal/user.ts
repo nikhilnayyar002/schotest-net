@@ -7,23 +7,34 @@ const environment: Environment = <any>process.env;
 
 /** Typescript Modal  */
 
-export interface User {
+export interface UserFeatures {
+  favourites: string[];
+  tests: { [index: string]: UserTest };
+}
+export interface UserBase {
   fullName: string;
   email: string;
+}
+
+export interface User extends UserBase,UserFeatures{
   password: string;
   saltSecret: string;
   _id: string;
-  favourites: string[];
-  tests: { [index: string]: UserTest };
-
   verifyPassword: (password: string) => boolean;
   generateJwt: () => string;
 }
+
 export interface UserTest {
   _id: string;
   questions: { [index: string]: string };
   time: number;
+  isTestOver:boolean;
 }
+
+export interface UserProfile extends UserBase {
+  id: string;
+}
+
 
 /** Mongoose Schema and Modal */
 

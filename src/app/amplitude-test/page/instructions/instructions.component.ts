@@ -11,6 +11,5 @@ export class InstructionsComponent extends PageComponent {
   constructor() { 
     super();
   }
-
-
+  
 }

@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { PageComponent } from '../page-component.modal';
 import { Store, select } from '@ngrx/store';
 import { TestState } from '../../state/test.state';
-import { Test } from '../../modals/test';
 import { take } from 'rxjs/operators';
+import { TestWithFeatures } from '../../modals/test';
 
 @Component({
   selector: 'app-questions',
@@ -13,7 +13,7 @@ import { take } from 'rxjs/operators';
 export class QuestionsComponent extends PageComponent{
 
   questions:string[];
-  test:Test;
+  test:TestWithFeatures;
   id:string;
 
   constructor(

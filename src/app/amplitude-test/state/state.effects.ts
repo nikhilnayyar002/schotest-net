@@ -6,6 +6,7 @@ import { MainService } from "../main.service";
 import { Observable } from "rxjs";
 import { Action, Store, select } from "@ngrx/store";
 import { GLobalState } from "src/app/shared/global.state";
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: "root"
@@ -14,7 +15,8 @@ export class TestEffect {
   constructor(
     private actions$: Actions,
     private ms: MainService,
-    private store: Store<GLobalState>
+    private store: Store<GLobalState>,
+    private router:Router
   ) {}
 
   updateQuestion: Observable<Action> = createEffect(
@@ -63,12 +65,23 @@ export class TestEffect {
         ofType(TestActions.PauseTestServer),
         tap(action =>
           this.store.pipe(take(1)).subscribe(globalState => {
+            console.log(2)
+            this.store.dispatch(TestActions.TestSubmitting({submittingTest:true}))
             this.ms
               .updateTime(
                 globalState.app.user.id,
                 globalState.test._id,
-                action.time
-              ).subscribe(() => null, error => console.log(error));
+                action.time,
+                action.isTestOver?true:false
+              ).subscribe(
+                () => {
+                  this.store.dispatch(TestActions.TestSubmitting({submittingTest:false}))
+                  if(action.isTestOver)
+                      /** navigate to completed component */
+                      this.router.navigate(['/dashboard/completed/'+globalState.test._id])
+                },
+                error => this.store.dispatch(TestActions.TestSubmitting({submittingTest:false}))
+              )
           })
         )
       ),

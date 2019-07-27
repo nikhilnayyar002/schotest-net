@@ -5,8 +5,9 @@ import { Store } from '@ngrx/store';
 import { GLobalState } from 'src/app/shared/global.state';
 import { take, switchMap, catchError, map } from 'rxjs/operators';
 import { SetTest } from '../state/state.actions';
-import { of, forkJoin, throwError } from 'rxjs';
-import { onTestNotFetched } from '../shared/global';
+import { of, forkJoin, Observable } from 'rxjs';
+import { UserTest } from 'server/src/modal/user';
+import { TestWithFeatures, TestOriginal } from '../modals/test';
 
 @Injectable()
 export class TestResolverService {
@@ -18,7 +19,8 @@ export class TestResolverService {
 
   }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot):any {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot)
+  :Observable<TestWithFeatures> | Observable<null> {
     let testID = route.paramMap.get("id"),
         arr = [
           this.ms.getTest(testID),
@@ -30,23 +32,25 @@ export class TestResolverService {
         
     return forkJoin(arr).pipe(
       take(1),
-      map((tests)=>{
-        if(tests[1]) {
-          if(tests[1].time != undefined || tests[1].time != null) 
-            tests[0].time = tests[1].time
-          for(let i in tests[1].questions){
-            let answer = <any> tests[1].questions[i],
-              index = answer?tests[0].questions[i].answers.indexOf(answer):null
-            tests[0].questions[i].checkedAnswerIndex = index
+      map((tests:(TestWithFeatures|UserTest)[])=>{
+        let testOriginal=<TestWithFeatures>tests[0], userTest=<UserTest>tests[1]
+        if(userTest && userTest.isTestOver) testOriginal.isTestOver = true;
+        else if(userTest) {
+          if(userTest.time != undefined || userTest.time != null) 
+            testOriginal.time =userTest.time
+          for(let i in userTest.questions){
+            let answer = userTest.questions[i],
+              index = answer?testOriginal.questions[i].answers.indexOf(answer):null
+            testOriginal.questions[i].checkedAnswerIndex = index
           }
         }
-        return tests[0]
+        return testOriginal
       }),
-      switchMap((test)=>{
+      switchMap((test:TestWithFeatures)=>{
         /**
-         * Test is already completed 
+         * Test is over
          */
-        if(!test.time) {
+        if(test.isTestOver) {
           this.router.navigate(['/dashboard/completed/'+test._id])
           return of(null)
         }

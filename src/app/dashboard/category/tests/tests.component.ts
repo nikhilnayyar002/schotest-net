@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { BackendTestResponse } from 'src/app/amplitude-test/modals/test';
 import { ActivatedRoute } from '@angular/router';
 import { createAccordianState } from 'src/app/shared/global';
+import { TestResponse } from 'src/app/amplitude-test/modals/test';
 
 
 @Component({
@@ -11,7 +11,7 @@ import { createAccordianState } from 'src/app/shared/global';
 })
 export class TestsComponent implements OnInit {
 
-  tests:BackendTestResponse[];
+  tests:TestResponse[];
   sections:string[];
   constructor(
     private route:ActivatedRoute
@@ -24,7 +24,7 @@ export class TestsComponent implements OnInit {
     this.tests = <any[]> this.route.snapshot.data.tests
   }
 
-  getSections(test:BackendTestResponse) {
+  getSections(test:TestResponse) {
     if(test.sections) return Object.keys(test.sections)
     else return null
   }

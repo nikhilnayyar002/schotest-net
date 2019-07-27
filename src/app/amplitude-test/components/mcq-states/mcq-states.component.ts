@@ -4,7 +4,7 @@ import {SubSink} from 'subsink'
 import { TestState } from '../../state/test.state';
 import { SetQuestionState, SetIndex } from '../../state/state.actions';
 import { QuestionState, checkAndGetQuestionState } from '../../shared/global';
-import { Test } from '../../modals/test';
+import { TestResponse, TestWithFeatures } from '../../modals/test';
 
 @Component({
   selector: 'app-mcq-states',
@@ -15,7 +15,7 @@ export class McqStatesComponent {
 
   questions:string[];
   id:string;
-  test:Test;
+  test:TestWithFeatures;
   private isTestOver=false;
   
   subs=new SubSink();

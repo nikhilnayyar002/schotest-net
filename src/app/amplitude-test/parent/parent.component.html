@@ -272,9 +272,18 @@
           No
         </button>
 
-        <button type="button" class="btn btn-sm btn-secondary" (click)="submitTest(true)">
-          Submit
-        </button>
+        <ng-container *ngIf="!otherState.submittingTest; else submitting">
+            <button type="button" class="btn btn-sm btn-secondary" (click)="submitTest(true)">
+                Submit
+            </button>
+        </ng-container>
+        <ng-template #submitting>
+          <div *ngIf="otherState.submittingTest" class="spinner-grow text-secondary" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </ng-template>
+        
+
       </div>
     </div>
   </div>

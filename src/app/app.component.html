@@ -1,6 +1,25 @@
-
-<div #routerProgress class="material-progress custom-material-progress bg-primary m-0">
+<div
+  #routerProgress
+  class="material-progress custom-material-progress bg-primary m-0"
+>
   <div class="indeterminate bg-secondary"></div>
 </div>
+<div
+  #networkStatus
+  class="overlay overlay-fixed justify-content-center align-items-center network-status-container"
+>
+  <div class="w-100 p-5 bg-primary shadow-lg">
+    <button
+      type="button"
+      class="close text-secondary"
+      aria-label="Close"
+      style="font-size: 40px;"
+      (click)="networkStatusToggle(null,true)"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h3>You are offline.</h3>
+  </div>
+</div>
 
-<router-outlet parent ></router-outlet>
+<router-outlet parent></router-outlet>

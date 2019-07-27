@@ -1,4 +1,4 @@
-import { Question } from "../modals/question";
+import { UserQuestion } from '../modals/question';
 
 export enum QuestionState {
   Marked = "Marked",
@@ -12,7 +12,7 @@ export enum QuestionState {
  * Checks the current question and updates it status.
  * This method is to be called before @setQuestionSelected
  */
-export function checkAndGetQuestionState(question: Question) {
+export function checkAndGetQuestionState(question: UserQuestion) {
   let state: QuestionState = QuestionState.Markedanswered;
   if(question.state == undefined) return QuestionState.Unanswered
   if (question.checkedAnswerIndex != null) {
@@ -33,7 +33,7 @@ export function checkAndGetQuestionState(question: Question) {
  * returns next question @index relative to current index
  *
  */
-export function getNextQuestionIndex(questions:{[index:string]:Question}, id:string): string {
+export function getNextQuestionIndex(questions:{[index:string]:UserQuestion}, id:string): string {
   let keys = Object.keys(questions), 
     nextIndex = keys.indexOf(id) != (keys.length - 1)?(keys.indexOf(id)+1):0
    return keys[nextIndex]; 

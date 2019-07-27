@@ -23,4 +23,4 @@ export const Schema = new mongoose.Schema< & mongoose.Document>({
  * Schema @Methods
  */
 
-export const Modal:  = <any>mongoose.model("", Schema);
+export const Modal  = mongoose.model("", Schema);

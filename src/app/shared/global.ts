@@ -1,6 +1,6 @@
 import { ChangeDetectorRef } from "@angular/core";
-import { User } from '../modals/user';
 import { HttpHeaders } from "@angular/common/http";
+import { UserProfile } from '../modals/user';
 
 export interface MediaQueryState {
   dispose: () => void;
@@ -11,7 +11,7 @@ export interface BackendStatus {
   status: boolean;
   message?: string;
   token?: string;
-  user?: User;
+  user?: UserProfile;
 }
 
 export interface Credentials {

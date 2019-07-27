@@ -1,23 +1,32 @@
 import * as express from "express";
-import { Record404Exception, HttpException } from "../config/global";
-import { UserModal, User, UserTest } from "../modal/user";
-import { TestModal, Test } from "../modal/test";
+import { Record404Exception, HttpException, returnTyped, simplifyMongoose, testFunc } from "../config/global";
+import { UserModal, User, UserTest, UserFeatures } from "../modal/user";
+import { TestModal, TestResponse, TestOriginal } from "../modal/test";
 
+/**
+ *  returns @UserFeatures
+ */
 export const getUserData: express.RequestHandler = (req, res, next) => {
   let id = req.params.userID;
   UserModal.findById(id, function(err, user: User) {
-    if (err) {
-      return next(err);
-    }
-    if (user)
+    if (err) next(err);
+    else if (user) {
+      let userRes:UserFeatures = {
+        favourites: user.favourites, tests: user.tests 
+      }
+      /** Send user favourites and tests */
       res.json({
         status: true,
-        user: { favourites: user.favourites, tests: user.tests }
+        user: userRes
       });
+    }
     else next(new Record404Exception());
   });
 };
 
+/**
+ *  returns @string_Arr
+ */
 export const getUserFavourites: express.RequestHandler = (req, res, next) => {
   let id = req.params.userID;
   UserModal.findById(id, function(err, user: User) {
@@ -30,7 +39,7 @@ export const getUserFavourites: express.RequestHandler = (req, res, next) => {
 };
 
 /**
- * Send @id in body
+ *  returns @message
  */
 export const postUserFavourites: express.RequestHandler = (req, res, next) => {
   let id = req.params.userID;
@@ -48,6 +57,9 @@ export const postUserFavourites: express.RequestHandler = (req, res, next) => {
   );
 };
 
+/**
+ *  returns @UserTest_Arr
+ */
 export const getUserTests: express.RequestHandler = (req, res, next) => {
   let id = req.params.userID;
 
@@ -60,6 +72,9 @@ export const getUserTests: express.RequestHandler = (req, res, next) => {
   });
 };
 
+/**
+ *  returns @UserTest
+ */
 export const getUserTest: express.RequestHandler = (req, res, next) => {
   let id = req.params.userID,
     tID = req.params.testID;
@@ -75,19 +90,10 @@ export const getUserTest: express.RequestHandler = (req, res, next) => {
   });
 };
 
-export const postUserTest: express.RequestHandler = (req, res, next) => {
-  let id = req.params.userID;
-  let newObj = {};
-  newObj[`tests.${req.body._id}`] = req.body;
-  UserModal.updateOne({ _id: id }, { $set: newObj }, function(err, doc) {
-    if (err) {
-      return next(err);
-    }
-    if (doc) return res.json({ status: true, message: "Success" });
-    else next(new HttpException("Failed", 400));
-  });
-};
 
+/**
+ *  returns @message
+ */
 export const postUserTestQ: express.RequestHandler = (req, res, next) => {
   let id = req.params.userID,
     tID = req.body.id;
@@ -111,6 +117,9 @@ export const postUserTestQ: express.RequestHandler = (req, res, next) => {
   });
 };
 
+/**
+ *  returns @message
+ */
 export const postUserTestT: express.RequestHandler = (req, res, next) => {
   let id = req.params.userID,
     tID = req.body.id;
@@ -122,6 +131,7 @@ export const postUserTestT: express.RequestHandler = (req, res, next) => {
       let newObj = {};
       newObj[`tests.${tID}.time`] = req.body.time;
       newObj[`tests.${tID}._id`] = tID;
+      newObj[`tests.${tID}.isTestOver`] = req.body.isTestOver;
       UserModal.updateOne({ _id: id }, { $set: newObj }, function(err, doc) {
         if (err) {
           return next(err);
@@ -133,48 +143,48 @@ export const postUserTestT: express.RequestHandler = (req, res, next) => {
   });
 };
 
+/**
+ *  returns @TestResponse_Arr
+ */
 export const getPausedTests: express.RequestHandler = (req, res, next) => {
-  return commonCompAndPaus(req, res, next, time => time != 0);
+  return commonCompAndPaus(req, res, next, test => !test.isTestOver && test.time );
 };
 
+/**
+ *  returns @TestResponse_Arr
+ */
 export const getCompletedTests: express.RequestHandler = (req, res, next) => {
-  return commonCompAndPaus(req, res, next, time => time == 0);
+  return commonCompAndPaus(req, res, next, test => test.isTestOver);
 };
 
 function commonCompAndPaus(
   req: express.Request,
   res: express.Response,
   next: express.NextFunction,
-  condition: (time: number) => boolean
+  condition: (test: UserTest) => any
 ) {
   let id = req.params.userID;
   UserModal.findById(id, function(err, user: User) {
-    if (err) {
-      return next(err);
-    }
+    if (err) return next(err);
     if (user) {
       if (user.tests) {
         let proms = [];
         for (let i in user.tests)
-          if (condition(user.tests[i].time))
+          if (condition(user.tests[i]))
             proms.push(TestModal.findById(user.tests[i]._id).exec());
 
         Promise.all(proms)
-          .then((tests: Test[]) => {
-            if (tests.length) {
-              tests = tests.map(test => {
-                test.questions = <any>{
-                  length: Object.keys(test.questions).length,
-                  marks: (function() {
-                    let marks = 0;
-                    for (let i in test.questions)
-                      marks += test.questions[i].marks;
-                    return marks;
-                  })()
-                };
-                test.time = user.tests[test._id].time;
-                return test;
-              });
+          .then((testsRes:TestOriginal[]) => {
+            if (testsRes.length) {
+
+              let tests = returnTyped<TestResponse[]>(
+                simplifyMongoose<TestOriginal[]>(testsRes)
+              );
+
+              for(let i=0;i<tests.length;++i) {
+                tests[i].questions = testFunc.getTestResponseQ(testsRes[i])
+                tests[i].time = user.tests[tests[i]._id].time;
+              }
 
               res.json({ status: true, tests: tests });
             } else next(new Record404Exception());

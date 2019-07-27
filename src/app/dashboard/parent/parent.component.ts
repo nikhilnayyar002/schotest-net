@@ -11,9 +11,9 @@ import { Store, select } from "@ngrx/store";
 import { AuthService } from "../../auth.service";
 import { SetAppState } from "../../state/state.actions";
 import { Router} from "@angular/router"
-import { User } from 'src/app/modals/user';
 import { takeWhileAlive, AutoUnsubscribe } from 'take-while-alive';
 import { Observable } from 'rxjs';
+import { UserProfile } from 'src/app/modals/user';
 
 
 /**
@@ -39,7 +39,7 @@ export class ParentComponent {
   @ViewChild("fixedOverlay", { static: false })
   private fixedOverlay: ElementRef;
   @ViewChild("sidebar", { static: false }) private sidebar: ElementRef;
-  user:Observable<User> = this.store.select(state => state.app.user);
+  user:Observable<UserProfile> = this.store.select(state => state.app.user);
 
   mediaQueryState: MediaQueryState = createMediaQuery(
     "(max-width: 900px)",

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Question } from '../../modals/question';
+import { UserQuestion } from '../../modals/question';
 
 
 @Component({
@@ -10,8 +10,8 @@ import { Question } from '../../modals/question';
 export class McqPageComponent {
 
 
-  @Input() question:Question;
-  @Output('emit') questionEmitEvent= new EventEmitter<Question>();
+  @Input() question:UserQuestion;
+  @Output('emit') questionEmitEvent= new EventEmitter<UserQuestion>();
 
   onClick(index) {
     /**

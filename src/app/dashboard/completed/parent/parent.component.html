@@ -47,6 +47,9 @@
         <span class="p-1 px-2 bg-info d-inline-block mr-2 small rounded-sm"
           >Time: {{ test.oTime | timer }}</span
         >
+        <span class="p-1 px-2 bg-info d-inline-block mr-2 small rounded-sm"
+          >Completed: {{ (test.oTime - test.time ) | timer }}</span
+        >
         <hr>
         <ng-container *ngIf="getSections(test) as sections">
           <p class="font-weight-bold">Sections:</p>

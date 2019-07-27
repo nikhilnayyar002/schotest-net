@@ -1,5 +1,5 @@
 import { QuestionState } from "./global";
-import { Question } from "../modals/question";
+import { UserQuestion } from '../modals/question';
 
 interface IDbItem {
   state: QuestionState;
@@ -9,7 +9,7 @@ interface IDbItem {
 export const QuestionStateDB = {
   db: null,
   testID: null,
-  setup: function(questions: { [index: string]: Question }) {
+  setup: function(questions: { [index: string]: UserQuestion }) {
     let request = window.indexedDB.open("states");
     request.onerror = () => {
       console.log("error creating db");
@@ -64,7 +64,7 @@ export const QuestionStateDB = {
     };
   },
 
-  applyStates: function(questions:{ [index: string]: Question }) {
+  applyStates: function(questions:{ [index: string]: UserQuestion }) {
     let found = false;
     for (let i of Array.from((<IDBDatabase>this.db).objectStoreNames))
       if (i == this.testID) {

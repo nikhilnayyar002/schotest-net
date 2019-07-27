@@ -21,6 +21,7 @@ export class AppComponent {
 
 
   @ViewChild('routerProgress', { static: false }) private routerProgress: ElementRef;
+  @ViewChild('networkStatus', { static: false }) private networkStatus: ElementRef;
 
   constructor(private router: Router, private auth:AuthService) {
 
@@ -35,7 +36,20 @@ export class AppComponent {
         evt instanceof NavigationCancel
       )
     ) as Observable<any>;
-    
+
+    window.addEventListener('online',  this.networkStatusToggle.bind(this));
+    window.addEventListener('offline', this.networkStatusToggle.bind(this))  
+  }
+
+  networkStatusToggle(ev, closeMe:boolean =false) {
+    let elem = <HTMLElement> this.networkStatus.nativeElement;
+    if(navigator.onLine || closeMe) {
+      elem.style.opacity = "0";
+      setTimeout(() => elem.style.display = "none", 250);
+    }else {
+      elem.style.display = "flex";
+      elem.style.opacity = "1";
+    }
   }
 
   ngAfterViewInit(): void {
@@ -47,7 +61,6 @@ export class AppComponent {
       this.routerProgress.nativeElement.style.opacity = "1"
     });
     this.navEnd.subscribe(evt => {
-      console.log(evt.url)
       this.routerProgress.nativeElement.style.opacity = "0"
       this.auth.lastUrlLoaded = evt.url
     });
@@ -60,6 +73,9 @@ export class AppComponent {
       setTimeout(() => {
         animated.parentElement.removeChild(animated)
       }, 500);
+
+    /** run intially */
+    this.networkStatusToggle(null)
   }
   
 }

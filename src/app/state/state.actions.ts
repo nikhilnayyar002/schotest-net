@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { User } from '../modals/user';
 import { AppState } from './app.state';
+import { UserProfile } from '../modals/user';
 
 /**
  * Set logged in state
@@ -14,7 +14,7 @@ export const SetLoginState = createAction(
  */
 export const SetUserState = createAction(
   '[User] Set',
-  props<{user:User}>()
+  props<{user:UserProfile}>()
 );
 
 export const SetAppState = createAction(

@@ -7,12 +7,17 @@ $grey-color:#676464;
 $primary-bg-color: #001a39; /*bg-primary*/
 $secondary-bg-color:rgb(253, 200, 0);
 
+//light variations
+$primary-bg-light:mix($primary-bg-color, #fff,80%);
+
+//transparent variations
+$primary-alpha:rgba( $primary-bg-color, .79 );
+
 //override forground color
 $primary-color:pick-visible-color($primary-bg-color, black, white);
 $secondary-color:pick-visible-color($secondary-bg-color, black, white);
 
-//light variation
-$primary-bg-light:mix($primary-bg-color, #fff,80%);
+
 
 //wanna override above forground color
 $override-primary-color:null;

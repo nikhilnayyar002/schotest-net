@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { QuestionState } from '../../shared/global';
 import { Store } from '@ngrx/store';
 import { GLobalState } from 'src/app/shared/global.state';
-import { Test } from '../../modals/test';
+import { TestResponse, TestWithFeatures } from '../../modals/test';
 
 interface TbData {
   questions:number;
@@ -21,7 +21,7 @@ interface TbData {
 export class OverallTestDetailComponent implements OnInit {
 
   tbDatas:{[index:string]:TbData} ={};
-  test:Test;
+  test:TestWithFeatures;
   sections:string[];
 
   constructor(private store:Store<GLobalState>) { }

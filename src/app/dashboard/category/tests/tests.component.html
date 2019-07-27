@@ -50,9 +50,13 @@
           <ul><li *ngFor="let section of sections">{{section}}</li></ul>
         </ng-container>
 
-        <button [routerLink]="[ '/test', test._id  ]" class="btn btn-secondary">
+
+        <button *ngIf="!test.isTestOver; else completedTemplate" [routerLink]="[ '/test', test._id  ]" class="btn btn-secondary">
           {{test.hasTestStarted ? 'Continue':'Start'}}
         </button>            
+        <ng-template #completedTemplate>
+            <button [routerLink]="[ '/completed', test._id  ]" class="btn btn-secondary">View Result</button>   
+        </ng-template>
         
       </div>
     </div>

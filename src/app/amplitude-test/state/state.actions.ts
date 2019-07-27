@@ -1,7 +1,7 @@
 import { createAction, props } from '@ngrx/store';
-import { Test } from '../modals/test';
-import { Question } from '../modals/question';
 import { QuestionState } from '../shared/global';
+import { TestWithFeatures } from '../modals/test';
+import { UserQuestion } from '../modals/question';
 
 /**
  * Set the state of question. Eg: Answered, Marked etc.
@@ -27,7 +27,7 @@ export const GetTest = createAction(
  */
 export const SetTest = createAction(
   '[Test] Set',
-  props<{test:Test}>()
+  props<{test:TestWithFeatures}>()
 );
 
 /**
@@ -43,7 +43,7 @@ export const SetIndex = createAction(
  */
 export const UpdateQuestion =createAction(
   '[Question] Update',
-  props<{question:Question}>()
+  props<{question:UserQuestion}>()
 )
 
 /**
@@ -51,7 +51,7 @@ export const UpdateQuestion =createAction(
  */
 export const SetQuestion =createAction(
   '[Question] Set',
-  props<{question:Question}>()
+  props<{question:UserQuestion}>()
 )
 
 export const TestOver =createAction(
@@ -64,16 +64,33 @@ export const TestOver =createAction(
  */
 export const ClearResponse =createAction(
   '[Question] Update Server',
-  props<{question:Question}>()
+  props<{question:UserQuestion}>()
 )
 
 export const PauseTest =createAction(
   '[Test] Pause',
   props<{time:number}>()
 )
+/**
+ * The new variable @isTestOver has been added and can be used
+ * to declare that the the test besides being paused.
+ * In short @PauseTestServer action can be used both to pause test and declare it as submitted.
+ */
 export const PauseTestServer =createAction(
   '[Test] Pause Server',
-  props<{time:number}>()
+  props<{time:number, isTestOver?:boolean}>()
+)
+
+/**
+ * While you are submitting test
+ */
+export const TestSubmitting =createAction(
+  '[Test] Submitting',
+  props<{submittingTest:boolean}>()
+)
+
+export const InitializeTestOtherState =createAction(
+  '[Test Other State] Initialize',
 )
 
 

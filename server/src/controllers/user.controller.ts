@@ -1,10 +1,12 @@
 import * as mongoose from "mongoose";
 import * as passport from "passport";
 import * as express from "express";
-import { UserModal, User } from "../modal/user";
-import { CommonRes } from "../config/global";
+import { UserModal, User, UserProfile } from "../modal/user";
+import { CommonRes, HttpException } from "../config/global";
 
-
+/**
+ * Return @User
+ */
 export const register:express.RequestHandler = (req, res, next) => {
 
     let user:User & mongoose.Document = <any>new UserModal();
@@ -29,6 +31,9 @@ export const register:express.RequestHandler = (req, res, next) => {
     });
 }
 
+/**
+ * Return @token
+ */
 export const authenticate:express.RequestHandler = (req, res, next) => {
     // call for passport authentication
     passport.authenticate('local', (err, user:User, info:CommonRes) => {       
@@ -41,13 +46,20 @@ export const authenticate:express.RequestHandler = (req, res, next) => {
     })(req, res);
 }
 
+/**
+ * Return @UserProfile
+ */
 export const userProfile:express.RequestHandler = (req, res, next) =>{
     UserModal.findOne({ _id: (<any>req)._id },
         (err, user:User) => {
+            if(err) next(new HttpException())
             if (!user)
                 return res.status(404).json({ status: false, message: 'User record not found.' });
-            else
-                return res.status(200).json({ status: true, user : { fullName:user.fullName, email:user.email, id:user._id }  });
+            else {
+                let userProfile:UserProfile = { fullName:user.fullName, email:user.email, id:user._id }
+                return res.status(200).json({ status: true, user :userProfile });
+            }
+                
         }
     );
 }

@@ -7,7 +7,7 @@ import config from "../../data/config";
 import { AuthService } from "../auth.service";
 import { Store } from "@ngrx/store";
 import { GLobalState } from "../shared/global.state";
-import { Test, BackendTestResponse } from "../amplitude-test/modals/test";
+import { TestResponse } from '../amplitude-test/modals/test';
 
 @Injectable({
   providedIn: "root"
@@ -25,54 +25,56 @@ export class MainService {
    * Fetches questions and sets the questions array locally
    */
   getCategories(): Observable<Category[]> {
-    let url = `${config.api.base}/categories`;
     let recipe = pipe(
       map((data: {status:boolean; categories:Category[]; }) =>data.categories )
     );
-    return this.auth.tryWithRefreshIfNecc(url, recipe);
+    return this.auth.tryWithRefreshIfNecc(config.routes.category.getCategories(), recipe);
   }
 
-  getTests(categoryID: string): Observable<BackendTestResponse[]> {
+  getTests(categoryID: string): Observable<TestResponse[]> {
     return this.store
       .select(state => state.app.user)
       .pipe(
         take(1),
         switchMap(user => {
-          let url = `${config.api.base}/categories/${categoryID}/tests?email=${user.email}`;
           let recipe = pipe(
-            map((data: {status:boolean; tests:Test[]; }) =>data.tests )
+            map((data: {status:boolean; tests:TestResponse[]; }) =>data.tests )
           );
-          return this.auth.tryWithRefreshIfNecc(url, recipe);
+          return this.auth.tryWithRefreshIfNecc(
+            config.routes.category.getCategoryTests(categoryID, user.email), recipe
+          );
         })
       );
   }
 
-  getPausedTests(): Observable<BackendTestResponse[]> {
+  getPausedTests(): Observable<TestResponse[]> {
     return this.store
       .select(state => state.app.user)
       .pipe(
         take(1),
         switchMap(user => {
-          let url = `${config.api.base}/userData/${user.id}/tests/paused`;
           let recipe = pipe(
-            map((data: {status:boolean; tests:Test[]; }) =>data.tests )
+            map((data: {status:boolean; tests:TestResponse[]; }) =>data.tests )
           );
-          return this.auth.tryWithRefreshIfNecc(url, recipe);
+          return this.auth.tryWithRefreshIfNecc(
+            config.routes.userData.getPausedTests(user.id), recipe
+          );
         })
       );
   }
 
-  getCompletedTests(): Observable<BackendTestResponse[]> {
+  getCompletedTests(): Observable<TestResponse[]> {
     return this.store
       .select(state => state.app.user)
       .pipe(
         take(1),
         switchMap(user => {
-          let url = `${config.api.base}/userData/${user.id}/tests/completed`;
           let recipe = pipe(
-            map((data: {status:boolean; tests:Test[]; }) =>data.tests )
+            map((data: {status:boolean; tests:TestResponse[]; }) =>data.tests )
           );
-          return this.auth.tryWithRefreshIfNecc(url, recipe);
+          return this.auth.tryWithRefreshIfNecc(
+            config.routes.userData.getCompletedTests(user.id), recipe
+          );
         })
       );
   }
