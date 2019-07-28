@@ -17,7 +17,7 @@ export class ParentComponent implements OnInit {
   tests:TestResponse[];
   sections:string[];
 
-  onCardHeaderCLick = createAccordianState();
+  onCardHeaderClick = createAccordianState();
 
   ngOnInit(): void {
     this.tests = <any[]> this.route.snapshot.data.tests

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
+import config from 'src/data/config';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-page-not-found',
@@ -8,15 +10,11 @@ import { AuthService } from '../auth.service';
 })
 export class PageNotFoundComponent {
 
+  config = config
   constructor(
-    private auth:AuthService
+    private auth:AuthService,
+    private route:ActivatedRoute
   ) {
-  }
-
-  ngAfterViewInit(): void {
-    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-    //Add 'implements AfterViewInit' to the class.
-    this.auth.lastUrlLoaded = '/dashboard'
   }
 
 }

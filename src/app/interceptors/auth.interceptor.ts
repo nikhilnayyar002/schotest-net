@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpHeaders } from "@angular/common/http";
 import { AuthService } from "../auth.service";
+import config from 'src/data/config';
 
  
 @Injectable() 
@@ -12,7 +13,7 @@ export class AuthInterceptor implements HttpInterceptor {
  
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     // Get the auth token from the service.
-    let ignoreUrl = "http://localhost:3000/auth/authenticate";
+    let ignoreUrl = config.routes.user.authenticate();
 
     if(req.url != ignoreUrl) {
         req = req.clone({

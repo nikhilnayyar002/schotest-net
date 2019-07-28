@@ -7,6 +7,7 @@ import { Observable } from "rxjs";
 import { Action, Store, select } from "@ngrx/store";
 import { GLobalState } from "src/app/shared/global.state";
 import { Router } from '@angular/router';
+import config from 'src/data/config';
 
 @Injectable({
   providedIn: "root"
@@ -78,7 +79,7 @@ export class TestEffect {
                   this.store.dispatch(TestActions.TestSubmitting({submittingTest:false}))
                   if(action.isTestOver)
                       /** navigate to completed component */
-                      this.router.navigate(['/dashboard/completed/'+globalState.test._id])
+                      this.router.navigate([config.clientRoutes.completedTest(globalState.test._id)])
                 },
                 error => this.store.dispatch(TestActions.TestSubmitting({submittingTest:false}))
               )

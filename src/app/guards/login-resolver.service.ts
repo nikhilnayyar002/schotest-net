@@ -26,11 +26,8 @@ export class LoginResolverService {
       .pipe(
         take(1),
         switchMap(appState => {
-          if(this.auth.lastUrlLoaded == '/login' || this.auth.lastUrlLoaded == '/')
-            this.auth.lastUrlLoaded = '/dashboard'
-
+        
           if (appState.loggedIn) {
-            console.log(1, this.auth.lastUrlLoaded )
             this.router.navigate([this.auth.lastUrlLoaded])
             return of(true);
           }
@@ -50,7 +47,6 @@ export class LoginResolverService {
                     }
                   })
                 );
-                console.log(2, this.auth.lastUrlLoaded )
                 this.router.navigate([this.auth.lastUrlLoaded])
                 return true;
               }),
@@ -62,7 +58,6 @@ export class LoginResolverService {
           else 
             return this.auth.refreshToken(appState).pipe(
               tap(()=> {
-                console.log(3, this.auth.lastUrlLoaded )
                 this.router.navigate([this.auth.lastUrlLoaded])
               }),
               catchError(()=> of(false))

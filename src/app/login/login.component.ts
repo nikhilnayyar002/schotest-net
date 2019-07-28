@@ -24,16 +24,14 @@ export class LoginComponent {
     psw: ["", [Validators.required]]
   });
 
-  redirectURL:String = '/dashboard';
-
   constructor(
     private fb: FormBuilder,
-    private ms: AuthService,
+    private auth: AuthService,
     private store: Store<GLobalState>,
     private router: Router,
     private route: ActivatedRoute,
-    private auth:AuthService
   ) {
+    
     /**
      * Resolving
      */
@@ -51,7 +49,7 @@ export class LoginComponent {
 
   submit() {
     this.loggingIn = true;
-    this.ms
+    this.auth
       .authenticate(this.email.value, this.psw.value)
       .pipe(take(1))
       .subscribe(
@@ -66,7 +64,8 @@ export class LoginComponent {
               }
             })
           );
-          this.router.navigate([this.redirectURL]);
+
+          this.router.navigate([this.auth.lastUrlLoaded]);
         },
         (error: string) => {
           this.loggingIn = false; /** set logged in to false */

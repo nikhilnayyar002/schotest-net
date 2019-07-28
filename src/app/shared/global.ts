@@ -136,7 +136,7 @@ export function createAccordianState() {
     else
       ct.style.transform = "rotate(90deg)"
     //code for prevAccorElem
-    if(prevAccorElem && prevAccorElem.style.transform == "rotate(90deg)")
+    if(prevAccorElem && prevAccorElem!=ct && prevAccorElem.style.transform == "rotate(90deg)")
       prevAccorElem.style.transform = "rotate(-90deg)"
     prevAccorElem = ct
   }

@@ -16,17 +16,34 @@ let config = {
             getCompletedTests:(uid) => `${domain}/userData/${uid}/tests/completed`
         },
         user:{
-
+            authenticate:()=> `${domain}/auth/authenticate`,
+            userProfile:()=>  `${domain}/auth/userProfile`,
         },
         category:{
             getCategories: ()=>`${domain}/categories`,
             getCategoryTests:(cid, email)=> `${domain}/categories/${cid}/tests?email=${email}`
-
-
         },
         test:{
             getTest: id => `${domain}/tests/${id}`
         }
+    },
+    clientRoutes:{
+        root:()=> '/',
+        login:()=> '/login',
+        test: (id)=> '/test/'+id,
+        dashboard: ()=>  '/dashboard',
+        completedTest:(id)=> '/dashboard/completed/'+ id,
+
+        /** DashboardResolverService */
+        dashboardCategories: ()=>"/dashboard/category",
+        dashboardCategory: (catID)=> `/dashboard/category/${catID}`,
+        dashboardPaused:()=> "/dashboard/paused",
+        dashboardCompleted: ()=> "/dashboard/completed",
+        /** Dashboard -> parent -> html */
+        relCategory:()=> './category',
+        relfavourite:()=>  './favourite',
+        relPaused:()=> './paused',
+        relCompleted:()=> './completed',
     }
 };
 export default config;

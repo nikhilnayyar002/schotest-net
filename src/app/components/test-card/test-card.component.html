@@ -1,0 +1,70 @@
+<div class="card bg-primary border-bottom border-info rounded-sm">
+  <div
+    class="card-header position-relative"
+    id="heading{{ index }}"
+    data-toggle="collapse"
+    attr.data-target="#collapse{{ index }}"
+    aria-expanded="false"
+    attr.aria-controls="collapse{{ index }}"
+    (click)="onCardHeaderCLick($event.currentTarget)"
+  >
+    <h6 class="mb-0 font-weight-bold">
+      {{ test.name }}
+    </h6>
+    <div class="card-status-container">
+      <span class="card-status">&larr;</span>
+    </div>
+  </div>
+  <div
+    id="collapse{{ index }}"
+    class="collapse"
+    attr.aria-labelledby="heading{{ index }}"
+    [attr.data-parent]="'#'+accordianID"
+  >
+    <div class="card-body bg-white text-dark">
+      <p class="font-weight-bold">Intro</p>
+      <p>{{ test.detail }}</p>
+
+      <span class="p-1 px-2 bg-info d-inline-block mr-2 small rounded-sm"
+        >Questions: {{ test.questions.length }}
+      </span>
+      <span class="p-1 px-2 bg-info d-inline-block mr-2 small rounded-sm"
+        >Marks: {{ test.questions.marks }}</span
+      >
+      <span class="p-1 px-2 bg-info d-inline-block mr-2 small rounded-sm"
+        >Time: {{ test.oTime | timer }}</span
+      >
+
+      <span *ngIf="test.isTestOver" class="p-1 px-2 bg-info d-inline-block mr-2 small rounded-sm"
+        >Completed: {{ (test.oTime - test.time ) | timer }}</span
+      >
+      <span *ngIf="!test.isTestOver && test.hasTestStarted" class="p-1 px-2 bg-info d-inline-block mr-2 small rounded-sm"
+        >Time Elapsed: {{ test.time | timer }}</span
+      >
+
+      <hr />
+      <ng-container *ngIf="getSections(test) as sections">
+        <p class="font-weight-bold">Sections:</p>
+        <ul>
+          <li *ngFor="let section of sections">{{ section }}</li>
+        </ul>
+      </ng-container>
+
+      <button
+        *ngIf="!test.isTestOver; else completedTemplate"
+        [routerLink]="[config.clientRoutes.test(test._id)]"
+        class="btn btn-secondary"
+      >
+        {{ test.hasTestStarted ? "Continue" : "Start" }}
+      </button>
+      <ng-template #completedTemplate>
+        <button
+          [routerLink]="[config.clientRoutes.completedTest(test._id)]"
+          class="btn btn-secondary"
+        >
+          View Result
+        </button>
+      </ng-template>
+    </div>
+  </div>
+</div>

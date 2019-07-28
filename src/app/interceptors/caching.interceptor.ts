@@ -8,8 +8,9 @@ import { Observable, of } from 'rxjs';
 import { startWith, tap } from 'rxjs/operators';
 
 import { RequestCache } from '../request-cache.service';
+import config from 'src/data/config';
 
-const ignoreURL = "/userProfile"
+const ignoreURL = config.routes.user.userProfile()
 
 @Injectable()
 export class CachingInterceptor implements HttpInterceptor {

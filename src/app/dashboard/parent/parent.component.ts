@@ -75,7 +75,7 @@ export class ParentComponent {
         }
       })
     );
-    this.router.navigate(["/login"]);
+    this.router.navigate([config.clientRoutes.login()]);
   }
 
   ngOnDestroy(): void {

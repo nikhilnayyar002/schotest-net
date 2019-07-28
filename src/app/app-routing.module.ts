@@ -13,7 +13,7 @@ const routes: Routes = [
       status: LoginResolverService
     }
   },
-  { path: '**', component: PageNotFoundComponent }
+  { path: '**', component: PageNotFoundComponent, data:{ iam:"pageNotFound" } }
 ];
 
 @NgModule({

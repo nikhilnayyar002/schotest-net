@@ -1,7 +1,7 @@
 <!-- navbar -->
 <nav class="navbar bg-primary navbar-expand-lg shadow">
   <!-- logo-->
-  <a class="navbar-brand" routerLink="/login">
+  <a class="navbar-brand" [routerLink]=[configData.clientRoutes.login()]>
     <span id="nav-bar-logo">{{ configData.company.name }}</span>
   </a>
 </nav>

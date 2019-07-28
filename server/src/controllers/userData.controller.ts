@@ -182,10 +182,14 @@ function commonCompAndPaus(
               );
 
               for(let i=0;i<tests.length;++i) {
+                let t= user.tests[tests[i]._id]
                 tests[i].questions = testFunc.getTestResponseQ(testsRes[i])
-                tests[i].time = user.tests[tests[i]._id].time;
+                if (t && (t.time != null || t.time != undefined)) {
+                  if (tests[i].time != t.time) tests[i].hasTestStarted = true;
+                  tests[i].time = t.time;
+                  tests[i].isTestOver = t.isTestOver;
+                }
               }
-
               res.json({ status: true, tests: tests });
             } else next(new Record404Exception());
           })

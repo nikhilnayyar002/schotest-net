@@ -6,8 +6,6 @@ import {
 } from "@angular/common/http";
 import {
   catchError,
-  tap,
-  mapTo,
   switchMap,
   switchMapTo,
   take,
@@ -20,28 +18,25 @@ import { Store } from "@ngrx/store";
 import { GLobalState } from "./shared/global.state";
 import { SetAppState } from "./state/state.actions";
 import { AppState } from "./state/app.state";
+import config from 'src/data/config';
 
 @Injectable({
   providedIn: "root"
 })
 export class AuthService {
-  constructor(private http: HttpClient, private store: Store<GLobalState>) {
-    console.log("auth created")
-  }
+  constructor(private http: HttpClient, private store: Store<GLobalState>) {}
 
-  lastUrlLoaded:string='/';
+  lastUrlLoaded:string=config.clientRoutes.dashboard()
 
   authenticate(email: string, pass: string): Observable<BackendStatus | Error> {
     const httpOptions = {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     };
-    let url = "http://localhost:3000/auth/authenticate";
     let credentials: Credentials = {
       email,
       password: pass
     };
-
-    return this.http.post<BackendStatus>(url, credentials, httpOptions).pipe(
+    return this.http.post<BackendStatus>(config.routes.user.authenticate(), credentials, httpOptions).pipe(
       /**
        * Set the token in localstorage
        */
@@ -53,20 +48,8 @@ export class AuthService {
     );
   }
 
-  // function isUserPayloadValid() {
-  //     let token = localStorage.getItem('token');
-  //     if (token) {
-  //         var userPayload = atob(token.split('.')[1]);
-  //         userPayload=JSON.parse(userPayload);
-  //         if (userPayload && (userPayload.exp > Date.now() / 1000))
-  //         return true;
-  //     }
-  //     return false;
-  // }
-
   userProfile(): Observable<BackendStatus | Error> {
-    let url = "http://localhost:3000/auth/userProfile";
-    return this.http.get<BackendStatus>(url);
+    return this.http.get<BackendStatus>(config.routes.user.userProfile());
   }
 
   userProfileHandled() {

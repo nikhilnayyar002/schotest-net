@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { createAccordianState } from 'src/app/shared/global';
 import { TestResponse } from 'src/app/amplitude-test/modals/test';
+import config from 'src/data/config';
 
 
 @Component({
@@ -11,22 +12,17 @@ import { TestResponse } from 'src/app/amplitude-test/modals/test';
 })
 export class TestsComponent implements OnInit {
 
+  config = config
   tests:TestResponse[];
   sections:string[];
   constructor(
     private route:ActivatedRoute
   ) {
   }
-
-  onCardHeaderCLick = createAccordianState();
+  onCardHeaderClick = createAccordianState()
 
   ngOnInit(): void {
     this.tests = <any[]> this.route.snapshot.data.tests
-  }
-
-  getSections(test:TestResponse) {
-    if(test.sections) return Object.keys(test.sections)
-    else return null
   }
 
 }

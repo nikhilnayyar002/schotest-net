@@ -1,8 +1,9 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { Router, NavigationStart, NavigationEnd, NavigationError, NavigationCancel } from '@angular/router';
+import { Router, NavigationStart, NavigationEnd, NavigationError, NavigationCancel, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, tap } from 'rxjs/operators';
 import { AuthService } from './auth.service';
+import config from 'src/data/config';
 
 
 @Component({
@@ -23,7 +24,7 @@ export class AppComponent {
   @ViewChild('routerProgress', { static: false }) private routerProgress: ElementRef;
   @ViewChild('networkStatus', { static: false }) private networkStatus: ElementRef;
 
-  constructor(private router: Router, private auth:AuthService) {
+  constructor(private router: Router, private auth:AuthService, private route:ActivatedRoute) {
 
     this.navStart = router.events.pipe(
       filter(evt => evt instanceof NavigationStart)
@@ -57,12 +58,34 @@ export class AppComponent {
     /**
      * Subscribing to router events
      */
-    this.navStart.subscribe(evt => {
-      this.routerProgress.nativeElement.style.opacity = "1"
-    });
+    this.navStart.subscribe(evt => this.routerProgress.nativeElement.style.opacity = "1");
+
     this.navEnd.subscribe(evt => {
       this.routerProgress.nativeElement.style.opacity = "0"
-      this.auth.lastUrlLoaded = evt.url
+
+      /**
+       * check for page-not-found component. to do that i have two ways:
+       * 1. Check component property of activatedRoute.
+       * 2. Check data property of activatedRoute. (let's do this)
+       */
+   
+        // .map((route) => {
+        //   while (route.firstChild) route = route.firstChild;
+        //   return route;
+        // })
+        // .filter((route) => route.outlet === 'primary')
+        // .mergeMap((route) => route.data)
+        /**
+         * "page not found" component route is just first child of AppComponent route
+         */
+
+        let firstChild = this.router.routerState.root.firstChild
+        if(firstChild && firstChild.snapshot.data && firstChild.snapshot.data["iam"] == "pageNotFound")
+          null
+        /** Check and correct for an infinite redirect to login component*/
+        else if (evt.url != config.clientRoutes.login() && evt.url !=config.clientRoutes.root())
+          this.auth.lastUrlLoaded = evt.url  
+          
     });
 
     /**

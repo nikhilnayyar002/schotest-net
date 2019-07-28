@@ -13,6 +13,7 @@ import { Store } from "@ngrx/store";
 import { GLobalState } from "../shared/global.state";
 import { take } from "rxjs/operators";
 import { SetRedirectURL } from "../state/state.actions";
+import config from 'src/data/config';
 
 @Injectable({
   providedIn: "root"
@@ -34,7 +35,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         .subscribe(state => {
           if (!state) {
             this.auth.lastUrlLoaded = routerState.url
-            this.router.navigate(["/login"]);
+            this.router.navigate([config.clientRoutes.login()]);
           }
           subscriber.next(state);
         });

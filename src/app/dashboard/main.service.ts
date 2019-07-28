@@ -18,7 +18,6 @@ export class MainService {
     private auth: AuthService,
     private store: Store<GLobalState>
   ) {
-    console.log("main");
   }
 
   /**

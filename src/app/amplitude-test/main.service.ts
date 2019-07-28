@@ -8,21 +8,19 @@ import { Observable, throwError } from "rxjs";
 import { catchError, tap, map, take, switchMap } from "rxjs/operators";
 import config from "../../data/config";
 import { QuestionStateDB } from "./shared/indexDB";
-import { Store } from "@ngrx/store";
-import { GLobalState } from "../shared/global.state";
 import { TestOriginal, UserTest, TestWithFeatures } from "./modals/test";
 
 @Injectable({
   providedIn: "root"
 })
 export class MainService {
-  constructor(private http: HttpClient, private store: Store<GLobalState>) {}
+  constructor(private http: HttpClient) {}
 
-  getTest(id: string): Observable<TestWithFeatures> {
+  getTest(userID: string, id: string): Observable<TestWithFeatures> {
     return this.http.get(config.routes.test.getTest(id)).pipe(
       map((data: { status: boolean; test: TestOriginal }) => <TestWithFeatures>data.test),
       tap(test => {
-        QuestionStateDB.testID = test._id;
+        QuestionStateDB.testID = userID + test._id;
         /** Asynchronous */
         QuestionStateDB.setup(test.questions);
       }),
