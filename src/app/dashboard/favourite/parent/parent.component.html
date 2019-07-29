@@ -1,1 +1,15 @@
-<p>favourite works!</p>
+<h1 class="header bg-info py-4">
+  Favourites
+</h1>
+
+<div class="page-content">
+  <ng-container *ngIf="areThereFavourites; else noFavourites">
+    <app-category-cards [categories]="categories"></app-category-cards>
+  </ng-container>
+  <ng-template #noFavourites>
+    <h6>
+        There are no favourites.
+    </h6>
+  </ng-template>
+  
+</div>

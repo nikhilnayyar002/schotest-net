@@ -13,7 +13,10 @@ let config = {
             postUserTestQ: uid => `${domain}/userData/${uid}/tests/q`,
             postUserTestT: uid => `${domain}/userData/${uid}/tests/t`,
             getPausedTests:(uid)=>`${domain}/userData/${uid}/tests/paused`,
-            getCompletedTests:(uid) => `${domain}/userData/${uid}/tests/completed`
+            getCompletedTests:(uid) => `${domain}/userData/${uid}/tests/completed`,
+            postUserFavourites:(uid) => `${domain}/userData/${uid}/favourites`,
+            delUserFavourites:(uid) => `${domain}/userData/${uid}/favourites/delete`,
+            getUserFavourites: (uid) =>  `${domain}/userData/${uid}/favourites`
         },
         user:{
             authenticate:()=> `${domain}/auth/authenticate`,
@@ -24,7 +27,8 @@ let config = {
             getCategoryTests:(cid, email)=> `${domain}/categories/${cid}/tests?email=${email}`
         },
         test:{
-            getTest: id => `${domain}/tests/${id}`
+            getTest: id => `${domain}/tests/${id}`,
+            getQuestionsAnswers: id =>  `${domain}/tests/${id}/completed`
         }
     },
     clientRoutes:{
@@ -39,6 +43,9 @@ let config = {
         dashboardCategory: (catID)=> `/dashboard/category/${catID}`,
         dashboardPaused:()=> "/dashboard/paused",
         dashboardCompleted: ()=> "/dashboard/completed",
+        dashboardCompletedTest: (id)=> `/dashboard/completed/${id}`,
+        dashboardFavourites: ()=> "/dashboard/favourite",
+        
         /** Dashboard -> parent -> html */
         relCategory:()=> './category',
         relfavourite:()=>  './favourite',

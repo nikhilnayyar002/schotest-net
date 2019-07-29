@@ -10,9 +10,7 @@ import config from "../../data/config";
 import { QuestionStateDB } from "./shared/indexDB";
 import { TestOriginal, UserTest, TestWithFeatures } from "./modals/test";
 
-@Injectable({
-  providedIn: "root"
-})
+@Injectable()
 export class MainService {
   constructor(private http: HttpClient) {}
 

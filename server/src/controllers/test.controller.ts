@@ -3,6 +3,7 @@ import * as mongoose from "mongoose";
 
 import { Record404Exception, simplifyMongoose, returnTyped } from "../config/global";
 import { TestModal, TestOriginal } from "../modal/test";
+import { AnswersForTestModal, AnswersForTest } from "../modal/answer";
 
 /**
  * Return @TestOriginal
@@ -31,3 +32,25 @@ export const postTest:express.RequestHandler = function(req, res, next) {
   })
 }
 
+/**
+ * Return @answers and @questions
+ */
+export const getQuestionsAnswers:express.RequestHandler = function(req, res, next) {
+  let testID=req.params.testID;
+  TestModal.findById(testID,function (err, test:TestOriginal) {
+    if (err) { return next(err); }
+    if(test) {
+      let questions = test.questions
+
+      AnswersForTestModal.findById(testID, (err, answersForTest: AnswersForTest) => {
+        if (err) {
+          return next(err);
+        }
+        if (answersForTest) res.json({ status: true, answers:answersForTest.answers, questions });
+        else next(new Record404Exception());
+      });
+      
+    }
+    else next(new Record404Exception())
+  })
+}

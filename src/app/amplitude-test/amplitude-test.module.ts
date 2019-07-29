@@ -16,6 +16,7 @@ import { ParentComponent } from './parent/parent.component';
 import { SharedModule } from '../shared/shared.module';
 import { tReducer, oReducer } from './state/state.reducer';
 import { TestResolverService } from './guard/test.resolver';
+import { MainService } from './main.service';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,7 @@ import { TestResolverService } from './guard/test.resolver';
      */
     EffectsModule.forFeature([TestEffect])
   ],
-  providers:[TestResolverService, TestEffect],
+  providers:[TestResolverService, TestEffect, MainService],
   entryComponents:[McqsComponent,QuestionsComponent,InstructionsComponent]
 })
 export class AmplitudeTestModule { }

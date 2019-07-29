@@ -15,7 +15,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AutoUnsubscribe, takeWhileAlive} from 'take-while-alive';
 import { intialOtherState } from '../state/state.reducer';
 import { TestWithFeatures } from '../modals/test';
-import { UserProfile } from 'server/src/modal/user';
+import { UserProfile } from 'src/app/modals/user';
 
 @Component({
   selector: 'app-parent',

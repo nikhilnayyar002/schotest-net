@@ -6,7 +6,7 @@
     attr.data-target="#collapse{{ index }}"
     aria-expanded="false"
     attr.aria-controls="collapse{{ index }}"
-    (click)="onCardHeaderCLick($event.currentTarget)"
+    (click)="onCardHeaderClick($event.currentTarget)"
   >
     <h6 class="mb-0 font-weight-bold">
       {{ test.name }}
@@ -25,20 +25,20 @@
       <p class="font-weight-bold">Intro</p>
       <p>{{ test.detail }}</p>
 
-      <span class="p-1 px-2 bg-info d-inline-block mr-2 small rounded-sm"
+      <span class="p-1 px-2 bg-info d-inline-block mr-2 mt-2 small rounded-sm"
         >Questions: {{ test.questions.length }}
       </span>
-      <span class="p-1 px-2 bg-info d-inline-block mr-2 small rounded-sm"
+      <span class="p-1 px-2 bg-info d-inline-block mr-2 mt-2 small rounded-sm"
         >Marks: {{ test.questions.marks }}</span
       >
-      <span class="p-1 px-2 bg-info d-inline-block mr-2 small rounded-sm"
+      <span class="p-1 px-2 bg-info d-inline-block mr-2 mt-2 small rounded-sm"
         >Time: {{ test.oTime | timer }}</span
       >
 
-      <span *ngIf="test.isTestOver" class="p-1 px-2 bg-info d-inline-block mr-2 small rounded-sm"
+      <span *ngIf="test.isTestOver" class="p-1 px-2 bg-info d-inline-block mr-2 mt-2 small rounded-sm"
         >Completed: {{ (test.oTime - test.time ) | timer }}</span
       >
-      <span *ngIf="!test.isTestOver && test.hasTestStarted" class="p-1 px-2 bg-info d-inline-block mr-2 small rounded-sm"
+      <span *ngIf="!test.isTestOver && test.hasTestStarted" class="p-1 px-2 bg-info d-inline-block mr-2 mt-2 small rounded-sm"
         >Time Elapsed: {{ test.time | timer }}</span
       >
 
@@ -61,6 +61,7 @@
         <button
           [routerLink]="[config.clientRoutes.completedTest(test._id)]"
           class="btn btn-secondary"
+          (click)="onViewResultClick()"
         >
           View Result
         </button>

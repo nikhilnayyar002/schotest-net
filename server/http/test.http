@@ -94,6 +94,9 @@ Content-Type: application/json
 ### Get Test
 GET http://localhost:3000/tests/12347
 
+### Get questions and answers 
+GET http://localhost:3000/tests/12347/completed
+
 
 ### @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Category @@@@@@@@@@@@@@@@@@@@@
 
@@ -136,7 +139,13 @@ Content-Type: application/json
 {
     "id":"12349"
 }
+###
+POST   http://localhost:3000/userData/1563870538160/favourites/delete
+Content-Type: application/json
 
+{
+    "id":"12349"
+}
 ###
 GET  http://localhost:3000/userData/1563870538160/tests
 
@@ -168,4 +177,23 @@ GET  http://localhost:3000/userData/1563870538160/tests/paused
 
 ###
 GET  http://localhost:3000/userData/1563870538160/tests/completed
+
+
+### @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ answers @@@@@@@@@@@@@@@@@@@@@
+
+###
+POST   http://localhost:3000/answers
+Content-Type: application/json
+
+{
+    "_id":"12348",
+    "answers":{
+        "123456":"equilateral",
+        "123457":"isosceles",
+        "123459":"right angled"
+    }
+}
+
+###
+GET  http://localhost:3000/answers/12347
 

@@ -1,6 +1,7 @@
 import { ChangeDetectorRef } from "@angular/core";
 import { HttpHeaders } from "@angular/common/http";
 import { UserProfile } from '../modals/user';
+import { QuestionOriginal } from '../amplitude-test/modals/question';
 
 export interface MediaQueryState {
   dispose: () => void;
@@ -18,6 +19,11 @@ export interface Credentials {
   email: string;
   password: string;
 };
+
+export interface QuestionsAnswers {
+  answers: { [index: string]: string };
+  questions: { [index: string]: QuestionOriginal };
+}
 
 
 export function createMediaQuery(

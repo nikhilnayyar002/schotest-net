@@ -2,6 +2,7 @@ import * as express from "express";
 import { Record404Exception, HttpException, returnTyped, simplifyMongoose, testFunc } from "../config/global";
 import { UserModal, User, UserTest, UserFeatures } from "../modal/user";
 import { TestModal, TestResponse, TestOriginal } from "../modal/test";
+import { CategoryModal, Category } from "../modal/category";
 
 /**
  *  returns @UserFeatures
@@ -25,20 +26,6 @@ export const getUserData: express.RequestHandler = (req, res, next) => {
 };
 
 /**
- *  returns @string_Arr
- */
-export const getUserFavourites: express.RequestHandler = (req, res, next) => {
-  let id = req.params.userID;
-  UserModal.findById(id, function(err, user: User) {
-    if (err) {
-      return next(err);
-    }
-    if (user) res.json({ status: true, favourites: user.favourites });
-    else next(new Record404Exception());
-  });
-};
-
-/**
  *  returns @message
  */
 export const postUserFavourites: express.RequestHandler = (req, res, next) => {
@@ -56,6 +43,26 @@ export const postUserFavourites: express.RequestHandler = (req, res, next) => {
     }
   );
 };
+
+/**
+ *  returns @message
+ */
+export const delUserFavourites: express.RequestHandler = (req, res, next) => {
+  let id = req.params.userID;
+
+  UserModal.updateOne(
+    { _id: id },
+    { $pull: { favourites: req.body.id } },
+    function(err, doc) {
+      if (err) {
+        return next(err);
+      }
+      if (doc) res.json({ status: true, message: "Success" });
+      else next(new HttpException("Failed", 400));
+    }
+  );
+};
+
 
 /**
  *  returns @UserTest_Arr
@@ -198,3 +205,53 @@ function commonCompAndPaus(
     } else next(new Record404Exception());
   });
 }
+
+
+
+
+/**
+ *  returns @Category_Arr
+ */
+export const getUserFavourites: express.RequestHandler = (req, res, next) => {
+  let id = req.params.userID;
+  UserModal.findById(id, function(err, user: User) {
+    if (err) {
+      return next(err);
+    }
+    if (user && user.favourites.length) {
+      let proms = [];
+
+      for (let i of user.favourites)
+        proms.push(CategoryModal.findById(i).exec());
+
+      Promise.all(proms)
+        .then((categories:Category[]) => {
+          if (categories.length) res.json({ status: true, categories });
+          else next(new Record404Exception());
+        })
+        .catch(err => next(new HttpException("Please try again later.")));
+
+    } 
+    else next(new Record404Exception());
+  });
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

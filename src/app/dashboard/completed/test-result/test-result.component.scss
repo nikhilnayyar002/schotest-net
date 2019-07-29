@@ -1,0 +1,9 @@
+@import "../../../../assets/scss/animations.scss";
+@import "../../../../data/mixins";
+@import "../../../../data/variables";
+
+:host {
+    @include browser-based-property(animation, fadeInFromNone 0.5s ease-out);
+    z-index: $z-router-material-progress - 2;
+    display: block;
+}

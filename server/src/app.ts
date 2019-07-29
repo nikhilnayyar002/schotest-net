@@ -13,6 +13,7 @@ import { HttpException } from './config/global';
 
 import "./config/passportConfig";
 import "./config/setupEnv"
+import { answerRouter } from './router/answer.router';
 
 const environment: Environment = <any>process.env;
 
@@ -76,6 +77,7 @@ app.use('/auth', UserRouter);
 app.use('/tests', TestRouter);
 app.use('/categories', CategoryRouter);
 app.use('/userData', UserDataRouter);
+app.use('/answers', answerRouter)
 app.use("**", invalidPath)
 
 function invalidPath(req,res, next) {

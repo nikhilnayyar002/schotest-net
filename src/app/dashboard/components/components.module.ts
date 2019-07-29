@@ -1,16 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TestCardComponent } from './test-card/test-card.component';
-import { SharedModule } from '../shared/shared.module';
 import { RouterModule } from '@angular/router';
+import { CategoryCardsComponent } from './category-cards/category-cards.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
-  declarations: [TestCardComponent],
+  declarations: [TestCardComponent, CategoryCardsComponent],
   imports: [
     CommonModule,
     SharedModule,
     RouterModule
   ],
-  exports:[TestCardComponent]
+  exports:[TestCardComponent, CategoryCardsComponent]
 })
 export class ComponentsModule { }

@@ -56,7 +56,9 @@ export const userProfile:express.RequestHandler = (req, res, next) =>{
             if (!user)
                 return res.status(404).json({ status: false, message: 'User record not found.' });
             else {
-                let userProfile:UserProfile = { fullName:user.fullName, email:user.email, id:user._id }
+                let userProfile:UserProfile = { 
+                    fullName:user.fullName, email:user.email, id:user._id, favourites:user.favourites
+                }
                 return res.status(200).json({ status: true, user :userProfile });
             }
                 

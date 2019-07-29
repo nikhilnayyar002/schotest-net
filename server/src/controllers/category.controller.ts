@@ -26,19 +26,6 @@ export const postCategory: express.RequestHandler = function(req, res, next) {
 };
 
 /**
- * Return @Category_Arr
- */
-export const getCategories: express.RequestHandler = (req, res, next) => {
-  CategoryModal.find({}, function(err, categories: Category[]) {
-    if (err) {
-      return next(err);
-    }
-    if (categories) res.json({ status: true, categories: categories });
-    else next(new Record404Exception());
-  });
-};
-
-/**
  * Return @Category
  */
 export const getCategory: express.RequestHandler = function(req, res, next) {
@@ -48,6 +35,19 @@ export const getCategory: express.RequestHandler = function(req, res, next) {
       return next(err);
     }
     if (category) res.json({ status: true, category });
+    else next(new Record404Exception());
+  });
+};
+
+/**
+ * Return @Category_Arr
+ */
+export const getCategories: express.RequestHandler = (req, res, next) => {
+  CategoryModal.find({}, function(err, categories: Category[]) {
+    if (err) {
+      return next(err);
+    }
+    if (categories) res.json({ status: true, categories: categories });
     else next(new Record404Exception());
   });
 };

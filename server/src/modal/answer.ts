@@ -3,8 +3,9 @@ import * as mongoose from "mongoose";
 /** Typescript Modal  */
 
 export interface AnswersForTest {
-    _id:string; /** Question ID */
+    _id:string; /** test ID */
     answers:{
+        /** @Index is question ID */
         [index:string]:{ value:string, data:string }
     }
 }
@@ -12,8 +13,8 @@ export interface AnswersForTest {
 /** Mongoose Schema and Modal */
 
 export const AnswersForTestSchema = new mongoose.Schema<AnswersForTest & mongoose.Document>({
-    answers: mongoose.SchemaTypes.Mixed,
     _id: { type: String },
+    answers: mongoose.SchemaTypes.Mixed
 });
 
 export const AnswersForTestModal= mongoose.model("AnswersForTest", AnswersForTestSchema);

@@ -33,6 +33,7 @@ export interface UserTest {
 
 export interface UserProfile extends UserBase {
   id: string;
+  favourites:string[];
 }
 
 

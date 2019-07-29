@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { getCategories, postCategory, getCategoryTests, getCategory } from '../controllers/categories.controller';
+import { getCategories, postCategory, getCategoryTests, getCategory } from '../controllers/category.controller';
 
 let router:express.Router = express.Router();
 router.post('/', postCategory);

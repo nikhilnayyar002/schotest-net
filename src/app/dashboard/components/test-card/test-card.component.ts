@@ -15,7 +15,7 @@ export class TestCardComponent  {
   @Input() accordianID:string;
   config = config;
   @Output() headClick = new EventEmitter<HTMLElement>() 
-
+  @Output() viewResult = new EventEmitter<TestResponse>() 
 
 
  
@@ -24,6 +24,6 @@ export class TestCardComponent  {
     else return null
   }
  
-  onCardHeaderCLick = (elem:HTMLElement) => this.headClick.emit(elem)
-
+  onCardHeaderClick = (elem:HTMLElement) => this.headClick.emit(elem)
+  onViewResultClick = ()=> this.viewResult.emit(this.test)
 }
