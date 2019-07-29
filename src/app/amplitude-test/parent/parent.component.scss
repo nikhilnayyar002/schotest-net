@@ -14,7 +14,7 @@
   z-index: $z-side;
 }
 
-.main {
+.main-container {
   height: calc(100vh - #{ $navbar-height + $nav-height-sections});
 }
 

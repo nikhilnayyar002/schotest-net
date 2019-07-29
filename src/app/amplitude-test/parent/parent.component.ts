@@ -47,7 +47,7 @@ export class ParentComponent {
   }
 
   // media state and side toggler state
-  sideState = new SideState();
+  sideState = new SideState(".main-container", "320px","10px");
   mediaQueryState: MediaQueryState = createMediaQuery(
     "(max-width: 900px)", (x: boolean) => this.sideState.toggler(!x, x), this.cdr
   );

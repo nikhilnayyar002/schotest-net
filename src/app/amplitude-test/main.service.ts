@@ -5,7 +5,7 @@ import {
   HttpHeaders
 } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
-import { catchError, tap, map, take, switchMap } from "rxjs/operators";
+import { catchError, tap, map, take, switchMap, debounceTime } from "rxjs/operators";
 import config from "../../data/config";
 import { QuestionStateDB } from "./shared/indexDB";
 import { TestOriginal, UserTest, TestWithFeatures } from "./modals/test";
@@ -42,7 +42,10 @@ export class MainService {
 
     return this.http
       .post(config.routes.userData.postUserTestQ(uid), data, httpOptions)
-      .pipe(catchError(this.handleError));
+      .pipe(
+        debounceTime(1500),
+        catchError(this.handleError)
+      );
   }
 
   updateTime(uid: string, tid: string, time: number, isTestOver: boolean) {

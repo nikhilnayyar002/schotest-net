@@ -66,7 +66,7 @@
 </ul>
 
 <!-- main content -->
-<div class="row no-gutters position-relative">
+<div class="main-container row no-gutters position-relative">
   <!-- overlay for side toggler-->
   <div
     class="overlay overlay-absolute"
@@ -75,10 +75,11 @@
         ? 'block'
         : 'none'
     "
+    (click)="shortenClick()"
   ></div>
 
   <!-- page content (question page) -->
-  <div class="main col position-relative">
+  <div class="col position-relative">
     <ng-container appPageSwitch></ng-container>
   </div>
 

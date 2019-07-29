@@ -56,22 +56,29 @@ export function onTestNotFetched(error: string, isTestOverNotif = false) {
 
 export class SideState {
   sideStateOpen = true;
-  shortenArrowMargin = this.sideStateOpen ? "-10px" : "0px";
+  shortenArrowMargin = this.sideStateOpen ? `-${this.shortenArrowMarginSize}` : "0px";
   shortenArrowText = this.sideStateOpen ? "&rarr;" : "&larr;";
 
+  constructor(
+    private parentSelector:string,
+    private sideWidth:string,
+    private shortenArrowMarginSize:string
+    ) {}
+
   toggler = (bool: boolean, mediaMatch: boolean) => {
-    let main = <HTMLElement>document.querySelector(".main");
+    /** Parent element that will be pushed to the left when side pops out on small screen */
+    let main = <HTMLElement>document.querySelector(this.parentSelector);
     if (bool == null) bool = !this.sideStateOpen; //on shortenClick(). see app.component.ts
 
     if (bool) {
       this.shortenArrowText = "&rarr;";
-      this.shortenArrowMargin = "-10px";
+      this.shortenArrowMargin = `-${this.shortenArrowMarginSize}`;
       this.sideStateOpen = true;
 
       if (mediaMatch) {
         // 320px value equal to width of side is hardcoded
-        main.style.width = "calc(100% + 320px)";
-        main.style.left = "-320px";
+        main.style.width = `calc(100% + ${this.sideWidth})`;
+        main.style.left = `-${this.sideWidth}`;
       }
     } else {
       this.shortenArrowText = "&larr;";
