@@ -14,7 +14,7 @@ export enum QuestionState {
  */
 export function checkAndGetQuestionState(question: UserQuestion) {
   let state: QuestionState = QuestionState.Markedanswered;
-  if(question.state == undefined) return QuestionState.Unanswered
+  if(question.state == undefined) state= QuestionState.Unanswered
   if (question.checkedAnswerIndex != null) {
     if (question.state == QuestionState.Marked)
       state = QuestionState.Markedanswered;
@@ -34,8 +34,11 @@ export function checkAndGetQuestionState(question: UserQuestion) {
  *
  */
 export function getNextQuestionIndex(questions:{[index:string]:UserQuestion}, id:string): string {
+
+ 
   let keys = Object.keys(questions), 
     nextIndex = keys.indexOf(id) != (keys.length - 1)?(keys.indexOf(id)+1):0
+    console.log(keys[nextIndex])
    return keys[nextIndex]; 
 }
 

@@ -129,4 +129,10 @@
   ::-webkit-scrollbar-thumb:hover {
     background: rgba($thumb-bg, 0.7);
   }
+
+  /* Firefox */
+  *{
+    scrollbar-width: thin;
+    scrollbar-color: $thumb-bg  transparent;
+  }
 }

@@ -3,7 +3,72 @@
 @import "../../../../data/variables";
 
 :host {
-    @include browser-based-property(animation, fadeInFromNone 0.5s ease-out);
-    z-index: $z-router-material-progress - 2;
-    display: block;
+  @include browser-based-property(animation, fadeInFromNone 0.5s ease-out);
+  z-index: $z-router-material-progress - 2;
+  display: block;
 }
+
+
+
+.progress {
+  height: 36px;
+  padding: 0px;
+  font-size: 16px;
+  width: 150px;
+  .progress-bar {
+    width: 0%;
+  }
+}
+.progress-title {
+  font-size: 20px;
+}
+
+#qanda {
+  height: calc(100vh - 24px - 16px - 16px - 80px);
+  display: flex;
+  flex-direction: column;
+
+
+  #currentQuestion {
+    flex: 1;
+    overflow: auto;
+  }
+
+  #jumptoQuestion {
+    label {
+      margin: 0;
+    }
+    input[type="text"] {
+      display: inline-block;
+      width: 70px;
+      outline: none;
+      border: none;
+      height: 30px;
+      font-size: 14px;
+    }
+  }
+}
+
+.dropdown-menu {
+    max-height: 280px;
+    overflow: auto;
+}
+
+$mcq-page-image-max-width: 100%;
+$mcq-page-image-max-height: 300px;
+$mcq-page-image-margin: 25px 0;
+
+em {
+  margin-bottom: 20px;
+  display: block;
+}
+img {
+  max-width: $mcq-page-image-max-width;
+  max-height: $mcq-page-image-max-height;
+  margin: $mcq-page-image-margin;
+}
+
+
+
+
+

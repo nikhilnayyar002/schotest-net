@@ -1,18 +1,275 @@
 <div class="overlay overlay-fixed overflow-auto">
-  <div class="bg-info m-4 p-3">
-    <div class="btn-group" role="group" aria-label="Basic example">
-      <button type="button" class="btn btn-secondary mr-1">Overall</button>
-      <button type="button" class="btn btn-secondary">Q & A</button>
+  <div class="bg-primary m-4 p-3">
+    <div
+      class="btn-group border border-info"
+      role="group"
+      aria-label="Basic example"
+    >
+      <button
+        type="button"
+        class="btn btn-primary mr-1 rounded-0"
+        [ngClass]="{ 'btn-info': selectedOption == 'overall' }"
+        (click)="selectedOption = 'overall'"
+      >
+        Overall
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary rounded-0"
+        [ngClass]="{ 'btn-info': selectedOption == 'q&a' }"
+        (click)="selectedOption = 'q&a'"
+      >
+        Q & A
+      </button>
     </div>
     <button
       type="button"
       class="close text-secondary"
       aria-label="Close"
       style="font-size: 40px; outline: none"
-      [routerLink]="[ '../']"
+      [routerLink]="['../']"
       replaceUrl
     >
       <span aria-hidden="true">&times;</span>
     </button>
+    <div *ngIf="isAllSet" class="bg-info p-2">
+      <div
+        id="overall"
+        *ngIf="selectedOption == 'overall'; else questionsAndAnswers"
+      >
+        <h1 class="m-4">Overall</h1>
+
+        <div class="row no-gutters">
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3 px-4 mb-3">
+            <div class="progress-title mb-1">Accuracy</div>
+            <div class="progress">
+              <div
+                class="progress-bar bg-secondary"
+                role="progressbar"
+                [style.width]="
+                  (overallProp.totalCorrect / overallProp.totalAttempt) * 100 +
+                  '%'
+                "
+              >
+                <span class="ml-1"
+                  >{{
+                    (overallProp.totalCorrect / overallProp.totalAttempt) * 100
+                  }}%</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3 px-4 mb-3">
+            <div class="progress-title mb-1">Attempted</div>
+            <div class="progress">
+              <div
+                class="progress-bar bg-secondary"
+                role="progressbar"
+                [style.width]="
+                  (overallProp.totalAttempt / overallProp.totalQuestions) *
+                    100 +
+                  '%'
+                "
+              >
+                <span class="ml-1">{{
+                  overallProp.totalAttempt + " / " + overallProp.totalQuestions
+                }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3 px-4 mb-3">
+            <div class="progress-title mb-1">Score</div>
+            <div class="progress">
+              <div
+                class="progress-bar bg-secondary"
+                role="progressbar"
+                [style.width]="
+                  (overallProp.scoredMarks / overallProp.totalMarks) * 100 + '%'
+                "
+              >
+                <span class="ml-1">{{
+                  overallProp.scoredMarks + " / " + overallProp.totalMarks
+                }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3 px-4 mb-3">
+            <div class="progress-title mb-1">Time</div>
+            <div class="progress" style="font-size: 14px">
+              <div
+                class="progress-bar bg-secondary"
+                role="progressbar"
+                [style.width]="
+                  ((test.oTime - test.time) / test.oTime) * 100 + '%'
+                "
+              >
+                <span class="ml-1">{{
+                  (test.oTime - test.time | timer) +
+                    " / " +
+                    test.oTime / 60 +
+                    " min"
+                }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #questionsAndAnswers>
+        <div id="qanda" class="p-4">
+          <div class="row">
+            <div class="col-auto dropdown d-inline-block">
+              <button
+                class="btn btn-secondary btn-sm dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Question No. {{ questions.indexOf(currQID) + 1 }}
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <span
+                  *ngFor="let q of questions; let i = index"
+                  class="dropdown-item"
+                  (click)="currQID = q;setQuestionBtnState()"
+                >
+                  Question No. {{ i + 1 }}
+                </span>
+              </div>
+            </div>
+            <div id="jumptoQuestion" class="col-auto ml-auto d-inline-block">
+              <label for="exampleFormControlInput1">Question: </label>
+              <input
+                [(ngModel)]="questionNoInput"
+                type="text"
+                class="form-control bg-secondary mx-2"
+                id="exampleFormControlInput1"
+                placeholder="no."
+              />
+              <button
+                class="btn btn-sm btn-secondary"
+                (click)="setQuestion(questionNoInput)"
+              >
+                Jump
+              </button>
+            </div>
+            <div class="col-12">
+                <div class="row align-items-center">
+                  <div class="col-auto">
+                    <h4 class="mt-3 d-inline-block m-0">Question No. {{ questions.indexOf(currQID) + 1 }}</h4>
+                  </div>
+                  <div class="col-auto ml-auto">
+                    <button class="btn btn-sm btn-secondary mr-2" [innerHTML]="'&lt;' | safeStyle:'dom'"></button>
+                    <button class="btn btn-sm btn-secondary" [innerHTML]="'&gt;' | safeStyle:'dom'"></button>                    
+                  </div>
+                </div>
+                <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                    <button
+                      *ngIf="res.questionsAnswers.questions[currQID].isComprehension"
+                      type="button"
+                      class="btn btn-secondary"
+                      [style.font-weight]="questionBtnState=='comprehension'?'bold':'normal'"
+                      (click)="questionBtnState = 'comprehension'"
+                    >Comprehension</button>
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      [style.font-weight]="questionBtnState=='question'?'bold':'normal'"
+                      (click)="questionBtnState = 'question'"                      
+                    >Question</button>
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      [style.font-weight]="questionBtnState=='answer'?'bold':'normal'"
+                      (click)="questionBtnState = 'answer'"                        
+                    >Answer</button>
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      [style.font-weight]="questionBtnState=='solution'?'bold':'normal'"
+                      (click)="questionBtnState = 'solution'"                      
+                    >Solution</button>                                                            
+                </div>
+            </div>
+            
+          </div>
+
+          <!-- Current Question -->
+          <div id="currentQuestion" class="mt-3">
+            <ng-container
+              *ngIf="res.questionsAnswers.questions[currQID] as question"
+            >
+              <!--Comprehension-->
+              <div *ngIf="question.isComprehension && questionBtnState=='comprehension'">
+                <em><u>Comprehension</u></em>
+                <!--content-->
+                <p
+                  [innerHTML]="question.comprehensionContent | safeStyle: 'dom'"
+                ></p>
+                <img
+                  *ngIf="question.image"
+                  [src]="question.image"
+                  alt="Image"
+                />
+              </div>
+              <!--Question-->
+              <div *ngIf="questionBtnState=='question'">
+                <em><u>Question</u></em>
+                <!--content-->
+                <p [innerHTML]="question.content | safeStyle: 'dom'"></p>
+                <img
+                  *ngIf="!question.isComprehension && question.image"
+                  [src]="question.image"
+                  alt="Image"
+                />
+              </div>
+              <!-- Answer -->
+              <div *ngIf="questionBtnState=='answer'">
+                  <em><u>Answers</u></em>
+                  <!--content-->
+                  <p *ngFor="let answer of question.answers; let i=index">
+                    {{ i+1}}. {{answer}}
+                  </p>
+              </div>
+
+              <!-- Answer -->
+              <div *ngIf="questionBtnState=='solution'">
+                  <em><u>Solution</u></em>
+                  <!--content-->
+                  <div
+                  [innerHTML]="res.questionsAnswers.answers[question._id].data | safeStyle: 'dom'"
+                  ></div>
+              </div>
+
+            </ng-container>
+          </div>
+        </div>
+      </ng-template>
+    </div>
   </div>
 </div>
+
+
+
+<!--             
+                    radio buttons--
+                    <div *ngFor="let answer of question.answers; let i=index"
+                    class="custom-control custom-radio">
+                    <input type="radio" [id]="'customRadio'+i" name="customRadio"
+                      class="custom-control-input" [value]="i" (click)="onClick(i)"
+                      [(ngModel)]="question.checkedAnswerIndex">
+                    <label class="custom-control-label" [attr.for]="'customRadio'+i">
+                      {{answer}}
+                    </label>
+                  </div>
+              
+                  </div>
+                </div>
+              </ng-container> -->
+
+

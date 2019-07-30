@@ -35,7 +35,6 @@ export class TestResolverService {
         ]
 
     return forkJoin(arr).pipe(
-      tap((d)=> console.log(d)),
       take(1),
       map((tests:(TestWithFeatures|UserTest)[])=>{
         let testOriginal=<TestWithFeatures>tests[0], userTest=<UserTest>tests[1]
@@ -45,11 +44,11 @@ export class TestResolverService {
             testOriginal.time =userTest.time
           for(let i in userTest.questions){
             let answer = userTest.questions[i],
-              index = answer?testOriginal.questions[i].answers.indexOf(answer):null
+              index = answer?testOriginal.questions[i].answers.indexOf(answer):null;
+            
             testOriginal.questions[i].checkedAnswerIndex = index
           }
         }
-        console.log(testOriginal)
         return testOriginal
       }),
       switchMap((test:TestWithFeatures)=>{

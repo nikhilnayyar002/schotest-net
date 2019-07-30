@@ -2,6 +2,7 @@ import { ChangeDetectorRef } from "@angular/core";
 import { HttpHeaders } from "@angular/common/http";
 import { UserProfile } from '../modals/user';
 import { QuestionOriginal } from '../amplitude-test/modals/question';
+import { Answers } from '../amplitude-test/modals/answer';
 
 export interface MediaQueryState {
   dispose: () => void;
@@ -21,7 +22,7 @@ export interface Credentials {
 };
 
 export interface QuestionsAnswers {
-  answers: { [index: string]: string };
+  answers:Answers;
   questions: { [index: string]: QuestionOriginal };
 }
 

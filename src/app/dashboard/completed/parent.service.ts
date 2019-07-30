@@ -4,6 +4,6 @@ import { TestResponse } from 'src/app/amplitude-test/modals/test';
 
 @Injectable()
 export class ParentService {
-  currentSelectedTest:TestResponse;
+  tests:TestResponse[];
   constructor() { }
 }

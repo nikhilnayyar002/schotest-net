@@ -1,13 +1,13 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Category } from "../modals/category";
-import { Observable, pipe } from "rxjs";
+import { Observable, pipe, forkJoin } from "rxjs";
 import { map, take, switchMap, tap } from "rxjs/operators";
 import config from "../../data/config";
 import { AuthService } from "../auth.service";
 import { Store } from "@ngrx/store";
 import { GLobalState } from "../shared/global.state";
-import { TestResponse } from "../amplitude-test/modals/test";
+import { TestResponse, UserTest } from "../amplitude-test/modals/test";
 import { BackendStatus, QuestionsAnswers } from "../shared/global";
 import { SetAppState } from "../state/state.actions";
 
@@ -168,16 +168,43 @@ export class MainService {
       );
   }
 
-  getQuestionsAnswers(testID: string): Observable<QuestionsAnswers> {
-    let recipe = pipe(
+  getQuestionsAnswers(testID: string)
+  :Observable<{userTest:UserTest, questionsAnswers:QuestionsAnswers}|null>{
+    let recipeForQandA = pipe(
       map((data: QuestionsAnswersRes) => ({
         answers: data.answers,
         questions: data.questions
       }))
     );
-    return this.auth.tryWithRefreshIfNecc(
-      config.routes.test.getQuestionsAnswers(testID),
-      recipe
+    let recipeForUserTest = pipe(
+      map((data: {status:boolean, test:UserTest}) => data.test)
     );
+
+    let arr = [
+      this.store.select(s=>s.app.user).pipe(
+        take(1),
+        switchMap(user => 
+          this.auth.tryWithRefreshIfNecc(
+            config.routes.userData.getUserTest(user.id, testID),
+            recipeForUserTest
+          )
+        )
+      ),
+      this.auth.tryWithRefreshIfNecc(
+        config.routes.test.getQuestionsAnswers(testID),
+        recipeForQandA
+      )
+    ]
+
+    return forkJoin(arr).pipe(
+      take(1),
+      map((data:(UserTest | QuestionsAnswers)[])=>{
+        let userTest=<UserTest>data[0], questionsAnswers=<QuestionsAnswers>data[1]
+        if(!userTest || !questionsAnswers) return null
+        return {  userTest,  questionsAnswers}
+      })
+    )
+
+
   }
 }

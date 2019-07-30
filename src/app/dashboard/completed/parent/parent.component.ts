@@ -22,11 +22,10 @@ export class ParentComponent implements OnInit {
   sections:string[];
   
   onCardHeaderClick = createAccordianState();
-  onViewResultClick = (test:TestResponse)=> this.ps.currentSelectedTest = test
-    
 
   ngOnInit(): void {
     this.tests = <any[]> this.route.snapshot.data.tests
+    this.ps.tests = this.tests
   }
 
   getSections(test:TestResponse) {

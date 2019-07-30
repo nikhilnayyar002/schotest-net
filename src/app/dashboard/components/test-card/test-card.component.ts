@@ -15,15 +15,12 @@ export class TestCardComponent  {
   @Input() accordianID:string;
   config = config;
   @Output() headClick = new EventEmitter<HTMLElement>() 
-  @Output() viewResult = new EventEmitter<TestResponse>() 
 
-
- 
   getSections(test:TestResponse) {
     if(test.sections) return Object.keys(test.sections)
     else return null
   }
  
   onCardHeaderClick = (elem:HTMLElement) => this.headClick.emit(elem)
-  onViewResultClick = ()=> this.viewResult.emit(this.test)
+  // onViewResultClick = ()=> this.viewResult.emit(this.test)
 }

@@ -186,11 +186,20 @@ POST   http://localhost:3000/answers
 Content-Type: application/json
 
 {
-    "_id":"12348",
+    "_id":"12349",
     "answers":{
-        "123456":"equilateral",
-        "123457":"isosceles",
-        "123459":"right angled"
+        "123456":{
+            "value":"equilateral",
+            "data":"<p>equilateral</p>"
+        },
+        "123457":{
+            "value":"isosceles",
+            "data":"<p>isosceles</p>"
+        },
+        "123459":{
+            "value":"right angled",
+            "data":"<p>right angled</p>"
+        }
     }
 }
 

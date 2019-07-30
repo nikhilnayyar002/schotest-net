@@ -26,7 +26,7 @@ export const QuestionStateDB = {
         autoIncrement: false
       });
       objectStore.createIndex("state", "state", { unique: false });
-      console.log("updgraded");
+      //console.log("updgraded");
     };
   },
 
@@ -59,7 +59,7 @@ export const QuestionStateDB = {
       var updateRequest = objectStore.put(data);
 
       updateRequest.onsuccess = function() {
-        console.log("updated");
+        //console.log("updated");
       };
     };
   },
