@@ -1,0 +1,48 @@
+:host {
+  height: calc(100vh - 24px - 16px - 16px - 80px);
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+
+  #currentQuestion {
+    flex: 1;
+    overflow: auto;
+  }
+
+  #jumptoQuestion {
+    label {
+      margin: 0;
+    }
+    input[type="text"] {
+      display: inline-block;
+      width: 70px;
+      outline: none;
+      border: none;
+      height: 30px;
+      font-size: 14px;
+    }
+  }
+}
+
+.dropdown-menu {
+  max-height: 280px;
+  overflow: auto;
+}
+
+$mcq-page-image-max-width: 100%;
+$mcq-page-image-max-height: 300px;
+$mcq-page-image-margin: 25px 0;
+
+em {
+  margin-bottom: 10px;
+  display: block;
+}
+img {
+  max-width: $mcq-page-image-max-width;
+  max-height: $mcq-page-image-max-height;
+  margin: $mcq-page-image-margin;
+}
+
+.header {
+  min-width: 420px;
+} 

@@ -1,0 +1,165 @@
+  <div class="header row">
+    <div class="col-auto dropdown d-inline-block">
+      <button
+        class="btn btn-secondary btn-sm dropdown-toggle"
+        type="button"
+        id="dropdownMenuButton"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
+        Question No. {{ questions.indexOf(currQID) + 1 }}
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <span
+          *ngFor="let q of questions; let i = index"
+          class="dropdown-item"
+          (click)="currQID = q; setQuestionBtnState()"
+        >
+          Question No. {{ i + 1 }}
+        </span>
+      </div>
+    </div>
+    <div id="jumptoQuestion" class="col-auto ml-auto d-inline-block">
+      <label for="exampleFormControlInput1">Question: </label>
+      <input
+        [(ngModel)]="questionNoInput"
+        type="text"
+        class="form-control bg-secondary mx-2"
+        id="exampleFormControlInput1"
+        placeholder="no."
+      />
+      <button
+        class="btn btn-sm btn-secondary"
+        (click)="setQuestion(questionNoInput)"
+      >
+        Jump
+      </button>
+    </div>
+    <div class="col-12">
+      <div class="row py-3">
+        <div class="col-auto">
+          <h4 class="d-inline-block m-0">
+            Question No. {{ questions.indexOf(currQID) + 1 }}
+          </h4>
+        </div>
+        <div class="col-auto ml-auto">
+          <button class="btn btn-sm btn-secondary mr-2"
+          (click)="setNextQuestion(currQID,'back')"
+          >&lt;</button>
+          <button class="btn btn-sm btn-secondary"
+          (click)="setNextQuestion(currQID,'front')"
+          >&gt;</button>
+        </div>
+      </div>
+      <div
+        class="btn-group btn-group-sm"
+        role="group"
+        aria-label="Basic example"
+      >
+        <button
+          *ngIf="res.questionsAnswers.questions[currQID].isComprehension"
+          type="button"
+          class="btn btn-secondary"
+          [style.font-weight]="questionBtnState == 'comprehension' ? 'bold' : 'normal'"
+          (click)="questionBtnState = 'comprehension'"
+        >
+          Comprehension
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          [style.font-weight]="questionBtnState == 'question' ? 'bold' : 'normal'"
+          (click)="questionBtnState = 'question'"
+        >
+          Question
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          [style.font-weight]="questionBtnState == 'answer' ? 'bold' : 'normal'"
+          (click)="questionBtnState = 'answer'"
+        >
+          Answer
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          [style.font-weight]="questionBtnState == 'solution' ? 'bold' : 'normal'"
+          (click)="questionBtnState = 'solution'"
+        >
+          Solution
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Current Question -->
+  <div id="currentQuestion" class="mt-3">
+    <ng-container *ngIf="res.questionsAnswers.questions[currQID] as question">
+
+      <!--Comprehension-->
+      <div
+        *ngIf="question.isComprehension && questionBtnState == 'comprehension'"
+      >
+        <em><u>Comprehension</u></em>
+        <!--content-->
+        <p [innerHTML]="question.comprehensionContent | safeStyle: 'dom'"></p>
+        <img *ngIf="question.image" [src]="question.image" alt="Image" />
+      </div>
+
+      <!--Question-->
+      <div *ngIf="questionBtnState == 'question'">
+        <em><u>Question</u></em>
+        <!--content-->
+        <p [innerHTML]="question.content | safeStyle: 'dom'"></p>
+        <img
+          *ngIf="!question.isComprehension && question.image"
+          [src]="question.image"
+          alt="Image"
+        />
+      </div>
+      
+      <!-- Answer -->
+      <div *ngIf="questionBtnState == 'answer'">
+        <em><u>Answers</u></em>
+
+        <span
+          class="p-1 px-2 bg-primary d-inline-block my-2 mr-2 small rounded-sm"
+          *ngIf="res.userTest.questions[question._id]!=undefined"
+        >
+          Attempted
+        </span>
+        <ng-container *ngIf="res.userTest.questions[question._id]!=null">
+
+        </ng-container>
+        
+        <span
+          *ngIf="res.userTest.questions[question._id] == res.questionsAnswers.answers[question._id].value; else wrong"
+          class="p-1 px-2 bg-success d-inline-block my-2 mr-2 small rounded-sm"
+        >Correct (+{{res.questionsAnswers.questions[question._id].marks}})</span>   
+        <ng-template #wrong>
+            <span class="p-1 px-2 bg-danger d-inline-block my-2 mr-2 small rounded-sm">Wrong (-1)</span>
+        </ng-template>
+             
+        <!--content-->
+        <p
+          class="p-1 rounded-sm"
+          *ngFor="let answer of question.answers; let i = index"
+          [ngClass]="{'bg-primary':res.userTest.questions[question._id]==answer}"
+        >
+          {{ i + 1 }}. {{ answer }}
+        </p>
+      </div>
+
+      <!-- Answer -->
+      <div *ngIf="questionBtnState == 'solution'">
+        <em><u>Solution</u></em>
+        <!--content-->
+        <div
+          [innerHTML]="res.questionsAnswers.answers[question._id].data | safeStyle: 'dom'"
+        ></div>
+      </div>
+
+    </ng-container>
+  </div>

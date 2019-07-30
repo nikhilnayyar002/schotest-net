@@ -1,0 +1,64 @@
+<!-- *ngIf="isAllSet" is not really neccessary -->
+<div *ngIf="isAllSet" id="overall">
+
+  <!--Heading-->
+  <h1 class="m-4">Overall</h1>
+  <!--Show off-->
+  <div class="row no-gutters">
+
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3 px-4 mb-3">
+      <div class="progress-title mb-1">Accuracy</div>
+      <div class="progress">
+        <div
+          class="progress-bar bg-secondary"
+          role="progressbar"
+          [style.width]="(overallProp.totalCorrect / overallProp.totalAttempt) * 100 + '%'"
+        >
+          <span class="ml-1"
+            >{{(overallProp.totalCorrect / overallProp.totalAttempt) * 100}}%</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3 px-4 mb-3">
+      <div class="progress-title mb-1">Attempted</div>
+      <div class="progress">
+        <div
+          class="progress-bar bg-secondary"
+          role="progressbar"
+          [style.width]="(overallProp.totalAttempt / overallProp.totalQuestions) * 100 + '%'"
+        >
+          <span class="ml-1">{{overallProp.totalAttempt + " / " + overallProp.totalQuestions}}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3 px-4 mb-3">
+      <div class="progress-title mb-1">Score</div>
+      <div class="progress">
+        <div
+          class="progress-bar bg-secondary"
+          role="progressbar"
+          [style.width]="(overallProp.scoredMarks / overallProp.totalMarks) * 100 + '%'">
+          <span class="ml-1">{{overallProp.scoredMarks + " / " + overallProp.totalMarks}}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3 px-4 mb-3">
+      <div class="progress-title mb-1">Time</div>
+      <div class="progress" style="font-size: 14px">
+        <div
+          class="progress-bar bg-secondary"
+          role="progressbar"
+          [style.width]="((test.oTime - test.time) / test.oTime) * 100 + '%'"
+        >
+          <span class="ml-1">{{(test.oTime - test.time | timer) + " / " + test.oTime / 60 + " min"}}</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!--end of show off-->
+</div>
