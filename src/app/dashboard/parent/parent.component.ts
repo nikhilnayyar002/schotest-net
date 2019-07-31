@@ -25,8 +25,9 @@ import { UserProfile } from 'src/app/modals/user';
  * 4. call "createSideBarStateOverlay" to create "toggleSideBar" function
  * 5. Call it through "mediaQueryState" object as : this.toggleSideBar(x, null)
  * 6. Call it through "Toggler Button" as : this.toggleSideBar(null, true)
- * 7. Optionally set overlay click to : this.toggleSideBar(null, true)
- * 8. Also find in components html where things are being worked.
+ * 7. Call it through "Unorded List Container" as : this.toggleSideBar(null, null, $event.target)
+ * 8. Optionally set overlay click to : this.toggleSideBar(null, true)
+ * 9. Also find in components html where things are being worked.
  */
 @Component({
   selector: "app-parent",
@@ -35,6 +36,7 @@ import { UserProfile } from 'src/app/modals/user';
 })
 @AutoUnsubscribe()
 export class ParentComponent {
+
   configData = config;
   @ViewChild("fixedOverlay", { static: false })
   private fixedOverlay: ElementRef;

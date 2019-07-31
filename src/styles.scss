@@ -235,3 +235,88 @@ See how dashboard->category->tests component look cool!!
   z-index: $z-router-material-progress - 1;
   display: none;
 }
+
+/***************************** shared code for admin and dashboard module */
+
+/* Parent Component Code */
+
+.sidebar {
+  position: relative;
+  top: (-$navbar-height);
+  left: 0px;
+  padding: 15px;
+  width: $side-width-dashboard;
+  z-index: $z-sidebar;
+  overflow: hidden;
+
+  // local variables
+  $top-height: 150px;
+  $list-group-height: calc(100vh - 150px);
+
+  //transition
+  // transform-origin: 0% 50%;
+  transition: left 0.5s;
+  .top {
+    height: $top-height;
+    padding: 15px;
+
+    .navbar-brand {
+      display: block;
+      margin: 0px;
+      padding-top: 20px;
+      font-size: 35px;
+    }
+  }
+  .list-group {
+    $padding: 16px;
+    height: $list-group-height;
+    padding: $padding;
+    overflow: auto;
+    .list-group-item {
+      margin-bottom: 5px;
+      &:focus {
+        outline: none;
+      }
+      &:hover {
+        box-shadow: 0 0 5px black;
+      }
+    }
+  }
+}
+
+.sidebar-closed {
+  left: -$side-width-dashboard;
+  position: absolute;
+}
+
+
+//navbar user dropdown
+.user-dropdown {
+  display: inline-block;
+  .user-btn {
+    border: none !important;
+    width: 36px;
+    height: 36px;
+    border-radius: 100%;
+    background: url(assets/img/no-user.png) center center / cover no-repeat !important;
+  }
+  .dropdown-toggle::after {
+    border: none;
+  }
+  .dropdown-menu {
+    font-size: 14px;
+    right: 0px;
+    left: initial;
+    min-width: 12rem;
+    & > *{
+      margin-bottom: 3px;
+      border-radius: 2px;
+    }
+    .user-name {
+      font-size: 16px;
+      font-weight: bold;
+    }
+  }
+}
+
+/* END - Parent Component Code */

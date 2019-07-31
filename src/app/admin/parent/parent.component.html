@@ -1,1 +1,98 @@
-<p>parent works!</p>
+<!-- navbar -->
+<nav class="navbar bg-primary navbar-expand-lg shadow">
+
+    <!--toggler-->
+    <div class="toggler-container btn btn-sm" (click)="toggleSideBar(null, true)">
+      <div class="bar1"></div>
+      <div class="bar2"></div>
+      <div class="bar3"></div>
+    </div>
+    <!--toggler overlay-->
+    <div
+      #fixedOverlay
+      class="overlay overlay-fixed sidebar-overlay"
+      style="display: none;"
+      (click)="toggleSideBar(null, true)"
+    ></div>
+  
+    <!-- dropdown in far right-->
+    <form class="form-inline ml-auto">
+      <div class="dropdown user-dropdown">
+        <button type="button" class="user-btn dropdown-toggle btn btn-sm mr-2 btn-secondary" data-toggle="dropdown"></button>
+        <div class="dropdown-menu p-2 bg-primary">
+          <div class="user-name p-2 py-3 bg-primary">
+              {{ (user|async)?.fullName }}
+          </div>
+          <span class="dropdown-item bg-secondary" (click)="logout()">Sign Out</span>
+        </div>
+      </div>   
+    </form>
+  </nav>
+  
+  
+  <div class="row no-gutters position-relative bg-info">
+    <div #sidebar id="sidebar" class="col-auto sidebar bg-primary shadow">
+      <div class="top">
+        <!-- side toggler          [style.display]="'none'" -->
+        <div
+          class="toggler-container btn btn-sm"
+          (click)="toggleSideBar(null, true)"
+        >
+          <div class="bar1"></div>
+          <div class="bar2"></div>
+          <div class="bar3"></div>
+        </div>
+        <span class="navbar-brand">
+          <a class="text-decoration-none" id="nav-bar-logo" href="https://schotest.com" target="_blank">
+            {{ configData.company.name }}
+          </a>
+        </span>
+        <div class="text-secondary">
+            Admin
+         </div>
+      </div>
+  
+      <ul class="list-group list-group-flush" (click)="toggleSideBar(null,null,$event.target)">
+        <li
+          [routerLink]="[configData.adminRoutes.relCategory()]"
+          class="list-group-item list-group-item-action rounded-sm"
+          [class.bg-info]="!rla1.isActive"
+          #rla1="routerLinkActive"
+          routerLinkActive="bg-secondary"
+        >
+          Category
+      </li>
+        <li
+          [routerLink]="[configData.adminRoutes.relTest()]"
+          class="list-group-item list-group-item-action rounded-sm"
+          [class.bg-info]="!rla2.isActive"
+          #rla2="routerLinkActive"
+          routerLinkActive="bg-secondary"
+        >
+          Test
+    </li>
+        <li
+          [routerLink]="[configData.adminRoutes.relInstruction()]"
+          class="list-group-item list-group-item-action rounded-sm"
+          [class.bg-info]="!rla3.isActive"
+          #rla3="routerLinkActive"
+          routerLinkActive="bg-secondary"
+        >
+          Instruction
+      </li>
+        <li
+          [routerLink]="[configData.adminRoutes.relUser()]"
+          class="list-group-item list-group-item-action rounded-sm"
+          [class.bg-info]="!rla4.isActive"
+          #rla4="routerLinkActive"
+          routerLinkActive="bg-secondary"
+        >
+          User
+      </li>
+      </ul>
+    </div>
+    <div class="main col position-relative">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  

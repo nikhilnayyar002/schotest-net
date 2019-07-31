@@ -28,7 +28,7 @@ export class CategoryCardsComponent  {
     private store:Store<GLobalState>
   ) {
     this.store.select(s => s.app.user).pipe(takeWhileAlive(this))
-    .subscribe(user => this.favourites = user.favourites)
+    .subscribe(user => this.favourites = user?user.favourites:null)
   }
 
   isFavourite(id:string):boolean {

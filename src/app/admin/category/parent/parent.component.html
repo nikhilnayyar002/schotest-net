@@ -1,1 +1,14 @@
-<p>parent works!</p>
+<h1 class="header bg-info py-4">
+    Category
+</h1>
+<div class="bg-primary p-2 rounded-sm d-flex">
+    <button
+        type="button"
+        class="btn btn-secondary btn-sm ml-auto"
+        [routerLink]="[ config.adminRoutes.categoryCreate() ]"
+    >Create</button>
+</div>
+
+<div class="page-content">
+    <ckeditor class="text-dark" [editor]="editor" data="<p>Hello, world!</p>"></ckeditor>
+</div>

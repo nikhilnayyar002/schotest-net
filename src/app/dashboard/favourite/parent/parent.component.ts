@@ -22,7 +22,7 @@ export class ParentComponent implements OnInit {
   ) {
     this.store.select(s => s.app.user).pipe(takeWhileAlive(this))
       .subscribe(user =>{
-        if(!user.favourites.length)
+        if(user && !user.favourites.length)
           this.areThereFavourites = false
       })
   }

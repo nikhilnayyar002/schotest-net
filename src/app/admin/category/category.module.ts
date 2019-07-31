@@ -6,11 +6,14 @@ import { ParentComponent } from './parent/parent.component';
 import { CategoryEditorComponent } from './category-editor/category-editor.component';
 import { TestsComponent } from './tests/tests.component';
 
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+
 @NgModule({
   declarations: [ParentComponent, CategoryEditorComponent, TestsComponent],
   imports: [
     CommonModule,
-    CategoryRoutingModule
+    CategoryRoutingModule,
+    CKEditorModule
   ]
 })
 export class CategoryModule { }

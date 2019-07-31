@@ -5,7 +5,7 @@ let config = {
         domain:domain,
     },
     company:{
-        name:"Test Bot"
+        name:"Schotest"
     },
     routes:{
         userData:{
@@ -51,6 +51,26 @@ let config = {
         relfavourite:()=>  './favourite',
         relPaused:()=> './paused',
         relCompleted:()=> './completed',
+    },
+    adminRoutes:{
+        /** admin -> parent -> html */
+        relCategory:()=> './category',
+        relTest:()=>  './test',
+        relInstruction:()=> './instruction',
+        relUser:()=> './user',        
+
+        /** AdminResolverService */
+        adminCategories: ()=>"/admin/category",
+        adminCategory: (catID)=> `/admin/category/${catID}`,
+        dashboardCategoryTests: (catID)=> `/admin/category/${catID}/tests`,    
+        adminTests:()=> "/admin/test",
+        adminTest:(id)=> `/admin/test/${id}`,
+        adminTestQuestions:(id)=> `/admin/test/${id}/questions`,  
+
+        categoryCreate:() => '/admin/category/create'
+        
+
+
     }
 };
 export default config;

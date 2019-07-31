@@ -2,7 +2,6 @@ import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { ParentComponent } from "./parent/parent.component";
 import { AuthGuard } from '../guards/auth.guard';
-import { categoryRoutes } from "./category/category-routing.module";
 
 const routes: Routes = [
   {

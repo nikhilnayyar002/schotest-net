@@ -23,7 +23,7 @@
         <div class="user-name p-2 py-3 bg-primary">
             {{ (user|async)?.fullName }}
         </div>
-        <span class="dropdown-item" (click)="logout()">Sign Out</span>
+        <span class="dropdown-item bg-secondary" (click)="logout()">Sign Out</span>
       </div>
     </div>   
   </form>
@@ -43,7 +43,9 @@
         <div class="bar3"></div>
       </div>
       <span class="navbar-brand">
-        <span id="nav-bar-logo">{{ configData.company.name }}</span>
+        <a class="text-decoration-none" id="nav-bar-logo" href="https://schotest.com" target="_blank">
+          {{ configData.company.name }}
+        </a>
       </span>
       <div class="text-secondary">
           Dashboard

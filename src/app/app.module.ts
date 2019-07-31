@@ -14,6 +14,7 @@ import { StoreModule } from '@ngrx/store';
 import { appReducer } from './state/state.reducer';
 import { httpInterceptorProviders } from './interceptors';
 import { RequestCache, RequestCacheWithMap } from './request-cache.service';
+import { AdminModule } from './admin/admin.module';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { RequestCache, RequestCacheWithMap } from './request-cache.service';
 
     DashboardModule,
     AmplitudeTestModule,
+    AdminModule,
     AppRoutingModule
   ],
   providers: [

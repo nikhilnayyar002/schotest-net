@@ -1,0 +1,14 @@
+@import "../../../data/variables";
+
+:host {
+  min-height: 100%;
+  position: relative;
+  display: block;
+}
+
+.main {
+  height: calc(100vh - #{$navbar-height});
+}
+
+
+
