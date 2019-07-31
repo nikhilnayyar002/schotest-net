@@ -15,20 +15,19 @@
     (click)="toggleSideBar(null, true)"
   ></div>
 
-  <!-- buttons in far right-->
+  <!-- dropdown in far right-->
   <form class="form-inline ml-auto">
-    <button
-      type="button"
-      class="btn btn-sm mr-2 btn-secondary"
-      (click)="logout()"
-      style="font-size: 12px;letter-spacing: 0px"
-    >
-      SIGN OUT
-    </button>
+    <div class="dropdown user-dropdown">
+      <button type="button" class="user-btn dropdown-toggle btn btn-sm mr-2 btn-secondary" data-toggle="dropdown"></button>
+      <div class="dropdown-menu p-2 bg-primary">
+        <div class="user-name p-2 py-3 bg-primary">
+            {{ (user|async)?.fullName }}
+        </div>
+        <span class="dropdown-item" (click)="logout()">Sign Out</span>
+      </div>
+    </div>   
   </form>
 </nav>
-
-
 
 
 <div class="row no-gutters position-relative bg-info">
@@ -47,11 +46,11 @@
         <span id="nav-bar-logo">{{ configData.company.name }}</span>
       </span>
       <div class="text-secondary">
-          {{ (user|async)?.fullName }}
+          Dashboard
        </div>
     </div>
 
-    <ul class="list-group list-group-flush">
+    <ul class="list-group list-group-flush" (click)="toggleSideBar(null,null,$event.target)">
       <li
         [routerLink]="[configData.clientRoutes.relCategory()]"
         class="list-group-item list-group-item-action rounded-sm"

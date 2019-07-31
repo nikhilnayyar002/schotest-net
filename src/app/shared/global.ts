@@ -107,8 +107,18 @@ export function createSideBarStateOverlay(
   sidebar: HTMLElement,
   fixedOverlay: HTMLElement,
   mediaQueryState: MediaQueryState
-): (x: boolean, force: boolean) => void {
-  return (x: boolean, force: boolean = null) => {
+): (x: boolean, force: boolean, element:HTMLElement) => void {
+  return (x: boolean, force: boolean = null, element:HTMLElement) => {
+    /** support for "li" being clicked when screen is small
+     *  then one should close the sidebar.
+     *  So add a click handlar to parent "ul".
+     */
+    if(element && element.nodeName == "LI" && mediaQueryState.isMediaMatched()) {
+      return openClose(true);
+    }
+    /**
+     * open/close using overlay or toggler
+     */
     if (force) {
       if (sidebar.classList.contains("sidebar-closed")) {
         return openClose(false, mediaQueryState.isMediaMatched());
@@ -116,9 +126,17 @@ export function createSideBarStateOverlay(
         return openClose(true);
       }
     }
+    /**
+     * open/close using media query
+     */
     openClose(x, x);
-    function openClose(toOpen: boolean, isMediaMatched: boolean = false) {
-      if (toOpen) {
+    /**
+     * main handler
+     * @param toClose if true close the sidebar.
+     * @param isMediaMatched is media query matched.
+     */
+    function openClose(toClose: boolean, isMediaMatched: boolean = false) {
+      if (toClose) {
         sidebar.classList.add("sidebar-closed");
         fixedOverlay.style.display = "none";
       } else {

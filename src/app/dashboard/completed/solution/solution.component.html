@@ -131,16 +131,16 @@
           Attempted
         </span>
         <ng-container *ngIf="res.userTest.questions[question._id]!=null">
-
-        </ng-container>
-        
-        <span
+          <span
           *ngIf="res.userTest.questions[question._id] == res.questionsAnswers.answers[question._id].value; else wrong"
           class="p-1 px-2 bg-success d-inline-block my-2 mr-2 small rounded-sm"
         >Correct (+{{res.questionsAnswers.questions[question._id].marks}})</span>   
         <ng-template #wrong>
             <span class="p-1 px-2 bg-danger d-inline-block my-2 mr-2 small rounded-sm">Wrong (-1)</span>
         </ng-template>
+        </ng-container>
+        
+
              
         <!--content-->
         <p
@@ -150,6 +150,10 @@
         >
           {{ i + 1 }}. {{ answer }}
         </p>
+        <hr>
+        <p>Correct Answer is:</p>
+        <p class="p-1 rounded-sm bg-success">{{res.questionsAnswers.answers[question._id].value }}</p>
+
       </div>
 
       <!-- Answer -->

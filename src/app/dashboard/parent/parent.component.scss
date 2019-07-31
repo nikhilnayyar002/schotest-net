@@ -59,3 +59,37 @@
 .main {
   height: calc(100vh - #{$navbar-height});
 }
+
+//navbar user dropdown
+.user-dropdown {
+  display: inline-block;
+  .user-btn {
+    border: none !important;
+    width: 36px;
+    height: 36px;
+    border-radius: 100%;
+    background: url(../../../assets/img/no-user.png) center center / cover no-repeat !important;
+  }
+  .dropdown-toggle::after {
+    border: none;
+  }
+  .dropdown-menu {
+    font-size: 14px;
+    right: 0px;
+    left: initial;
+    min-width: 12rem;
+    & > *{
+      margin-bottom: 3px;
+      border-radius: 2px;
+    }
+    .user-name {
+      font-size: 16px;
+      font-weight: bold;
+    }
+  }
+}
+
+
+//.dropdown-toggle::after {
+// .dropdown 
+// dropdown-menu 

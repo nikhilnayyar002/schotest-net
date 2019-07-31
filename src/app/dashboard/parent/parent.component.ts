@@ -63,7 +63,7 @@ export class ParentComponent {
     this.mediaQueryState.runMediaQuery();
   }
 
-  toggleSideBar: (x: boolean, force: boolean) => void;
+  toggleSideBar: (x: boolean, force: boolean, element?:HTMLElement) => void;
 
   logout() {
     this.auth.logout();
