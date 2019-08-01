@@ -236,6 +236,15 @@ See how dashboard->category->tests component look cool!!
   display: none;
 }
 
+.btn-add {
+  border-radius: 100%;
+  font-size: 30px;
+  padding: 0;
+  line-height: 0px;
+  width: 36px;
+  height: 36px;
+}
+
 /***************************** shared code for admin and dashboard module */
 
 /* Parent Component Code */
@@ -320,3 +329,5 @@ See how dashboard->category->tests component look cool!!
 }
 
 /* END - Parent Component Code */
+
+

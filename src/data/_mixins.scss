@@ -137,3 +137,63 @@
     scrollbar-color: $thumb-bg  transparent;
   }
 }
+
+// theming ck toolbar
+@mixin setCkToolbarStyle($bg, $color: pick-visible-color($bg, black, white)) {
+  .ck-toolbar{
+    background: $bg !important;
+    color: $color !important;
+    border: none !important;
+    & *{
+      background: $bg !important;
+      color: $color !important;
+    }
+  }
+  .ck-content {
+    background:white !important;
+    color: black !important;
+    border: none !important;
+    & *{
+      color: inherit !important;
+    }
+    max-height: 350px;
+    resize: vertical;
+  }
+}
+
+// theming ck button and tooltip
+@mixin setCkBtnStyle($hover-bg, $hover-color: pick-visible-color($hover-bg, black, white)) {
+  .ck-button{
+    &:hover{
+      background: $hover-bg !important;
+      color: $hover-color !important;
+      & *{
+        background: $hover-bg !important;
+        color: $hover-color !important; 
+      }
+    }
+    .ck-tooltip {
+      background: transparent !important;
+      .ck-tooltip__text {
+        background: $hover-bg !important;
+        color: $hover-color !important;         
+      }
+    }
+
+    
+  }
+  .ck-on {
+    background: $hover-bg !important;
+    color: $hover-color !important;
+    & *{
+      background: $hover-bg !important;
+      color: $hover-color !important; 
+    }
+  }
+  .ck-dropdown__button{
+    &:hover{
+      background: $hover-bg !important;
+      color: $hover-color !important;
+    }
+  }
+}

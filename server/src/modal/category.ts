@@ -8,6 +8,7 @@ export interface Category  {
     lastUpdated: Date;
     _id:string;
     syllabus:string;
+    image:string;
 }
 
 /** Mongoose Schema and Modal */
@@ -17,7 +18,8 @@ export const CategorySchema = new mongoose.Schema<Category & mongoose.Document>(
     tests: {type:[String]},
     lastUpdated: { type:Date },
     _id: { type:String },
-    syllabus: {type:String}
+    syllabus: {type:String},
+    image: {type:String}
 });
 
 

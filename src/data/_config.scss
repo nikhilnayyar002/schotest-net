@@ -63,7 +63,14 @@
 @include createDropDown($secondary-bg-color);
 @include createCustomRadio($secondary-bg-color);
 @include createCustomToggler($secondary-bg-color);
+
 @include createCustomScrollbar(7px,$secondary-bg-color, 10px);
+@include setCkToolbarStyle($primary-bg-color);
+@include setCkBtnStyle($secondary-bg-color);
+
+
+
+
 
 //more overrides
 .badge-primary {

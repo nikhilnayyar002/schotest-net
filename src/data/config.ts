@@ -71,6 +71,16 @@ let config = {
         
 
 
+    },
+    ckEditor:{
+        config:{
+            toolbar:[
+                "fontFamily", "bold", "italic", "strikethrough", "underline",
+                "blockQuote","heading", "link", "numberedList","bulletedList",
+                "alignment:left", "alignment:right", "alignment:center", "alignment:justify",
+                "alignment", "fontSize"
+            ]
+        }
     }
 };
 export default config;

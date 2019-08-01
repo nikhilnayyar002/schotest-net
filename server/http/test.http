@@ -109,7 +109,8 @@ Content-Type: application/json
     "tests": ["12347"],
     "lastUpdated": "2019-07-23T05:37:45.006Z",
     "_id":"12349",
-    "syllabus":"<p>You know well</p>"
+    "syllabus":"<p>You know well</p>",
+    "image":""
 }
 
 ### Get category 

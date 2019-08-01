@@ -4,4 +4,5 @@ export interface Category {
     lastUpdated:Date;
     syllabus:string;
     _id:string;
+    image:string;
 }

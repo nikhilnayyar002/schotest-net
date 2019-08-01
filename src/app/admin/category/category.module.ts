@@ -5,6 +5,8 @@ import { CategoryRoutingModule } from './category-routing.module';
 import { ParentComponent } from './parent/parent.component';
 import { CategoryEditorComponent } from './category-editor/category-editor.component';
 import { TestsComponent } from './tests/tests.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
@@ -13,7 +15,10 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
   imports: [
     CommonModule,
     CategoryRoutingModule,
-    CKEditorModule
+    CKEditorModule,
+    FormsModule,
+    ReactiveFormsModule,
+    SharedModule
   ]
 })
 export class CategoryModule { }
