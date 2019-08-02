@@ -5,7 +5,8 @@ let config = {
         domain:domain,
     },
     company:{
-        name:"Schotest"
+        name:"Schotest",
+        url:"https://schotest.com"
     },
     routes:{
         userData:{
@@ -24,7 +25,8 @@ let config = {
         },
         category:{
             getCategories: ()=>`${domain}/categories`,
-            getCategoryTests:(cid, email)=> `${domain}/categories/${cid}/tests?email=${email}`
+            postCategory: ()=>`${domain}/categories`,
+            getCategoryTests:(cid, email)=> `${domain}/categories/${cid}/tests?email=${email}`,
         },
         test:{
             getTest: id => `${domain}/tests/${id}`,
@@ -53,6 +55,8 @@ let config = {
         relCompleted:()=> './completed',
     },
     adminRoutes:{
+        admin: ()=>  '/admin',
+
         /** admin -> parent -> html */
         relCategory:()=> './category',
         relTest:()=>  './test',

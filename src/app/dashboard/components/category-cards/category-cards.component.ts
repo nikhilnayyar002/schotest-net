@@ -1,10 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Category } from 'server/src/modal/category';
 import { MainService } from 'src/app/dashboard/main.service';
 import { GLobalState } from 'src/app/shared/global.state';
 import { Store } from '@ngrx/store';
 import { takeWhileAlive, AutoUnsubscribe } from 'take-while-alive';
 import config from 'src/data/config';
+import { Category } from 'src/app/modals/category';
 
 @Component({
   selector: 'app-category-cards',

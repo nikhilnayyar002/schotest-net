@@ -1,9 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { ParentService } from "../parent.service";
-import { TestResponse } from "src/app/amplitude-test/modals/test";
+import { TestResponse, UserTest } from "src/app/amplitude-test/modals/test";
 import { QuestionsAnswers } from "src/app/shared/global";
 import { ActivatedRoute } from "@angular/router";
-import { UserTest } from "server/src/modal/test";
 
 @Component({
   selector: "app-test-result",

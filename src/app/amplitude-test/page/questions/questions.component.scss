@@ -1,10 +1,4 @@
-.main {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-
-  .page-content {
-    flex: 1;
-    overflow: auto;
-  }
+@import "../../../../data/mixins";
+:host {
+  @include page-content;
 }

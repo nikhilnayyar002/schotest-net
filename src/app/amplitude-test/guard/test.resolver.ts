@@ -6,8 +6,7 @@ import { GLobalState } from 'src/app/shared/global.state';
 import { take, switchMap, catchError, map, tap } from 'rxjs/operators';
 import { SetTest } from '../state/state.actions';
 import { of, forkJoin, Observable } from 'rxjs';
-import { UserTest } from 'server/src/modal/user';
-import { TestWithFeatures, TestOriginal } from '../modals/test';
+import { TestWithFeatures, TestOriginal, UserTest } from '../modals/test';
 import config from 'src/data/config';
 
 @Injectable()

@@ -15,7 +15,7 @@ export interface UserTestFeatures {
 }
 
 export interface UserTest {
-  _id:string;
+  _id: string;
   time: number;
   isTestOver: boolean;
   questions: { [index: string]: string };
@@ -23,6 +23,8 @@ export interface UserTest {
 
 export interface TestOriginal extends TestBase {
   questions: { [index: string]: QuestionOriginal };
+  /** test is ready when all properties of "TestOriginal" are set */
+  isTestReady?: boolean;
 }
 
 export interface TestWithFeatures extends TestBase, UserTestFeatures {
@@ -35,6 +37,3 @@ export interface TestResponse extends TestBase, UserTestFeatures {
     marks: number;
   };
 }
-
-
-

@@ -21,9 +21,14 @@
       <button type="button" class="user-btn dropdown-toggle btn btn-sm mr-2 btn-secondary" data-toggle="dropdown"></button>
       <div class="dropdown-menu p-2 bg-primary">
         <div class="user-name p-2 py-3 bg-primary">
-            {{ (user|async)?.fullName }}
+            {{ user?.fullName }}
         </div>
-        <span class="dropdown-item bg-secondary" (click)="logout()">Sign Out</span>
+        <a 
+          class="dropdown-item bg-secondary"
+          routerLink="{{configData.adminRoutes.admin()}}"
+          *ngIf="user && user.isAdmin"
+        >Admin</a>
+        <a class="dropdown-item bg-secondary" (click)="logout()">Sign Out</a>
       </div>
     </div>   
   </form>
@@ -43,7 +48,7 @@
         <div class="bar3"></div>
       </div>
       <span class="navbar-brand">
-        <a class="text-decoration-none" id="nav-bar-logo" href="https://schotest.com" target="_blank">
+        <a class="text-decoration-none" id="nav-bar-logo" href="{{configData.company.url}}" target="_blank">
           {{ configData.company.name }}
         </a>
       </span>

@@ -41,7 +41,7 @@ export class ParentComponent {
   @ViewChild("fixedOverlay", { static: false })
   private fixedOverlay: ElementRef;
   @ViewChild("sidebar", { static: false }) private sidebar: ElementRef;
-  user:Observable<UserProfile> = this.store.select(state => state.app.user);
+  user:UserProfile;
 
   mediaQueryState: MediaQueryState = createMediaQuery(
     "(max-width: 900px)",
@@ -54,7 +54,11 @@ export class ParentComponent {
     private router: Router,
     private store: Store<GLobalState>,
     private auth: AuthService
-  ) {}
+  ) {
+    this.store.select(state => state.app.user).pipe(takeWhileAlive(this)).subscribe((user)=>{
+      if(user) this.user = user
+    })
+  }
 
   ngAfterViewInit(): void {
     this.toggleSideBar = createSideBarStateOverlay(
@@ -78,6 +82,7 @@ export class ParentComponent {
       })
     );
     this.router.navigate([config.clientRoutes.login()]);
+    return false
   }
 
   ngOnDestroy(): void {

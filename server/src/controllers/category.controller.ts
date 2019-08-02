@@ -12,17 +12,51 @@ import { UserModal, User } from "../modal/user";
 import { TestModal, TestOriginal, TestResponse } from "../modal/test";
 
 /**
- * Return @message
+ * Return @message | @Category
  */
 export const postCategory: express.RequestHandler = function(req, res, next) {
-  let test: Category & mongoose.Document = <any>new CategoryModal(req.body);
-  test.save((err, doc: Category) => {
-    if (!err) res.json({ status: true, category: doc });
-    else {
-      if (err.code) res.status(422).json({ status: false, message: err.code });
-      else return next(err);
-    }
-  });
+  let category: Category = req.body;
+
+  /** check if test ID's provided are good or not */
+  if (category.tests && category.tests.length) {
+    /** fetch tests */
+    let proms = [];
+    for (let t of category.tests) proms.push(TestModal.findById(t).exec());
+    Promise.all(proms)
+      .then((testsRes: TestOriginal[]) => {
+        if (testsRes.length) {
+          /** check if tests are ready */
+          let errMessage: string = "";
+          for (let t of testsRes) {
+            if (!t)
+              errMessage += `${
+                category.tests[testsRes.indexOf(t)]
+              } not found.\n`;
+            else if (!t.isTestReady)
+              errMessage += `${t._id} is not ready yet.\n`;
+          }
+
+          if (!errMessage) save() /** proceed to save */
+          else res.status(422).json({ status: false, message: errMessage });
+        } else
+          res.status(404).json({ status: false, message: "Tests not found" });
+      })
+      .catch(err =>
+        next(new HttpException(typeof err == "string" ? err : err.message))
+      );
+  } else save() /** proceed to save */
+
+  function save() {
+    let cat: Category & mongoose.Document = <any>new CategoryModal(category);
+    cat.save((err, doc: Category) => {
+      if (!err) res.json({ status: true, category: doc });
+      else {
+        if (err.code)
+          res.status(422).json({ status: false, message: err.code });
+        else return next(err);
+      }
+    });
+  }
 };
 
 /**
@@ -76,8 +110,8 @@ export const getCategoryTests: express.RequestHandler = (req, res, next) => {
             );
 
             /** Map questions. Common operation */
-            for(let i=0;i<tests.length;++i) {
-              tests[i].questions = testFunc.getTestResponseQ(testsRes[i])
+            for (let i = 0; i < tests.length; ++i) {
+              tests[i].questions = testFunc.getTestResponseQ(testsRes[i]);
             }
 
             /** Find user */

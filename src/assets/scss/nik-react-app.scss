@@ -8,7 +8,7 @@
 .form-container {
     // background:$primary-color;
     padding: 35px;
-    max-width: 500px;
+    max-width: 450px;
     margin: auto;
     border-radius: 5px;
     box-shadow: 0px 0px 5px 0px black;
@@ -45,6 +45,8 @@
       // color: #ca4444;
       font-size: 14px;
       padding: 5px;
+      border-radius: 4px; 
+      display: inline-block;
       // display: none;
     }
     #form-tab {

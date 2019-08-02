@@ -10,13 +10,16 @@ import { CommonRes, HttpException } from "../config/global";
 export const register:express.RequestHandler = (req, res, next) => {
 
     let user:User & mongoose.Document = <any>new UserModal();
+    let userObj:User = req.body
 
-    user.fullName = req.body.fullName;
-    user.email = req.body.email;
-    user.password = req.body.password;
+    user.fullName = userObj.fullName;
+    user.email = userObj.email;
+    user.password = userObj.password;
     user._id = (new Date()).getTime().toString();
+    user._id =  userObj._id;
     user.favourites = []
     user.tests = {}
+    user.isAdmin = userObj.isAdmin?true:false
     
     user.save((err, doc:User) => {
         if (!err)
@@ -57,7 +60,8 @@ export const userProfile:express.RequestHandler = (req, res, next) =>{
                 return res.status(404).json({ status: false, message: 'User record not found.' });
             else {
                 let userProfile:UserProfile = { 
-                    fullName:user.fullName, email:user.email, id:user._id, favourites:user.favourites
+                    fullName:user.fullName, email:user.email, id:user._id, favourites:user.favourites,
+                    isAdmin:user.isAdmin
                 }
                 return res.status(200).json({ status: true, user :userProfile });
             }

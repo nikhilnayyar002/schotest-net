@@ -35,6 +35,17 @@ export class MainService {
     );
   }
 
+  postCategory(category: Category){
+    const httpOptions = {
+      headers: new HttpHeaders({ "Content-Type": "application/json" })
+    };
+    return this.http.post(
+      config.routes.category.postCategory(),category,httpOptions
+    )
+  } 
+
+
+
   // getTests(categoryID: string): Observable<TestResponse[]> {
   //   return this.store
   //     .select(state => state.app.user)
@@ -92,33 +103,7 @@ export class MainService {
   //     );
   // }
 
-  // postFavourites(cid: string): Observable<BackendStatus | Error> {
-  //   const httpOptions = {
-  //     headers: new HttpHeaders({ "Content-Type": "application/json" })
-  //   };
 
-  //   return this.store
-  //     .select(state => state.app.user)
-  //     .pipe(
-  //       take(1),
-  //       switchMap(user =>
-  //         this.http
-  //           .post<BackendStatus>(
-  //             config.routes.userData.postUserFavourites(user.id),
-  //             { id: cid },
-  //             httpOptions
-  //           )
-  //           .pipe(
-  //             tap(() => {
-  //               /** Set the favourites */
-  //               let newUser = { ...user };
-  //               newUser.favourites.push(cid);
-  //               this.store.dispatch(SetAppState({ app: { user: newUser } }));
-  //             })
-  //           )
-  //       )
-  //     );
-  // }
 
   // delFavourites(cid: string): Observable<BackendStatus | Error> {
   //   const httpOptions = {

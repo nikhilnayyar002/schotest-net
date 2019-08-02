@@ -13,7 +13,7 @@ export const getUserData: express.RequestHandler = (req, res, next) => {
     if (err) next(err);
     else if (user) {
       let userRes:UserFeatures = {
-        favourites: user.favourites, tests: user.tests 
+        favourites: user.favourites, tests: user.tests, isAdmin:user.isAdmin
       }
       /** Send user favourites and tests */
       res.json({

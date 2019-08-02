@@ -24,6 +24,8 @@ export interface UserTest {
 
 export interface TestOriginal extends TestBase {
   questions: { [index: string]: Question };
+  /** test is ready when all properties of "TestOriginal" are set */
+  isTestReady?:boolean;
 }
 
 export interface TestWithFeatures extends TestBase, UserTestFeatures {
@@ -47,6 +49,7 @@ export const TestSchema = new mongoose.Schema<TestOriginal & mongoose.Document>(
   oTime: { type: Number },
   detail: { type: String },
   _id: { type: String },
+  isTestReady:{ type: Boolean }
 });
 
 /**

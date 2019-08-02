@@ -62,7 +62,7 @@ export class AppComponent {
 
     this.navEnd.subscribe(evt => {
       this.routerProgress.nativeElement.style.opacity = "0"
-
+   
       /**
        * check for page-not-found component. to do that i have two ways:
        * 1. Check component property of activatedRoute.
@@ -80,7 +80,7 @@ export class AppComponent {
          */
 
         let firstChild = this.router.routerState.root.firstChild
-        if(firstChild && firstChild.snapshot.data && firstChild.snapshot.data["iam"] == "pageNotFound")
+        if(firstChild && firstChild.snapshot.data["iam"] == "pageNotFound")
           null
         /** Check and correct for an infinite redirect to login component*/
         else if (evt.url != config.clientRoutes.login() && evt.url !=config.clientRoutes.root())

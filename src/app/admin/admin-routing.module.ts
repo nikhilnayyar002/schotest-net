@@ -8,6 +8,7 @@ const routes: Routes = [
     path: "admin",
     component: ParentComponent,
     canActivate: [AuthGuard],
+    data:{ iam:"admin" },
     children:[
       {
         path:'',

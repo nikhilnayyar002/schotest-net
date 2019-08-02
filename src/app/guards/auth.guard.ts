@@ -28,16 +28,26 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     activatedRoute: ActivatedRouteSnapshot,
     routerState: RouterStateSnapshot
   ): any {
+
     return new Observable(subscriber => {
       this.store
-        .select(state => state.app.loggedIn)
+        .select(state => state.app)
         .pipe(take(1))
-        .subscribe(state => {
-          if (!state) {
+        .subscribe(app => {
+          if (!app.loggedIn) {
             this.auth.lastUrlLoaded = routerState.url
             this.router.navigate([config.clientRoutes.login()], {skipLocationChange:true});
           }
-          subscriber.next(state);
+          /**
+           * Check for an admin route
+           */
+          else if(activatedRoute.firstChild && activatedRoute.firstChild.data["iam"]=="admin") {
+            if(app.user.isAdmin) subscriber.next(app.loggedIn);
+            else
+              this.router.navigate([config.clientRoutes.login()], {skipLocationChange:true});
+          }
+          /** its all ok */
+          else subscriber.next(app.loggedIn);
         });
     });
 

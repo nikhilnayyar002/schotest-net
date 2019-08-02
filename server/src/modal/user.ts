@@ -8,8 +8,9 @@ const environment: Environment = <any>process.env;
 /** Typescript Modal  */
 
 export interface UserFeatures {
+  isAdmin:boolean;
   favourites: string[];
-  tests: { [index: string]: UserTest };
+  tests?: { [index: string]: UserTest };
 }
 export interface UserBase {
   fullName: string;
@@ -31,9 +32,8 @@ export interface UserTest {
   isTestOver:boolean;
 }
 
-export interface UserProfile extends UserBase {
+export interface UserProfile extends UserBase, UserFeatures {
   id: string;
-  favourites:string[];
 }
 
 
@@ -59,7 +59,8 @@ export const UserSchema = new mongoose.Schema<User & mongoose.Document>({
     type: String
   },
   favourites: { type: [String] },
-  tests: mongoose.SchemaTypes.Mixed
+  tests: mongoose.SchemaTypes.Mixed,
+  isAdmin:{ type: Boolean }
 });
 
 /**
