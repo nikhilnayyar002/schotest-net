@@ -1,29 +1,35 @@
-<div class="row no-gutters p-2 justify-content-center align-items-start text-center">
+<div
+  class="row no-gutters p-2 align-items-start text-center"
+  *ngIf="categories"
+  [ngClass]="categories.length == 1 ? 'justify-content-center' : 'justify-content-start'"
+>
   <div *ngFor="let category of categories" class="card bg-primary m-2">
-    <div
-      *ngIf="favourites && !settingStar; else settingStarStatus"
-      class="bg-primary star-container"
-      (click)="onStarClick(category._id)"
-    >
-      <ng-container *ngIf="isFavourite(category._id); else notFavourite">
-        <span
-          class="btn btn-primary text-secondary star"
-          [innerHTML]="'&#9733;' | safeStyle: 'dom'"
-        ></span>
-      </ng-container>
-      <ng-template #notFavourite>
-        <span
-          class="btn btn-primary text-info star"
-          [innerHTML]="'&#9734;' | safeStyle: 'dom'"
-        ></span>
-      </ng-template>
-    </div>
-    <ng-template #settingStarStatus>
-      <div class="bg-primary star-container">
-        <div class="spinner-grow text-secondary" role="status"></div>
+    <ng-container *ngIf="showFavourite">
+      <div
+        *ngIf="favourites && !settingStar; else settingStarStatus"
+        class="bg-primary star-container"
+        (click)="onStarClick(category._id)"
+      >
+        <ng-container *ngIf="isFavourite(category._id); else notFavourite">
+          <span
+            class="btn btn-primary text-secondary star"
+            [innerHTML]="'&#9733;' | safeStyle: 'dom'"
+          ></span>
+        </ng-container>
+        <ng-template #notFavourite>
+          <span
+            class="btn btn-primary text-info star"
+            [innerHTML]="'&#9734;' | safeStyle: 'dom'"
+          ></span>
+        </ng-template>
       </div>
-    </ng-template>
+      <ng-template #settingStarStatus>
+        <div class="bg-primary star-container">
+          <div class="spinner-grow text-secondary" role="status"></div>
+        </div>
+      </ng-template>
 
+    </ng-container>
     <img
       src="https://boygeniusreport.files.wordpress.com/2018/12/captain-marvel.jpg"
       class="card-img-top"
@@ -49,8 +55,10 @@
       >
         Syllabus
       </button>
-      <a [routerLink]="[config.clientRoutes.dashboardCategory(category._id)]" class="btn btn-secondary btn-sm"
-        >Visit</a
+      <a
+        [routerLink]="[directingLink(category._id)]"
+        class="btn btn-secondary btn-sm"
+        >{{ directingLabel }}</a
       >
     </div>
   </div>

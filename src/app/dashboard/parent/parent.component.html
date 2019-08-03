@@ -60,7 +60,7 @@
     <ul class="list-group list-group-flush" (click)="toggleSideBar(null,null,$event.target)">
       <li
         [routerLink]="[configData.clientRoutes.relCategory()]"
-        class="list-group-item list-group-item-action rounded-sm"
+        class="list-group-item list-group-item-action rounded-sm bg-info"
         [class.bg-info]="!rla1.isActive"
         #rla1="routerLinkActive"
         routerLinkActive="bg-secondary"
@@ -69,7 +69,7 @@
     </li>
       <li
         [routerLink]="[configData.clientRoutes.relfavourite()]"
-        class="list-group-item list-group-item-action rounded-sm"
+        class="list-group-item list-group-item-action rounded-sm bg-info"
         [class.bg-info]="!rla2.isActive"
         #rla2="routerLinkActive"
         routerLinkActive="bg-secondary"
@@ -78,7 +78,7 @@
   </li>
       <li
         [routerLink]="[configData.clientRoutes.relPaused()]"
-        class="list-group-item list-group-item-action rounded-sm"
+        class="list-group-item list-group-item-action rounded-sm bg-info"
         [class.bg-info]="!rla3.isActive"
         #rla3="routerLinkActive"
         routerLinkActive="bg-secondary"
@@ -87,7 +87,7 @@
     </li>
       <li
         [routerLink]="[configData.clientRoutes.relCompleted()]"
-        class="list-group-item list-group-item-action rounded-sm"
+        class="list-group-item list-group-item-action rounded-sm bg-info"
         [class.bg-info]="!rla4.isActive"
         #rla4="routerLinkActive"
         routerLinkActive="bg-secondary"

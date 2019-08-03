@@ -1,6 +1,12 @@
 @import "../../../../data/mixins";
 :host {
   @include page-content;
+
+  .page-content {
+    border-top: 1px solid #001a39;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 22px;
+  }
 }
 .form-container {
   margin: 0px 10px;

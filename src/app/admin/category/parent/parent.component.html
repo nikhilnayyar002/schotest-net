@@ -1,14 +1,29 @@
 <h1 class="header bg-info py-4">
-    Category
+  Category
 </h1>
 <div class="bg-primary p-2 rounded-sm d-flex">
-    <button
-        type="button"
-        class="btn btn-secondary btn-sm ml-auto"
-        [routerLink]="[ config.adminRoutes.categoryCreate() ]"
-    >Create</button>
+  <button
+    type="button"
+    class="btn btn-secondary btn-sm ml-auto"
+    [routerLink]="[config.adminRoutes.categoryCreate()]"
+  >
+    Create
+  </button>
 </div>
 
 <div class="page-content">
-
+  <app-category-cards
+    *ngIf="categories; else loadingCategories"
+    [categories]="categories"
+    [directingLabel]="'Edit'"
+    [directingLink]="config.adminRoutes.adminEditCategory"
+    [showFavourite]="false"
+  ></app-category-cards>
+  <ng-template #loadingCategories>
+    <div class="py-3">
+      <div class="spinner-border text-secondary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  </ng-template>
 </div>

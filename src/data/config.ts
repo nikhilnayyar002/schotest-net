@@ -26,10 +26,13 @@ let config = {
         category:{
             getCategories: ()=>`${domain}/categories`,
             postCategory: ()=>`${domain}/categories`,
+            getCategory:(cid)=>`${domain}/categories/${cid}`,
             getCategoryTests:(cid, email)=> `${domain}/categories/${cid}/tests?email=${email}`,
         },
         test:{
+            postTest: () => `${domain}/tests`,
             getTest: id => `${domain}/tests/${id}`,
+            getTestState: id => `${domain}/tests/${id}/state`,
             getQuestionsAnswers: id =>  `${domain}/tests/${id}/completed`
         }
     },
@@ -65,14 +68,11 @@ let config = {
 
         /** AdminResolverService */
         adminCategories: ()=>"/admin/category",
-        adminCategory: (catID)=> `/admin/category/${catID}`,
-        dashboardCategoryTests: (catID)=> `/admin/category/${catID}/tests`,    
+        adminEditCategory: (catID)=> `/admin/category/edit/${catID}`,
         adminTests:()=> "/admin/test",
-        adminTest:(id)=> `/admin/test/${id}`,
-        adminTestQuestions:(id)=> `/admin/test/${id}/questions`,  
-
-        categoryCreate:() => '/admin/category/create'
-        
+        adminEditTest:(id)=> `/admin/test/edit/${id}`,
+        categoryCreate:() => '/admin/category/create',
+        testCreate:() => '/admin/test/create'  
 
 
     },

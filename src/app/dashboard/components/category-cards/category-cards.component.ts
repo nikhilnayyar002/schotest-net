@@ -17,6 +17,10 @@ export class CategoryCardsComponent  {
   config = config
 
   @Input() categories:Category[]
+  @Input() directingLink:(id:string)=>string = config.clientRoutes.dashboardCategory
+  @Input() directingLabel:string = 'Visit'
+  @Input() showFavourite:boolean = true
+  
   syllabusHTML:string = '';
   favourites:string[]=null;
 

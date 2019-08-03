@@ -1,5 +1,5 @@
 <h4 class="header bg-info py-4">
-  Create New Category
+  {{pageTitle}}
 </h4>
 
 <div #pageContent class="page-content">
@@ -38,22 +38,23 @@
     <div class="input-container flex-column">
       <label for="test">Add Tests (?)</label>
       <!--Added test ID's container-->
-      <div class="d-flex flex-nowrap overflow-auto" style="padding: 18px">
-        <span *ngFor="let id of tests;let i = index" class="ml-5 position-relative d-inline-block">
-          {{id}}
-          <button
-            class="btn btn-danger btn-add"
-            style="position: absolute;top: -100%;right: -36px;"
-            (click)="removeTest(i)"
-          >
-            -
-          </button>
-        </span>
+      <div
+        *ngIf="tests.length"
+        class="d-flex mb-4 flex-nowrap overflow-auto"
+      >
+        <div *ngFor="let test of tests" class="mr-2 d-inline-block bg-info p-3">
+          <span class="mb-3 d-block">{{ test.name }}</span>
+          <div>
+            <button type="button" class="btn btn-danger btn-sm mr-2 mb-2" (click)="removeTest(test._id)">Remove</button>
+            <button type="button" class="btn btn-secondary btn-sm mb-2"
+              [routerLink]="[ configData.adminRoutes.adminEditTest(test._id)]"
+            >View</button>  
+          </div>
+        </div>
       </div>
       <!--input test ID-->
       <div>
         <input
-          #addTestID
           class="input-field bg-info"
           type="text"
           placeholder="test"
@@ -63,10 +64,17 @@
           formControlName="testID"
         />
         <button
-          class="btn btn-secondary btn-add ml-2"
-          (click)="tests.push(addTestID.value)"
-        >+</button>
+          type="button"
+          class="btn btn-secondary ml-2 btn-sm"
+          (click)="addTest()"
+          [disabled]="testID.value ? false : true"
+        >
+          Add
+        </button>
       </div>
+    </div>
+    <div *ngIf="testAddError" class="input-error">
+      {{testAddError}}
     </div>
     <!--Syllabus-->
     <div class="input-container flex-column">

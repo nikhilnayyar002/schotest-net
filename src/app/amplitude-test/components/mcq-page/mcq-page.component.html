@@ -1,14 +1,12 @@
-
 <ng-container *ngIf="question.isComprehension; else normalTemplate">
   <div class="row no-gutters h-100">
-
     <!--Comprehension-->
     <div class="col page-content border-right border-primary">
       <em><u>Comprehension</u></em>
 
-       <!--content-->
-      <p [innerHTML]="question.comprehensionContent | safeStyle:'dom'"></p>
-      <img *ngIf="question.image" [src]="question.image" alt="Image">
+      <!--content-->
+      <p [innerHTML]="question.comprehensionContent | safeStyle: 'dom'"></p>
+      <img *ngIf="question.image" [src]="question.image" alt="Image" />
     </div>
 
     <!--Question-->
@@ -16,43 +14,54 @@
       <em><u>Question</u></em>
 
       <!--content-->
-      <p [innerHTML]="question.content | safeStyle:'dom'"></p>
+      <p [innerHTML]="question.content | safeStyle: 'dom'"></p>
 
       <!--radio buttons-->
-      <div *ngFor="let answer of question.answers; let i=index"
-      class="custom-control custom-radio">
-      <input type="radio" [id]="'customRadio'+i" name="customRadio"
-        class="custom-control-input" [value]="i" (click)="onClick(i)"
-        [(ngModel)]="question.checkedAnswerIndex">
-      <label class="custom-control-label" [attr.for]="'customRadio'+i">
-        {{answer}}
-      </label>
-    </div>
-
+      <div
+        *ngFor="let answer of question.answers; let i = index"
+        class="custom-control custom-radio"
+      >
+        <input
+          type="radio"
+          [id]="'customRadio' + i"
+          name="customRadio"
+          class="custom-control-input"
+          [value]="i"
+          (click)="onClick(i)"
+          [(ngModel)]="question.checkedAnswerIndex"
+        />
+        <label class="custom-control-label" [attr.for]="'customRadio' + i">
+          {{ answer }}
+        </label>
+      </div>
     </div>
   </div>
 </ng-container>
 
 <ng-template #normalTemplate>
-
   <!--Question-->
   <div class="page-content">
-
     <!--content-->
-    <p [innerHTML]="question.content | safeStyle:'dom'"></p>
-    <img *ngIf="question.image" [src]="question.image" alt="Image">
+    <p [innerHTML]="question.content | safeStyle: 'dom'"></p>
+    <img *ngIf="question.image" [src]="question.image" alt="Image" />
 
     <!--radio buttons-->
-    <div *ngFor="let answer of question.answers; let i=index"
-      class="custom-control custom-radio">
-      <input type="radio" [id]="'customRadio'+i" name="customRadio"
-        class="custom-control-input" [value]="i" (click)="onClick(i)"
-        [(ngModel)]="question.checkedAnswerIndex">
-      <label class="custom-control-label" [attr.for]="'customRadio'+i">
-        {{answer}}
+    <div
+      *ngFor="let answer of question.answers; let i = index"
+      class="custom-control custom-radio"
+    >
+      <input
+        type="radio"
+        [id]="'customRadio' + i"
+        name="customRadio"
+        class="custom-control-input"
+        [value]="i"
+        (click)="onClick(i)"
+        [(ngModel)]="question.checkedAnswerIndex"
+      />
+      <label class="custom-control-label" [attr.for]="'customRadio' + i">
+        {{ answer }}
       </label>
     </div>
-
   </div>
-
 </ng-template>

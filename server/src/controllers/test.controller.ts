@@ -18,6 +18,25 @@ export const getTest:express.RequestHandler = function(req, res, next) {
 }
 
 /**
+ * Return @string
+ */
+export const getTestState:express.RequestHandler = function(req, res, next) {
+  let testID=req.params.testID;
+  TestModal.findById(testID,function (err, test:TestOriginal) {
+    if (err) { return next(err); }
+    if(test) {
+      /** check if tests are ready */
+      let errMessage: string = "";
+      if(test.isTestReady)
+        res.json({status:true, test:{name:test.name}})
+      else
+        res.status(400).json({status:false, message:`${test._id} is not ready yet.`})
+    }
+    else next(new Record404Exception())
+  })
+}
+
+/**
  * Return @message
  */
 export const postTest:express.RequestHandler = function(req, res, next) {

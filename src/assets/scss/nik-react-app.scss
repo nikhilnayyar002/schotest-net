@@ -1,6 +1,7 @@
 //@import "./input-styles";
 @import "./animations";
 @import "../../data/mixins";
+@import "../../data/variables";
 
 // $page-bg:grey;
 // $hover-color: yellow;
@@ -16,7 +17,7 @@
     @include browser-based-property(animation, fadeInFromNone 0.5s ease-out);
   
     input[type="text"],
-    input[type="password"] {
+    input[type="password"], textarea{
      font: 16px/16px Arial, sans-serif;
     //  color:$secondary-color;
      width: 100%;
@@ -29,8 +30,9 @@
       @include browser-based-property(animation, 1s ease-out 0s 1 slideInFromLeft);
       position: relative;
     }
-    input[type="text"],
-    input[type="password"]:focus {
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    textarea:focus {
       outline: none;
     }
     .input-container {
@@ -45,8 +47,9 @@
       // color: #ca4444;
       font-size: 14px;
       padding: 5px;
-      border-radius: 4px; 
-      display: inline-block;
+      // border-radius: 4px; 
+      // display: inline-block;
+      color:$secondary-bg-color !important;
       // display: none;
     }
     #form-tab {

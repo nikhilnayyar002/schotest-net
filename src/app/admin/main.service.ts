@@ -1,13 +1,13 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Category } from "../modals/category";
-import { Observable, pipe, forkJoin } from "rxjs";
-import { map, take, switchMap, tap } from "rxjs/operators";
+import { Observable, pipe, forkJoin, of } from "rxjs";
+import { map, take, switchMap, tap, catchError } from "rxjs/operators";
 import config from "../../data/config";
 import { AuthService } from "../auth.service";
 import { Store } from "@ngrx/store";
 import { GLobalState } from "../shared/global.state";
-import { TestResponse, UserTest } from "../amplitude-test/modals/test";
+import { TestResponse, UserTest, TestOriginal } from "../amplitude-test/modals/test";
 import { BackendStatus, QuestionsAnswers } from "../shared/global";
 import { SetAppState } from "../state/state.actions";
 
@@ -35,16 +35,61 @@ export class MainService {
     );
   }
 
-  postCategory(category: Category){
+  postCategory(category: Category, post:boolean){
     const httpOptions = {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     };
-    return this.http.post(
-      config.routes.category.postCategory(),category,httpOptions
-    )
+    if(post) /** new category */
+      return this.http.post(config.routes.category.postCategory(),category,httpOptions)
+    else  /** update category */
+      return this.http.put(config.routes.category.postCategory(),category,httpOptions)
   } 
 
+  getCategory(catID:string): Observable<Category[]> {
+    let recipe = pipe(
+      map(
+        (data: { status: boolean; category: Category }) => data.category
+      )
+    );
+    return this.auth.tryWithRefreshIfNecc(
+      config.routes.category.getCategory(catID),
+      recipe
+    );
+  }
 
+  getTestState(id:string): Observable<TestOriginal | string> {
+    let recipe = pipe(
+      map(
+        (data: { status: boolean; test: TestOriginal }) => data.test
+      ),
+      catchError(error=>of(error.error.message))
+    );
+    return this.auth.tryWithRefreshIfNecc(
+      config.routes.test.getTestState(id),
+      recipe
+    );
+  }
+
+  postTest(test: TestOriginal, post:boolean){
+    const httpOptions = {
+      headers: new HttpHeaders({ "Content-Type": "application/json" })
+    };
+    if(post) /** new test */
+      return this.http.post(config.routes.test.postTest(),test,httpOptions)
+    // else  /** update category */
+    //   return this.http.put(config.routes.category.postCategory(),category,httpOptions)
+  } 
+  getTest(id:string): Observable<Category[]> {
+    let recipe = pipe(
+      map(
+        (data: { status: boolean; test: TestOriginal }) => data.test
+      )
+    );
+    return this.auth.tryWithRefreshIfNecc(
+      config.routes.test.getTest(id),
+      recipe
+    );
+  }
 
   // getTests(categoryID: string): Observable<TestResponse[]> {
   //   return this.store

@@ -1,1 +1,173 @@
-<p>test-editor works!</p>
+<h4 class="header bg-info py-4">
+  {{ pageTitle }}
+</h4>
+
+<div #pageContent class="page-content">
+  <form class="bg-primary form-container" [formGroup]="form">
+    <!--Title-->
+    <div class="input-container flex-column">
+      <label for="title">Title</label>
+      <input
+        class="input-field bg-info"
+        type="text"
+        placeholder="title"
+        name="title"
+        formControlName="title"
+        autocomplete="off"
+      />
+    </div>
+    <div
+      *ngIf="title.errors && (title.dirty || title.touched)"
+      class="input-error"
+    >
+      Title is required.
+    </div>
+    <!--Detail-->
+    <div class="input-container flex-column">
+      <label for="detail">Detail (?)</label>
+      <textarea
+        class="input-field bg-info"
+        type="text"
+        placeholder="detail"
+        name="detail"
+        formControlName="detail"
+        rows="2"
+      ></textarea>
+    </div>
+    <!--Time-->
+    <div class="input-container flex-column">
+      <label for="time">Time (?)</label>
+      <div>
+        <input
+          class="input-field bg-info"
+          type="text"
+          placeholder="time"
+          name="time"
+          formControlName="time"
+          autocomplete="off"
+          style="max-width: 150px;"
+        />
+        <span class="ml-3 text-secondary">{{ +time.value | timer}}</span>
+      </div>
+    </div>
+
+    <!-- Test Ready (i think it should be shown when editing test)-->
+    <div class="input-container" *ngIf="test">
+      <label class="mr-4">Is test ready?</label>
+      <!--radio buttons-->
+      <div class="custom-control custom-radio mx-2">
+        <input
+          type="radio"
+          name="isTestReady"
+          [value]="true"
+          id="isTestReadyYes"
+          class="custom-control-input"
+          formControlName="isTestReady"
+        />
+        <label class="custom-control-label" for="isTestReadyYes">
+          Yes
+        </label>
+      </div>
+      <div class="custom-control custom-radio mx-2">
+        <input
+          type="radio"
+          [value]="false"
+          name="isTestReady"
+          id="isTestReadyNo"
+          class="custom-control-input"
+          formControlName="isTestReady"
+        />
+        <label class="custom-control-label" for="isTestReadyNo">
+          No
+        </label>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <button
+        id="submit-btn"
+        type="submit"
+        class="btn btn-secondary"
+        [disabled]="form.invalid"
+        (click)="submit()"
+        *ngIf="!submitting"
+      >
+        Submit
+      </button>
+      <div *ngIf="submitting" class="spinner-grow text-secondary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+    <div *ngIf="backendError" class="input-error" style="margin-top: 15px;">
+      <pre>{{ backendError }}</pre>
+    </div>
+  </form>
+
+  <form class="bg-primary form-container mt-2" [formGroup]="form">
+    <h4 class="mb-5">
+      Add Question
+    </h4>
+    <!--Title-->
+    <div class="input-container flex-column">
+      <label for="title">Title</label>
+      <input
+        class="input-field bg-info"
+        type="text"
+        placeholder="title"
+        name="title"
+        formControlName="title"
+        autocomplete="off"
+      />
+    </div>
+    <div
+      *ngIf="title.errors && (title.dirty || title.touched)"
+      class="input-error"
+    >
+      Title is required.
+    </div>
+    <!--Detail-->
+    <div class="input-container flex-column">
+      <label for="detail">Detail (?)</label>
+      <textarea
+        class="input-field bg-info"
+        type="text"
+        placeholder="detail"
+        name="detail"
+        formControlName="detail"
+        rows="2"
+      ></textarea>
+    </div>
+    <!--Time-->
+    <div class="input-container flex-column">
+      <label for="time">Time (?)</label>
+      <input
+        class="input-field bg-info"
+        type="text"
+        placeholder="time"
+        name="time"
+        formControlName="time"
+        autocomplete="off"
+      />
+    </div>
+
+    <!-- submit -->
+    <div class="d-flex justify-content-center">
+      <button
+        id="submit-btn"
+        type="submit"
+        class="btn btn-secondary"
+        [disabled]="form.invalid"
+        (click)="submit()"
+        *ngIf="!submitting"
+      >
+        Submit
+      </button>
+      <div *ngIf="submitting" class="spinner-grow text-secondary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+    <div *ngIf="backendError" class="input-error" style="margin-top: 15px;">
+      <pre>{{ backendError }}</pre>
+    </div>
+  </form>
+</div>

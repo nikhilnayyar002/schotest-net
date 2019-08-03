@@ -16,48 +16,37 @@ import { TestModal, TestOriginal, TestResponse } from "../modal/test";
  */
 export const postCategory: express.RequestHandler = function(req, res, next) {
   let category: Category = req.body;
-
-  /** check if test ID's provided are good or not */
-  if (category.tests && category.tests.length) {
-    /** fetch tests */
-    let proms = [];
-    for (let t of category.tests) proms.push(TestModal.findById(t).exec());
-    Promise.all(proms)
-      .then((testsRes: TestOriginal[]) => {
-        if (testsRes.length) {
-          /** check if tests are ready */
-          let errMessage: string = "";
-          for (let t of testsRes) {
-            if (!t)
-              errMessage += `${
-                category.tests[testsRes.indexOf(t)]
-              } not found.\n`;
-            else if (!t.isTestReady)
-              errMessage += `${t._id} is not ready yet.\n`;
-          }
-
-          if (!errMessage) save() /** proceed to save */
-          else res.status(422).json({ status: false, message: errMessage });
-        } else
-          res.status(404).json({ status: false, message: "Tests not found" });
-      })
-      .catch(err =>
-        next(new HttpException(typeof err == "string" ? err : err.message))
-      );
-  } else save() /** proceed to save */
-
-  function save() {
-    let cat: Category & mongoose.Document = <any>new CategoryModal(category);
-    cat.save((err, doc: Category) => {
-      if (!err) res.json({ status: true, category: doc });
-      else {
-        if (err.code)
-          res.status(422).json({ status: false, message: err.code });
-        else return next(err);
-      }
-    });
-  }
+  let cat: Category & mongoose.Document = <any>new CategoryModal(category);
+  cat.save((err, doc: Category) => {
+    if (!err) res.json({ status: true, category: doc });
+    else {
+      if (err.code)
+        res.status(422).json({ status: false, message: err.code });
+      else return next(err);
+    }
+  });
 };
+
+/**
+ * Return @message | @Category
+ */
+export const updateCategory: express.RequestHandler = function(req, res, next) {
+  let category: Category = req.body;
+
+  CategoryModal.updateOne(
+    { _id: category._id },
+    { ...category },
+    function(err, doc) {
+      if (err) {
+        return next(err);
+      }
+      if (doc) res.json({ status: true, message: "Success" });
+      else next(new HttpException("Failed", 400));
+    }
+  );
+
+};
+
 
 /**
  * Return @Category
@@ -100,7 +89,7 @@ export const getCategoryTests: express.RequestHandler = (req, res, next) => {
     if (category) {
       /** fetch original tests corresponding to tests in this category */
       let proms = [];
-      for (let t of category.tests) proms.push(TestModal.findById(t).exec());
+      for (let t of category.tests) proms.push(TestModal.findById(t._id).exec());
 
       Promise.all(proms)
         .then((testsRes: TestOriginal[]) => {
@@ -139,3 +128,54 @@ export const getCategoryTests: express.RequestHandler = (req, res, next) => {
     } else next(new Record404Exception());
   });
 };
+
+
+/** **************************** Old code ********************** */
+
+/**
+ * Return @message | @Category
+ */
+// export const postCategory: express.RequestHandler = function(req, res, next) {
+//   let category: Category = req.body;
+
+//   /** check if test ID's provided are good or not */
+//   if (category.tests && category.tests.length) {
+//     /** fetch tests */
+//     let proms = [];
+//     for (let t of category.tests) proms.push(TestModal.findById(t).exec());
+//     Promise.all(proms)
+//       .then((testsRes: TestOriginal[]) => {
+//         if (testsRes.length) {
+//           /** check if tests are ready */
+//           let errMessage: string = "";
+//           for (let t of testsRes) {
+//             if (!t)
+//               errMessage += `${
+//                 category.tests[testsRes.indexOf(t)]
+//               } not found.\n`;
+//             else if (!t.isTestReady)
+//               errMessage += `${t._id} is not ready yet.\n`;
+//           }
+
+//           if (!errMessage) save() /** proceed to save */
+//           else res.status(422).json({ status: false, message: errMessage });
+//         } else
+//           res.status(404).json({ status: false, message: "Tests not found" });
+//       })
+//       .catch(err =>
+//         next(new HttpException(typeof err == "string" ? err : err.message))
+//       );
+//   } else save() /** proceed to save */
+
+//   function save() {
+//     let cat: Category & mongoose.Document = <any>new CategoryModal(category);
+//     cat.save((err, doc: Category) => {
+//       if (!err) res.json({ status: true, category: doc });
+//       else {
+//         if (err.code)
+//           res.status(422).json({ status: false, message: err.code });
+//         else return next(err);
+//       }
+//     });
+//   }
+// };

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import config from 'src/data/config';
 
 @Component({
   selector: 'app-parent',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ParentComponent implements OnInit {
 
-  constructor() { }
+  config = config
+  // categories:Category[]
 
-  ngOnInit() {
+  constructor(
+    // private route:ActivatedRoute,
+    // private ms:MainService
+  ) {}
+
+  ngOnInit(): void {
+    // this.ms.getCategories().subscribe((categories)=>this.categories = categories)
   }
 
 }

@@ -5,6 +5,8 @@ import { FormBuilder, Validators, FormControl } from "@angular/forms";
 import { MainService } from '../../main.service';
 import { Category } from 'src/app/modals/category';
 import { BackendStatus } from 'src/app/shared/global';
+import { ActivatedRoute } from '@angular/router';
+import { TestOriginal } from 'src/app/amplitude-test/modals/test';
 
 @Component({
   selector: "app-category-editor",
@@ -12,11 +14,17 @@ import { BackendStatus } from 'src/app/shared/global';
   styleUrls: ["./category-editor.component.scss"]
 })
 export class CategoryEditorComponent {
+
+  pageTitle:string;
   configData = config;
   backendError: string;
+  testAddError:string;
   submitting: boolean = false;
-  tests:string[]=[]
+  tests:{_id: string, name: string}[]=[]
   @ViewChild("pageContent", {static:false}) pageContent:ElementRef<HTMLElement>;
+
+  //work as "edit" component
+  category:Category;
 
   form = this.fb.group({
     title: ["", [Validators.required]],
@@ -25,33 +33,75 @@ export class CategoryEditorComponent {
     testID:[""]
   });
 
-  constructor(private fb: FormBuilder, private ms:MainService)
+  constructor(private fb: FormBuilder, private ms:MainService, private route: ActivatedRoute)
   // private store: Store<GLobalState>,
   // private router: Router,
   // private route: ActivatedRoute,
   {}
 
-  get title(): any {return this.form.get("title") as FormControl;}
-  get image(): any {return this.form.get("image") as FormControl;}  
-  get syllabus(): any {return this.form.get("syllabus") as FormControl;} 
+  ngOnInit(): void {
+    this.category = this.route.snapshot.data["category"]
+    /** Display the values */
+    if(this.category) {
+      this.pageTitle = "Edit "+ this.category.name
 
-  removeTest(i:number) {
-    this.tests.splice(i, 1);
+      this.title.setValue(this.category.name)
+      this.image.setValue(this.category.image)
+      this.syllabus.setValue(this.category.syllabus)
+      for(let test of this.category.tests) 
+        this.tests.push(test)
+    } else {
+      this.pageTitle = "Create New Category"
+    }
+  }
+
+  get title() {return this.form.get("title") as FormControl;}
+  get image() {return this.form.get("image") as FormControl;}  
+  get syllabus() {return this.form.get("syllabus") as FormControl;} 
+  get testID() {return this.form.get("testID") as FormControl;} 
+  
+  removeTest(id:string) {
+    this.tests = this.tests.filter(test => test._id !=id)
+    // this.tests.splice(i, 1); // i is index(number)
+  }
+
+  addTest() {
+    let id = this.testID.value
+    this.testAddError = ''
+    if(this.tests.find(test => test._id == id)) {
+      this.testAddError = "Test already Added !!"
+      return
+    }
+    this.ms.getTestState(id).subscribe(
+      (data)=>{
+        if(typeof(data)=="string") this.testAddError = data
+        else this.tests.push(<any>{_id:id, name:data.name})
+        this.testID.reset()
+      },
+      error =>{
+        this.testAddError = "Error Occurred! Please try again."
+        this.testID.reset()
+      }
+    )
   }
 
   submit() {
-    this.submitting = true;
+    this.submitting = true
+    let id = this.category?this.category._id:(new Date()).getTime().toString();
     let category:Category =  {
         name:this.title.value,
         tests: this.tests,
         lastUpdated: new Date(),
-        _id:(new Date()).getTime().toString(),
+        _id:id,
         syllabus:this.syllabus.value,
         image:this.image.value
     }
      
-    this.ms.postCategory(category).subscribe(
-      () => {this.submitting = false; this.form.reset(); this.tests = []; },
+    this.ms.postCategory(category, !this.category).subscribe(
+      () => {
+        this.submitting = false;
+        if(!this.category) { this.form.reset(); this.tests = []; }
+      },
       (error:any) =>{
         this.submitting = false;
         this.backendError = error.error.message
