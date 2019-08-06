@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { createAccordianState } from 'src/app/shared/global';
-import { TestResponse } from 'src/app/amplitude-test/modals/test';
 import config from 'src/data/config';
+import { TestWithFeatures } from 'src/app/amplitude-test/modals/test';
 
 
 @Component({
@@ -13,7 +13,7 @@ import config from 'src/data/config';
 export class TestsComponent implements OnInit {
 
   config = config
-  tests:TestResponse[];
+  tests:TestWithFeatures[];
   sections:string[];
   constructor(
     private route:ActivatedRoute

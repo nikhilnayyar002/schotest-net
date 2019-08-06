@@ -1,6 +1,5 @@
 import * as jwt from "jsonwebtoken";
 import * as express from "express";
-import { TestOriginal } from "../modal/test";
 
 /** global types */
 
@@ -69,18 +68,3 @@ export function simplifyMongoose<T>(data: any): T {
   return data._doc;
 }
 
-/** Test Functions */
-
-export const testFunc = {
-
-  getTestResponseQ: function(test: TestOriginal) {
-    let marks = 0;
-    for (let i in test.questions) marks += test.questions[i].marks;
-
-    return {
-      length: Object.keys(test.questions).length,
-      marks
-    };
-  }
-
-}

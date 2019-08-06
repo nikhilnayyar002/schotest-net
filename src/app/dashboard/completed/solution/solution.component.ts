@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { TestResponse, UserTest } from 'src/app/amplitude-test/modals/test';
+import { TestWithFeatures, UserTest } from 'src/app/amplitude-test/modals/test';
 import { QuestionsAnswers } from 'src/app/shared/global';
 
 @Component({
@@ -9,7 +9,7 @@ import { QuestionsAnswers } from 'src/app/shared/global';
 })
 export class SolutionComponent{
 
-  @Input() test: TestResponse;
+  @Input() test: TestWithFeatures;
   @Input() res: { userTest: UserTest; questionsAnswers: QuestionsAnswers; };
 
   questions:string[];

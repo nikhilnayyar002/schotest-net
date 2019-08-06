@@ -3,7 +3,7 @@ import { PageComponent } from '../page-component.modal';
 import { Store, select } from '@ngrx/store';
 import { TestState } from '../../state/test.state';
 import { take } from 'rxjs/operators';
-import { TestWithFeatures } from '../../modals/test';
+import { TestWithFeatures, TestWithFeaturesForUser } from '../../modals/test';
 
 @Component({
   selector: 'app-questions',
@@ -13,7 +13,7 @@ import { TestWithFeatures } from '../../modals/test';
 export class QuestionsComponent extends PageComponent{
 
   questions:string[];
-  test:TestWithFeatures;
+  test:TestWithFeaturesForUser;
   id:string;
 
   constructor(

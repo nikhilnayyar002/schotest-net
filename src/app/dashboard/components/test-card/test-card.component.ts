@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
-import { TestResponse } from 'src/app/amplitude-test/modals/test';
 import config from 'src/data/config';
 import { createAccordianState } from 'src/app/shared/global';
+import { TestWithFeatures } from 'src/app/amplitude-test/modals/test';
 
 @Component({
   selector: 'app-test-card',
@@ -10,13 +10,13 @@ import { createAccordianState } from 'src/app/shared/global';
 })
 export class TestCardComponent  {
 
-  @Input() test:TestResponse;
+  @Input() test:TestWithFeatures;
   @Input() index:number;
   @Input() accordianID:string;
   config = config;
   @Output() headClick = new EventEmitter<HTMLElement>() 
 
-  getSections(test:TestResponse) {
+  getSections(test:TestWithFeatures) {
     if(test.sections) return Object.keys(test.sections)
     else return null
   }

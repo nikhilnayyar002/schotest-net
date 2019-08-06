@@ -5,18 +5,27 @@ import {
   HttpHeaders
 } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
-import { catchError, tap, map, take, switchMap, debounceTime } from "rxjs/operators";
+import { catchError, tap, map, debounceTime } from "rxjs/operators";
 import config from "../../data/config";
 import { QuestionStateDB } from "./shared/indexDB";
-import { TestOriginal, UserTest, TestWithFeatures } from "./modals/test";
+import { UserTest, TestWithFeatures, TestWithFeaturesForUser } from "./modals/test";
+import { UserQuestion } from './modals/question';
 
 @Injectable()
 export class MainService {
   constructor(private http: HttpClient) {}
 
-  getTest(userID: string, id: string): Observable<TestWithFeatures> {
+  getTest(userID: string, id: string): Observable<TestWithFeaturesForUser> {
     return this.http.get(config.routes.test.getTest(id)).pipe(
-      map((data: { status: boolean; test: TestOriginal }) => <TestWithFeatures>data.test),
+      map((data: { status: boolean; test: TestWithFeatures }) => {
+        let questions:{ [index: string]: UserQuestion } = {},
+          test:TestWithFeaturesForUser
+        data.test.questions.forEach((question)=>{
+          questions[question._id] = <UserQuestion>question
+        })
+        test = {...data.test, questions}
+        return test
+      }),
       tap(test => {
         QuestionStateDB.testID = userID + test._id;
         /** Asynchronous */

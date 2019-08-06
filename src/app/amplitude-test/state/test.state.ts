@@ -1,4 +1,4 @@
-import { TestWithFeatures } from '../modals/test';
+import { TestWithFeatures, TestWithFeaturesForUser } from '../modals/test';
 
 export interface TestOtherState {
     /**
@@ -18,6 +18,6 @@ export interface TestOtherState {
 }
 
 export interface TestState {
-    test:TestWithFeatures;
+    test:TestWithFeaturesForUser;
     testOther:TestOtherState;
 }

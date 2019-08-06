@@ -3,9 +3,9 @@ import { createReducer, on, Action } from '@ngrx/store';
 import { TestOtherState } from './test.state';
 import { QuestionState, onTestNotFetched } from '../shared/global';
 import { QuestionStateDB } from '../shared/indexDB';
-import { TestWithFeatures } from '../modals/test';
+import { TestWithFeatures, TestWithFeaturesForUser } from '../modals/test';
 
-export const initialTestState:TestWithFeatures = null
+export const initialTestState:TestWithFeaturesForUser = null
 
 const testReducer = createReducer(
     initialTestState,
@@ -33,7 +33,7 @@ const testReducer = createReducer(
     }),
 );
 
-export function tReducer (state:TestWithFeatures|undefined,action:Action) {
+export function tReducer (state:TestWithFeaturesForUser|undefined,action:Action) {
     return testReducer(state,action)
 }
 

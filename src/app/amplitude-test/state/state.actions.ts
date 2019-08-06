@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { QuestionState } from '../shared/global';
-import { TestWithFeatures } from '../modals/test';
+import { TestWithFeaturesForUser } from '../modals/test';
 import { UserQuestion } from '../modals/question';
 
 /**
@@ -27,7 +27,7 @@ export const GetTest = createAction(
  */
 export const SetTest = createAction(
   '[Test] Set',
-  props<{test:TestWithFeatures}>()
+  props<{test:TestWithFeaturesForUser}>()
 );
 
 /**

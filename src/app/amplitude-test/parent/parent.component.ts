@@ -14,7 +14,7 @@ import { GLobalState } from 'src/app/shared/global.state';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AutoUnsubscribe, takeWhileAlive} from 'take-while-alive';
 import { intialOtherState } from '../state/state.reducer';
-import { TestWithFeatures } from '../modals/test';
+import { TestWithFeatures, TestWithFeaturesForUser } from '../modals/test';
 import { UserProfile } from 'src/app/modals/user';
 
 @Component({
@@ -25,7 +25,7 @@ import { UserProfile } from 'src/app/modals/user';
 @AutoUnsubscribe()
 export class ParentComponent {
 
-  test: TestWithFeatures;
+  test: TestWithFeaturesForUser;
   otherState:TestOtherState = intialOtherState;
   isFullScreenEnabled: boolean = false;
   sections:string[];
@@ -83,7 +83,7 @@ export class ParentComponent {
     */
     this.pageItems = this.ps.getPages();
     this.loadComponent('');
-    this.test = <TestWithFeatures> this.route.snapshot.data.test
+    this.test = <TestWithFeaturesForUser> this.route.snapshot.data.test
     if(this.test) {
       this.start(); 
       //set index

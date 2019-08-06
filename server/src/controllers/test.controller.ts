@@ -1,18 +1,31 @@
 import * as express from "express";
 import * as mongoose from "mongoose";
-
-import { Record404Exception, simplifyMongoose, returnTyped } from "../config/global";
-import { TestModal, TestOriginal } from "../modal/test";
-import { AnswersForTestModal, AnswersForTest } from "../modal/answer";
+import { Record404Exception, returnTyped, simplifyMongoose } from "../config/global";
+import { TestModal, TestOriginal, TestWithFeatures } from "../modal/test";
+import { QuestionModal, QuestionOriginal } from "../modal/question";
+import { AnswerModal, Answer } from "../modal/answer";
 
 /**
- * Return @TestOriginal
+ * Return @TestWithFeatures
  */
 export const getTest:express.RequestHandler = function(req, res, next) {
     let testID=req.params.testID;
     TestModal.findById(testID,function (err, test:TestOriginal) {
       if (err) { return next(err); }
-      if(test)res.json({status:true, test})
+      if(test)
+        QuestionModal.find({tID:test._id}, (err, questions: QuestionOriginal[]) => {
+          if (err) {
+            return next(err);
+          }
+          if (questions && questions.length) {
+            test = simplifyMongoose<TestOriginal>(test)
+            let testRes:TestWithFeatures = {...test, questions}
+            res.json({status:true, test:testRes})
+          } 
+          else next(new Record404Exception());
+        })
+        .sort({ section: 'asc', sectionOrder: 1 });
+
       else next(new Record404Exception())
     })
 }
@@ -55,21 +68,25 @@ export const postTest:express.RequestHandler = function(req, res, next) {
  * Return @answers and @questions
  */
 export const getQuestionsAnswers:express.RequestHandler = function(req, res, next) {
-  let testID=req.params.testID;
-  TestModal.findById(testID,function (err, test:TestOriginal) {
-    if (err) { return next(err); }
-    if(test) {
-      let questions = test.questions
+  let tID=req.params.testID;
 
-      AnswersForTestModal.findById(testID, (err, answersForTest: AnswersForTest) => {
+  /** Let us obtain @questions first */
+  QuestionModal.find({ tID }, function(err, questions: QuestionOriginal[]) {
+    if (err) return next(err);
+
+    if (questions && questions.length) {
+      /** Let us obtain @answers first */
+      AnswerModal.find({ tID }, (err, answers: Answer[]) => {
         if (err) {
           return next(err);
         }
-        if (answersForTest) res.json({ status: true, answers:answersForTest.answers, questions });
+        if (answers && answers.length)
+          res.json({ status: true, answers, questions });
         else next(new Record404Exception());
       });
-      
+
     }
-    else next(new Record404Exception())
-  })
+    else next(new Record404Exception());
+  });
+
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ParentService } from "../parent.service";
-import { TestResponse, UserTest } from "src/app/amplitude-test/modals/test";
+import { TestWithFeatures, UserTest } from "src/app/amplitude-test/modals/test";
 import { QuestionsAnswers } from "src/app/shared/global";
 import { ActivatedRoute } from "@angular/router";
 
@@ -11,7 +11,7 @@ import { ActivatedRoute } from "@angular/router";
 })
 export class TestResultComponent {
 
-  test: TestResponse;
+  test: TestWithFeatures;
   res: { userTest: UserTest; questionsAnswers: QuestionsAnswers; };
   selectedOption: "overall" | "q&a" = "overall";
 

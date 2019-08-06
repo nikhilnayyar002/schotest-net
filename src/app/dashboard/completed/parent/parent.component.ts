@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MainService } from '../../main.service';
 import { ActivatedRoute } from '@angular/router';
 import { createAccordianState } from 'src/app/shared/global';
-import { TestResponse } from 'src/app/amplitude-test/modals/test';
+import { TestWithFeatures } from 'src/app/amplitude-test/modals/test';
 import { ParentService } from '../parent.service';
 
 @Component({
@@ -18,7 +18,7 @@ export class ParentComponent implements OnInit {
     private ps:ParentService
   ) { }
 
-  tests:TestResponse[];
+  tests:TestWithFeatures[];
   sections:string[];
   
   onCardHeaderClick = createAccordianState();
@@ -28,7 +28,7 @@ export class ParentComponent implements OnInit {
     this.ps.tests = this.tests
   }
 
-  getSections(test:TestResponse) {
+  getSections(test:TestWithFeatures) {
     if(test.sections) return Object.keys(test.sections)
     else return null
   }

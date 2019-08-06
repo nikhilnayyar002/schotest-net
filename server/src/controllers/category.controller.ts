@@ -5,11 +5,10 @@ import {
   Record404Exception,
   HttpException,
   returnTyped,
-  simplifyMongoose,
-  testFunc
+  simplifyMongoose
 } from "../config/global";
 import { UserModal, User } from "../modal/user";
-import { TestModal, TestOriginal, TestResponse } from "../modal/test";
+import { TestModal, TestOriginal, TestWithFeatures } from "../modal/test";
 
 /**
  * Return @message | @Category
@@ -76,7 +75,7 @@ export const getCategories: express.RequestHandler = (req, res, next) => {
 };
 
 /**
- * Return @TestResponse_Arr
+ * Return @TestWithFeatures_Arr
  */
 export const getCategoryTests: express.RequestHandler = (req, res, next) => {
   let categoryID = req.params.categoryID;
@@ -93,15 +92,10 @@ export const getCategoryTests: express.RequestHandler = (req, res, next) => {
 
       Promise.all(proms)
         .then((testsRes: TestOriginal[]) => {
-          if (testsRes.length) {
-            let tests = returnTyped<TestResponse[]>(
+          if (testsRes.length && !testsRes.includes(null)) {
+            let tests = returnTyped<TestWithFeatures[]>(
               simplifyMongoose<TestOriginal[]>(testsRes)
             );
-
-            /** Map questions. Common operation */
-            for (let i = 0; i < tests.length; ++i) {
-              tests[i].questions = testFunc.getTestResponseQ(testsRes[i]);
-            }
 
             /** Find user */
             UserModal.find({ email: req.query.email }, (err, user: User[]) => {
@@ -145,7 +139,7 @@ export const getCategoryTests: express.RequestHandler = (req, res, next) => {
 //     for (let t of category.tests) proms.push(TestModal.findById(t).exec());
 //     Promise.all(proms)
 //       .then((testsRes: TestOriginal[]) => {
-//         if (testsRes.length) {
+//         if (testsRes.length && !testsRes.includes(null)) {
 //           /** check if tests are ready */
 //           let errMessage: string = "";
 //           for (let t of testsRes) {

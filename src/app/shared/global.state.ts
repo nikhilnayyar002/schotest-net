@@ -1,10 +1,7 @@
 import { AppState } from '../state/app.state';
-import { TestWithFeatures } from '../amplitude-test/modals/test';
-import { TestOtherState } from '../amplitude-test/state/test.state';
+import { TestState } from '../amplitude-test/state/test.state';
 
-export interface GLobalState {
+export interface GLobalState extends TestState {
     app:AppState;
-    test:TestWithFeatures;
-    testOther:TestOtherState;
 }
 

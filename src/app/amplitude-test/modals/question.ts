@@ -9,6 +9,9 @@ export interface QuestionOriginal {
   _id: string;
   section: string;
   marks: number;
+
+  sectionOrder:number;
+  tID:string;
 }
 
 export interface UserQuestion extends QuestionOriginal {

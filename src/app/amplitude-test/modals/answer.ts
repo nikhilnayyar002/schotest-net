@@ -6,3 +6,9 @@ export interface AnswersForTest {
     _id:string; /** test ID */
     answers:Answers;
 }
+export interface Answer {
+    _id:string; /** Question ID */
+    tID:string; /** Test ID */
+    value:string;
+    data:string;
+}

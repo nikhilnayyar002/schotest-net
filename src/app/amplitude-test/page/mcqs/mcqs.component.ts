@@ -6,7 +6,7 @@ import { TestState } from '../../state/test.state';
 import { UpdateQuestion, SetQuestionState, SetIndex, ClearResponse, SetQuestion } from '../../state/state.actions';
 import { checkAndGetQuestionState, QuestionState, getNextQuestionIndex } from '../../shared/global';
 import { UserQuestion } from '../../modals/question';
-import { TestWithFeatures } from '../../modals/test';
+import { TestWithFeatures, TestWithFeaturesForUser } from '../../modals/test';
 
 @Component({
   selector: 'app-mcqs',
@@ -17,7 +17,7 @@ export class McqsComponent extends PageComponent{
 
   questions:string[];
   id:string;
-  test:TestWithFeatures;
+  test:TestWithFeaturesForUser;
 
   subs=new SubSink();
 

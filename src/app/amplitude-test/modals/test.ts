@@ -1,11 +1,14 @@
 import { QuestionOriginal, UserQuestion } from "./question";
 
-export interface TestBase {
+export interface TestOriginal {
   name: string;
   sections: { [index: string]: string };
   detail: string;
   _id: string;
   oTime: number;
+  nOfQ:number;
+  marks:number;
+  isTestReady?:boolean;
 }
 
 export interface UserTestFeatures {
@@ -15,25 +18,18 @@ export interface UserTestFeatures {
 }
 
 export interface UserTest {
-  _id: string;
+  _id:string;
   time: number;
   isTestOver: boolean;
   questions: { [index: string]: string };
 }
 
-export interface TestOriginal extends TestBase {
-  questions: { [index: string]: QuestionOriginal };
-  /** test is ready when all properties of "TestOriginal" are set */
-  isTestReady?: boolean;
+export interface TestWithFeatures extends TestOriginal, UserTestFeatures {
+  /** test is ready when all properties of "TestOriginal" are all good set */
+  questions:QuestionOriginal[]
 }
 
-export interface TestWithFeatures extends TestBase, UserTestFeatures {
+export interface TestWithFeaturesForUser extends TestOriginal, UserTestFeatures {
+  /** test is ready when all properties of "TestOriginal" are all good set */
   questions: { [index: string]: UserQuestion };
-}
-
-export interface TestResponse extends TestBase, UserTestFeatures {
-  questions: {
-    length: number;
-    marks: number;
-  };
 }

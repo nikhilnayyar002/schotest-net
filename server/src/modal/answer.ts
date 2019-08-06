@@ -2,19 +2,20 @@ import * as mongoose from "mongoose";
 
 /** Typescript Modal  */
 
-export interface AnswersForTest {
-    _id:string; /** test ID */
-    answers:{
-        /** @Index is question ID */
-        [index:string]:{ value:string, data:string }
-    }
+export interface Answer {
+    _id:string; /** Question ID */
+    tID:string;
+    value:string;
+    data:string;
 }
 
 /** Mongoose Schema and Modal */
 
-export const AnswersForTestSchema = new mongoose.Schema<AnswersForTest & mongoose.Document>({
-    _id: { type: String },
-    answers: mongoose.SchemaTypes.Mixed
+export const AnswerSchema = new mongoose.Schema<Answer & mongoose.Document>({
+    _id: String,
+    tID:String,
+    value:String,
+    data:String
 });
 
-export const AnswersForTestModal= mongoose.model("AnswersForTest", AnswersForTestSchema);
+export const AnswerModal= mongoose.model("Answer", AnswerSchema);

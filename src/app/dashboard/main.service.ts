@@ -7,12 +7,16 @@ import config from "../../data/config";
 import { AuthService } from "../auth.service";
 import { Store } from "@ngrx/store";
 import { GLobalState } from "../shared/global.state";
-import { TestResponse, UserTest } from "../amplitude-test/modals/test";
+import {  UserTest, TestWithFeatures, TestWithFeaturesForUser } from "../amplitude-test/modals/test";
 import { BackendStatus, QuestionsAnswers } from "../shared/global";
 import { SetAppState } from "../state/state.actions";
+import { QuestionOriginal } from '../amplitude-test/modals/question';
+import { Answer, Answers } from '../amplitude-test/modals/answer';
 
-interface QuestionsAnswersRes extends QuestionsAnswers {
+interface QuestionsAnswersRes{
   status: boolean;
+  questions: QuestionOriginal[];
+  answers: Answer[]
 }
 
 @Injectable()
@@ -35,7 +39,7 @@ export class MainService {
     );
   }
 
-  getTests(categoryID: string): Observable<TestResponse[]> {
+  getTests(categoryID: string): Observable<TestWithFeatures[]> {
     return this.store
       .select(state => state.app.user)
       .pipe(
@@ -43,7 +47,7 @@ export class MainService {
         switchMap(user => {
           let recipe = pipe(
             map(
-              (data: { status: boolean; tests: TestResponse[] }) => data.tests
+              (data: { status: boolean; tests: TestWithFeatures[] }) => data.tests
             )
           );
           return this.auth.tryWithRefreshIfNecc(
@@ -54,7 +58,7 @@ export class MainService {
       );
   }
 
-  getPausedTests(): Observable<TestResponse[]> {
+  getPausedTests(): Observable<TestWithFeaturesForUser[]> {
     return this.store
       .select(state => state.app.user)
       .pipe(
@@ -62,7 +66,7 @@ export class MainService {
         switchMap(user => {
           let recipe = pipe(
             map(
-              (data: { status: boolean; tests: TestResponse[] }) => data.tests
+              (data: { status: boolean; tests: TestWithFeaturesForUser[] }) => data.tests
             )
           );
           return this.auth.tryWithRefreshIfNecc(
@@ -73,7 +77,7 @@ export class MainService {
       );
   }
 
-  getCompletedTests(): Observable<TestResponse[]> {
+  getCompletedTests(): Observable<TestWithFeaturesForUser[]> {
     return this.store
       .select(state => state.app.user)
       .pipe(
@@ -81,7 +85,7 @@ export class MainService {
         switchMap(user => {
           let recipe = pipe(
             map(
-              (data: { status: boolean; tests: TestResponse[] }) => data.tests
+              (data: { status: boolean; tests: TestWithFeaturesForUser[] }) => data.tests
             )
           );
           return this.auth.tryWithRefreshIfNecc(
@@ -171,11 +175,18 @@ export class MainService {
   getQuestionsAnswers(testID: string)
   :Observable<{userTest:UserTest, questionsAnswers:QuestionsAnswers}|null>{
     let recipeForQandA = pipe(
-      map((data: QuestionsAnswersRes) => ({
-        answers: data.answers,
-        questions: data.questions
-      }))
+      map((data: QuestionsAnswersRes) => {
+        let questions:{ [index: string]: QuestionOriginal } = {}
+        , answers:Answers
+
+        data.questions.forEach((question)=> questions[question._id] = question)
+        data.answers.forEach((answer)=> 
+           answers[answer._id] = { value:answer.value, data:answer.data  }
+        )
+        return {questions, answers}
+      })
     );
+    
     let recipeForUserTest = pipe(
       map((data: {status:boolean, test:UserTest}) => data.test)
     );
@@ -204,7 +215,6 @@ export class MainService {
         return {  userTest,  questionsAnswers}
       })
     )
-
-
+    
   }
 }

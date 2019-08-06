@@ -7,7 +7,7 @@ import config from "../../data/config";
 import { AuthService } from "../auth.service";
 import { Store } from "@ngrx/store";
 import { GLobalState } from "../shared/global.state";
-import { TestResponse, UserTest, TestOriginal } from "../amplitude-test/modals/test";
+import { UserTest, TestOriginal } from "../amplitude-test/modals/test";
 import { BackendStatus, QuestionsAnswers } from "../shared/global";
 import { SetAppState } from "../state/state.actions";
 

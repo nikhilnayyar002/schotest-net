@@ -1,8 +1,8 @@
 import * as express from "express";
-import { Record404Exception, HttpException, returnTyped, simplifyMongoose, testFunc } from "../config/global";
+import { Record404Exception, HttpException, returnTyped, simplifyMongoose } from "../config/global";
 import { UserModal, User, UserTest, UserFeatures } from "../modal/user";
-import { TestModal, TestResponse, TestOriginal } from "../modal/test";
 import { CategoryModal, Category } from "../modal/category";
+import { TestModal, TestWithFeatures, TestOriginal } from "../modal/test";
 
 /**
  *  returns @UserFeatures
@@ -158,7 +158,7 @@ export const getPausedTests: express.RequestHandler = (req, res, next) => {
 };
 
 /**
- *  returns @TestResponse_Arr
+ *  returns @TestWithFeatures_Arr
  */
 export const getCompletedTests: express.RequestHandler = (req, res, next) => {
   return commonCompAndPaus(req, res, next, test => test.isTestOver);
@@ -177,26 +177,24 @@ function commonCompAndPaus(
       if (user.tests) {
         let proms = [];
         for (let i in user.tests)
-          if (condition(user.tests[i]))
+          if (condition(user.tests[i])) 
             proms.push(TestModal.findById(user.tests[i]._id).exec());
-
+          
         Promise.all(proms)
           .then((testsRes:TestOriginal[]) => {
-            if (testsRes.length) {
-
-              let tests = returnTyped<TestResponse[]>(
+            if (testsRes.length && !testsRes.includes(null)) {
+              let tests = returnTyped<TestWithFeatures[]>(
                 simplifyMongoose<TestOriginal[]>(testsRes)
               );
-
               for(let i=0;i<tests.length;++i) {
                 let t= user.tests[tests[i]._id]
-                tests[i].questions = testFunc.getTestResponseQ(testsRes[i])
                 if (t && (t.time != null || t.time != undefined)) {
                   if (tests[i].time != t.time) tests[i].hasTestStarted = true;
                   tests[i].time = t.time;
                   tests[i].isTestOver = t.isTestOver;
                 }
               }
+              
               res.json({ status: true, tests: tests });
             } else next(new Record404Exception());
           })
@@ -226,7 +224,8 @@ export const getUserFavourites: express.RequestHandler = (req, res, next) => {
 
       Promise.all(proms)
         .then((categories:Category[]) => {
-          if (categories.length) res.json({ status: true, categories });
+          categories
+          if (categories.length && !categories.includes(null)) res.json({ status: true, categories });
           else next(new Record404Exception());
         })
         .catch(err => next(new HttpException("Please try again later.")));

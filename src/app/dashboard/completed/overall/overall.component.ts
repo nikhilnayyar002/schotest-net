@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { TestResponse, UserTest } from "src/app/amplitude-test/modals/test";
 import { QuestionsAnswers } from "src/app/shared/global";
+import { UserTest, TestWithFeatures } from 'src/app/amplitude-test/modals/test';
 
 @Component({
   selector: "app-overall",
@@ -8,7 +8,7 @@ import { QuestionsAnswers } from "src/app/shared/global";
   styleUrls: ["./overall.component.scss"]
 })
 export class OverallComponent implements OnInit {
-  @Input() test: TestResponse;
+  @Input() test: TestWithFeatures;
   @Input() res: { userTest: UserTest; questionsAnswers: QuestionsAnswers };
 
   overallProp = {
@@ -22,8 +22,8 @@ export class OverallComponent implements OnInit {
   isAllSet: boolean = false;
 
   ngOnInit() {
-    this.overallProp.totalQuestions = this.test.questions.length;
-    this.overallProp.totalMarks = this.test.questions.marks;
+    this.overallProp.totalQuestions = this.test.nOfQ;
+    this.overallProp.totalMarks = this.test.marks;
     let { userTest, questionsAnswers } = this.res;
     //set more properties
     for (let q in userTest.questions) {

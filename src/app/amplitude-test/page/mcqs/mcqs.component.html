@@ -1,4 +1,4 @@
-<div class="main">
+<div *ngIf="test" class="main">
   <!-- Heading: Eg: Question No. 1, Instructions, Questions -->
   <div class="main-top p-2 pl-3 w-100 d-flex bg-primary">
     <!-- main heading -->
@@ -6,7 +6,7 @@
 
     <div class="bg-info px-1 ml-auto bg-info">
       <small>Marks:</small>
-      <span class="badge badge-success mr-1">+ 3</span>
+      <span class="badge badge-success mr-1">{{ test.questions[id].marks }}</span>
       <span class="badge badge-danger">- 1</span>
     </div>
   </div>

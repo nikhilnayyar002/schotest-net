@@ -69,7 +69,6 @@ export class TestEditorComponent implements OnInit {
         detail:this.detail.value,
         oTime:this.time.value,
         _id:id,
-        questions:null,
         isTestReady:this.isTestReady.value
     }
     this.ms.postTest(test, !this.test).subscribe(

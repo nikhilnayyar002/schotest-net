@@ -49,72 +49,27 @@ POST http://localhost:3000/tests
 Content-Type: application/json
 
 {
-    "_id": "12347",
-    "name": "mockedTest",
+    "_id": "12349",
+    "name": "mockedTest2",
     "sections": {
         "English": "123456",
         "Mathematics": "123459"
     },
-    "questions": {
-        "123456": {
-            "content": "<p>Answer the following question according to the information given below.<\/p><p>If a, b, c are the s_ides of a triangle, and a2 + b2 + c2 = bc + ca + ab, then the triangle is<\/p>",
-            "image": "",
-            "isComprehension": false,
-            "comprehensionContent": "",
-            "answers": [
-                "equilateral",
-                "isosceles",
-                "right angled",
-                "obtuse angled"
-            ],
-            "_id": "123456",
-            "section": "English",
-            "marks": 1
-        },
-        "123457": {
-            "content": "<p>Answer the following question according to the information<\/p>",
-            "image": "http://www.puzzles9.com/wp-content/uploads/2016/09/puz581.png",
-            "isComprehension": false,
-            "comprehensionContent": "",
-            "answers": [
-                "equilateral",
-                "isosceles",
-                "right angled",
-                "obtuse angled"
-            ],
-            "_id": "123457",
-            "section": "English",
-            "marks": 1
-        },
-        "123459": {
-            "content": "<p>Hello there!!<\/p>",
-            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Westerner_and_Arab_practicing_geometry_15th_century_manuscript.jpg/250px-Westerner_and_Arab_practicing_geometry_15th_century_manuscript.jpg",
-            "isComprehension": true,
-            "comprehensionContent": "<p>Hello there!!<\/p><p>Hello there!!<\/p><p>Hello there!!<\/p><p>Hello there!!<\/p><p>Hello there!!<\/p>",
-            "answers": [
-                "equilateral",
-                "isosceles",
-                "right angled",
-                "obtuse angled"
-            ],
-            "_id": "123459",
-            "section": "Mathematics",
-            "marks": 2
-        }
-    },
-    "detail": "Simple mocked Test",
-    "oTime": 3600,
-    "isTestReady":true
+    "detail": "Simple mocked Test 2",
+    "oTime": 1800,
+    "isTestReady":true,
+    "nOfQ":3,
+    "marks":4
 }
 
 ### Get Test
 GET http://localhost:3000/tests/12347
 
 ### Get Test Name
-GET http://localhost:3000/tests/12347/name
+GET http://localhost:3000/tests/12347/state
 
 ### Get questions and answers 
-GET http://localhost:3000/tests/12347/completed
+GET http://localhost:3000/tests/12349/completed
 
 
 ### @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Category @@@@@@@@@@@@@@@@@@@@@
@@ -222,30 +177,104 @@ GET  http://localhost:3000/userData/1563870538160/tests/paused
 GET  http://localhost:3000/userData/1563870538160/tests/completed
 
 
-### @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ answers @@@@@@@@@@@@@@@@@@@@@
+### @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ answer @@@@@@@@@@@@@@@@@@@@@
 
 ###
 POST   http://localhost:3000/answers
 Content-Type: application/json
 
 {
-    "_id":"12349",
-    "answers":{
-        "123456":{
-            "value":"equilateral",
-            "data":"<p>equilateral</p>"
-        },
-        "123457":{
-            "value":"isosceles",
-            "data":"<p>isosceles</p>"
-        },
-        "123459":{
-            "value":"right angled",
-            "data":"<p>right angled</p>"
-        }
-    }
+    "_id":"123459",
+    "tID":"12349",
+    "value":"right angled",
+    "data":"<p>right angled</p>"
 }
 
 ###
-GET  http://localhost:3000/answers/12347
+GET  http://localhost:3000/answers/123459
+
+###
+GET  http://localhost:3000/answers/all/12349
+
+###
+POST  http://localhost:3000/answers/all
+Content-Type: application/json
+
+[
+    {
+    "_id":"123451",
+    "tID":"12349",
+    "value":"right angled",
+    "data":"<p>right angled</p>"
+    }
+]
+
+### @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ question @@@@@@@@@@@@@@@@@@@@@
+
+###
+POST   http://localhost:3000/questions
+Content-Type: application/json
+
+{
+  "content": "<p>Hello there!!<\/p>",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Westerner_and_Arab_practicing_geometry_15th_century_manuscript.jpg/250px-Westerner_and_Arab_practicing_geometry_15th_century_manuscript.jpg",
+  "isComprehension": true,
+  "comprehensionContent": "<p>Hello there!!<\/p><p>Hello there!!<\/p><p>Hello there!!<\/p><p>Hello there!!<\/p><p>Hello there!!<\/p>",
+  "answers":[
+      "equilateral",
+      "isosceles",
+      "right angled",
+      "obtuse angled"
+  ],
+  "_id": "123459",
+  "section": "Mathematics",
+  "marks": 2,
+  "sectionOrder":null,
+  "tID":"12349"
+}
+
+###
+GET  http://localhost:3000/questions/123459
+
+###
+POST  http://localhost:3000/questions/all
+Content-Type: application/json
+
+[
+    {
+            "content": "<p>Answer the following question according to the information<\/p>",
+            "image": "http://www.puzzles9.com/wp-content/uploads/2016/09/puz581.png",
+            "isComprehension": false,
+            "comprehensionContent": "",
+            "answers": [
+                "equilateral",
+                "isosceles",
+                "right angled",
+                "obtuse angled"
+            ],
+            "_id": "123457",
+            "section": "English",
+            "marks": 1,
+            "sectionOrder":0,
+            "tID":"12349"
+    },
+    {
+            "content": "<p>Answer the following question according to the information given below.<\/p><p>If a, b, c are the s_ides of a triangle, and a2 + b2 + c2 = bc + ca + ab, then the triangle is<\/p>",
+            "image": "",
+            "isComprehension": false,
+            "comprehensionContent": "",
+            "answers": [
+                "equilateral",
+                "isosceles",
+                "right angled",
+                "obtuse angled"
+            ],
+            "_id": "123456",
+            "section": "English",
+            "marks": 1,
+            "sectionOrder":0,
+            "tID":"12349"
+    }
+]
+
 

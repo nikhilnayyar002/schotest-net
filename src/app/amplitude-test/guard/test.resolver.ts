@@ -6,7 +6,7 @@ import { GLobalState } from 'src/app/shared/global.state';
 import { take, switchMap, catchError, map, tap } from 'rxjs/operators';
 import { SetTest } from '../state/state.actions';
 import { of, forkJoin, Observable } from 'rxjs';
-import { TestWithFeatures, TestOriginal, UserTest } from '../modals/test';
+import { TestWithFeatures, UserTest, TestWithFeaturesForUser } from '../modals/test';
 import config from 'src/data/config';
 
 @Injectable()
@@ -35,22 +35,21 @@ export class TestResolverService {
 
     return forkJoin(arr).pipe(
       take(1),
-      map((tests:(TestWithFeatures|UserTest)[])=>{
-        let testOriginal=<TestWithFeatures>tests[0], userTest=<UserTest>tests[1]
-        if(userTest && userTest.isTestOver) testOriginal.isTestOver = true;
+      map((tests:(TestWithFeaturesForUser|UserTest)[])=>{
+        let test=<TestWithFeaturesForUser>tests[0], userTest=<UserTest>tests[1]
+        if(userTest && userTest.isTestOver) test.isTestOver = true;
         else if(userTest) {
           if(userTest.time != undefined || userTest.time != null) 
-            testOriginal.time =userTest.time
+            test.time =userTest.time
           for(let i in userTest.questions){
             let answer = userTest.questions[i],
-              index = answer?testOriginal.questions[i].answers.indexOf(answer):null;
-            
-            testOriginal.questions[i].checkedAnswerIndex = index
+              index = answer?test.questions[i].answers.indexOf(answer):null;
+            test.questions[i].checkedAnswerIndex = index
           }
         }
-        return testOriginal
+        return test
       }),
-      switchMap((test:TestWithFeatures)=>{
+      switchMap((test:TestWithFeaturesForUser)=>{
         /**
          * Test is over
          */
