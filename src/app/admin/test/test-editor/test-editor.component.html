@@ -1,4 +1,4 @@
-<h4 class="header bg-info py-4">
+<h4 class="header py-4">
   {{ pageTitle }}
 </h4>
 
@@ -34,70 +34,78 @@
         rows="2"
       ></textarea>
     </div>
-    <!--Time-->
-    <div class="input-container flex-column">
-      <label for="time">Time(s) <small>(?)</small></label>
-      <div>
-        <input
-          class="input-field bg-info"
-          type="text"
-          placeholder="time"
-          name="time"
-          formControlName="time"
-          autocomplete="off"
-          style="max-width: 150px;"
-        />
-        <span class="ml-3 text-secondary">{{ +time.value | timer}}</span>
+    <div class="row">
+      <div class="col-md-6 col-lg-4">
+        <!--Time-->
+        <div class="input-container flex-column">
+          <label for="time">Time(s) <small>(?)</small></label>
+          <div>
+            <input
+              class="input-field bg-info"
+              type="text"
+              placeholder="time"
+              name="time"
+              formControlName="time"
+              autocomplete="off"
+              style="max-width: 150px;"
+            />
+            <span class="ml-3 text-secondary">{{ +time.value | timer }}</span>
+          </div>
+        </div>
+        <div
+          *ngIf="time.errors && (time.dirty || time.touched)"
+          class="input-error"
+        >
+          Time should be a number (represents time in seconds).
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <!--No. of Questions-->
+        <div class="input-container flex-column">
+          <label for="nOfQ">No. of Questions <small>(?)</small></label>
+          <div>
+            <input
+              class="input-field bg-info"
+              type="text"
+              placeholder="number"
+              name="nOfQ"
+              formControlName="nOfQ"
+              autocomplete="off"
+              style="max-width: 150px;"
+            />
+          </div>
+        </div>
+        <div
+          *ngIf="nOfQ.errors && (nOfQ.dirty || nOfQ.touched)"
+          class="input-error"
+        >
+          Value should be a number.
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <!--Marks-->
+        <div class="input-container flex-column">
+          <label for="marks">Total Marks<small>(?)</small></label>
+          <div>
+            <input
+              class="input-field bg-info"
+              type="text"
+              placeholder="number"
+              name="marks"
+              formControlName="marks"
+              autocomplete="off"
+              style="max-width: 150px;"
+            />
+          </div>
+        </div>
+        <div
+          *ngIf="marks.errors && (marks.dirty || nOfQ.touched)"
+          class="input-error"
+        >
+          Value should be a number.
+        </div>
       </div>
     </div>
-    <div
-      *ngIf="time.errors && (time.dirty || time.touched)"
-      class="input-error"
-    >
-      Time should be a number (represents time in seconds).
-    </div>
-    <!--No. of Questions-->
-    <div class="input-container flex-column">
-      <label for="nOfQ">No. of Questions <small>(?)</small></label>
-      <div>
-        <input
-          class="input-field bg-info"
-          type="text"
-          placeholder="number"
-          name="nOfQ"
-          formControlName="nOfQ"
-          autocomplete="off"
-          style="max-width: 150px;"
-        />
-      </div>
-    </div>
-    <div
-      *ngIf="nOfQ.errors && (nOfQ.dirty || nOfQ.touched)"
-      class="input-error"
-    >
-      Value should be a number.
-    </div>      
-    <!--Marks-->
-    <div class="input-container flex-column">
-      <label for="marks">Total Marks<small>(?)</small></label>
-      <div>
-        <input
-          class="input-field bg-info"
-          type="text"
-          placeholder="number"
-          name="marks"
-          formControlName="marks"
-          autocomplete="off"
-          style="max-width: 150px;"
-        />
-      </div>
-    </div>
-    <div
-      *ngIf="marks.errors && (marks.dirty || nOfQ.touched)"
-      class="input-error"
-    >
-      Value should be a number.
-    </div>  
 
     <!-- Test Ready (i think it should be shown when editing test)-->
     <div class="input-container" *ngIf="test">
@@ -131,15 +139,15 @@
       </div>
     </div>
     <div class="mr-2 mb-2">
-        <button
-          type="button"
-          class="btn btn-secondary btn-sm"
-          [disabled]="submitting"
-          [routerLink]="[ './questions']"
-          *ngIf="test"
-        >
-          Questions
-        </button>    
+      <button
+        type="button"
+        class="btn btn-secondary btn-sm"
+        [disabled]="submitting"
+        [routerLink]="['./questions']"
+        *ngIf="test"
+      >
+        Questions
+      </button>
     </div>
     <div class="d-flex justify-content-center">
       <button

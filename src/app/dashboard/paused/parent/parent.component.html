@@ -1,4 +1,4 @@
-<div class="header bg-info py-4">
+<div class="header py-4">
   <h1 class="mb-4">
     Paused Tests
   </h1>
@@ -6,7 +6,7 @@
     Click to pop down details of particular test in given list of tests.
   </p>
 </div>
-<div class="accordion page-content bg-info" id="accordionTests">
+<div class="accordion page-content" id="accordionTests">
   <app-test-card
     *ngFor="let test of tests; let i = index"
     [test]='test'
