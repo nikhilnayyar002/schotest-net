@@ -24,7 +24,7 @@
     </div>
     <!--Image-->
     <div class="input-container flex-column">
-      <label for="image">Image Url/Base64 (?)</label>
+      <label for="image">Image Url/Base64 <small>(?)</small></label>
       <input
         class="input-field bg-info"
         type="text"
@@ -36,14 +36,14 @@
     </div>
     <!--tests-->
     <div class="input-container flex-column">
-      <label for="test">Add Tests (?)</label>
+      <label for="test">Add Tests <small>(?)</small></label>
       <!--Added test ID's container-->
       <div
         *ngIf="tests.length"
         class="d-flex mb-4 flex-nowrap overflow-auto"
       >
         <div *ngFor="let test of tests" class="mr-2 d-inline-block bg-info p-3">
-          <span class="mb-3 d-block">{{ test.name }}</span>
+          <span class="mb-3 d-block">{{ test.name?test.name:test._id }}</span>
           <div>
             <button type="button" class="btn btn-danger btn-sm mr-2 mb-2" (click)="removeTest(test._id)">Remove</button>
             <button type="button" class="btn btn-secondary btn-sm mb-2"
@@ -78,7 +78,7 @@
     </div>
     <!--Syllabus-->
     <div class="input-container flex-column">
-      <label>Syllabus (?)</label>
+      <label>Syllabus <small>(?)</small></label>
       <ckeditor
         [editor]="editor"
         (ready)="onReady($event)"

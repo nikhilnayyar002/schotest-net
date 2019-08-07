@@ -88,7 +88,7 @@ export const getCategoryTests: express.RequestHandler = (req, res, next) => {
     if (category) {
       /** fetch original tests corresponding to tests in this category */
       let proms = [];
-      for (let t of category.tests) proms.push(TestModal.findById(t._id).exec());
+      for (let t of category.tests) proms.push(TestModal.findById(t).exec());
 
       Promise.all(proms)
         .then((testsRes: TestOriginal[]) => {

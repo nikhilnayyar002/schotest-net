@@ -177,16 +177,14 @@ export class MainService {
     let recipeForQandA = pipe(
       map((data: QuestionsAnswersRes) => {
         let questions:{ [index: string]: QuestionOriginal } = {}
-        , answers:Answers
-
+        , answers:Answers ={}
         data.questions.forEach((question)=> questions[question._id] = question)
-        data.answers.forEach((answer)=> 
-           answers[answer._id] = { value:answer.value, data:answer.data  }
-        )
+        if(data.answers.length)
+          data.answers.forEach((answer)=>  answers[answer._id] = { value:answer.value, data:answer.data  })
+        else answers = null
         return {questions, answers}
       })
     );
-    
     let recipeForUserTest = pipe(
       map((data: {status:boolean, test:UserTest}) => data.test)
     );
@@ -212,7 +210,7 @@ export class MainService {
       map((data:(UserTest | QuestionsAnswers)[])=>{
         let userTest=<UserTest>data[0], questionsAnswers=<QuestionsAnswers>data[1]
         if(!userTest || !questionsAnswers) return null
-        return {  userTest,  questionsAnswers}
+        return {  userTest, questionsAnswers}
       })
     )
     

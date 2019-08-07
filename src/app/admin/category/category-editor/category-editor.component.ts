@@ -4,9 +4,7 @@ import config from "src/data/config";
 import { FormBuilder, Validators, FormControl } from "@angular/forms";
 import { MainService } from '../../main.service';
 import { Category } from 'src/app/modals/category';
-import { BackendStatus } from 'src/app/shared/global';
 import { ActivatedRoute } from '@angular/router';
-import { TestOriginal } from 'src/app/amplitude-test/modals/test';
 
 @Component({
   selector: "app-category-editor",
@@ -20,7 +18,7 @@ export class CategoryEditorComponent {
   backendError: string;
   testAddError:string;
   submitting: boolean = false;
-  tests:{_id: string, name: string}[]=[]
+  tests:{_id: string, name?: string}[]=[]
   @ViewChild("pageContent", {static:false}) pageContent:ElementRef<HTMLElement>;
 
   //work as "edit" component
@@ -48,8 +46,17 @@ export class CategoryEditorComponent {
       this.title.setValue(this.category.name)
       this.image.setValue(this.category.image)
       this.syllabus.setValue(this.category.syllabus)
-      for(let test of this.category.tests) 
-        this.tests.push(test)
+      for(let id of this.category.tests) {
+        this.tests.push({_id:id})
+        this.ms.getTestState(id).subscribe(
+          (data)=>{
+            if(typeof(data)!="string") {
+              let results = this.tests.filter((test)=>test._id == id)
+              if(results.length) results[0].name = data.name
+            }
+          }
+        )
+      }
     } else {
       this.pageTitle = "Create New Category"
     }
@@ -90,7 +97,7 @@ export class CategoryEditorComponent {
     let id = this.category?this.category._id:(new Date()).getTime().toString();
     let category:Category =  {
         name:this.title.value,
-        tests: this.tests,
+        tests: this.tests.map(test => test._id),
         lastUpdated: new Date(),
         _id:id,
         syllabus:this.syllabus.value,

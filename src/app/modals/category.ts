@@ -1,6 +1,6 @@
 export interface Category {
     name:string;
-    tests:{_id:string, name:string}[];
+    tests:string[];
     lastUpdated:Date;
     syllabus:string;
     _id:string;

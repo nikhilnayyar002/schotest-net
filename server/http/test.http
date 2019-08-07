@@ -79,13 +79,8 @@ POST http://localhost:3000/categories
 Content-Type: application/json
 
 {
-    "name":"mockedCategoryw4",
-    "tests": [
-        {
-            "_id":"12347",
-            "name":"mockedCategory1"
-        }
-    ],
+    "name":"mockedCategory1",
+    "tests": ["12347"],
     "lastUpdated": "2019-07-23T05:37:45.006Z",
     "_id":"12349",
     "syllabus":"<p>You know well</p>",

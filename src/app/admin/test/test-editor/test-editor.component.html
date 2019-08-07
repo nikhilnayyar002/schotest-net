@@ -24,7 +24,7 @@
     </div>
     <!--Detail-->
     <div class="input-container flex-column">
-      <label for="detail">Detail (?)</label>
+      <label for="detail">Detail <small>(?)</small></label>
       <textarea
         class="input-field bg-info"
         type="text"
@@ -36,7 +36,7 @@
     </div>
     <!--Time-->
     <div class="input-container flex-column">
-      <label for="time">Time (?)</label>
+      <label for="time">Time(s) <small>(?)</small></label>
       <div>
         <input
           class="input-field bg-info"
@@ -50,6 +50,54 @@
         <span class="ml-3 text-secondary">{{ +time.value | timer}}</span>
       </div>
     </div>
+    <div
+      *ngIf="time.errors && (time.dirty || time.touched)"
+      class="input-error"
+    >
+      Time should be a number (represents time in seconds).
+    </div>
+    <!--No. of Questions-->
+    <div class="input-container flex-column">
+      <label for="nOfQ">No. of Questions <small>(?)</small></label>
+      <div>
+        <input
+          class="input-field bg-info"
+          type="text"
+          placeholder="number"
+          name="nOfQ"
+          formControlName="nOfQ"
+          autocomplete="off"
+          style="max-width: 150px;"
+        />
+      </div>
+    </div>
+    <div
+      *ngIf="nOfQ.errors && (nOfQ.dirty || nOfQ.touched)"
+      class="input-error"
+    >
+      Value should be a number.
+    </div>      
+    <!--Marks-->
+    <div class="input-container flex-column">
+      <label for="marks">Total Marks<small>(?)</small></label>
+      <div>
+        <input
+          class="input-field bg-info"
+          type="text"
+          placeholder="number"
+          name="marks"
+          formControlName="marks"
+          autocomplete="off"
+          style="max-width: 150px;"
+        />
+      </div>
+    </div>
+    <div
+      *ngIf="marks.errors && (marks.dirty || nOfQ.touched)"
+      class="input-error"
+    >
+      Value should be a number.
+    </div>  
 
     <!-- Test Ready (i think it should be shown when editing test)-->
     <div class="input-container" *ngIf="test">
@@ -82,75 +130,17 @@
         </label>
       </div>
     </div>
-
-    <div class="d-flex justify-content-center">
-      <button
-        id="submit-btn"
-        type="submit"
-        class="btn btn-secondary"
-        [disabled]="form.invalid"
-        (click)="submit()"
-        *ngIf="!submitting"
-      >
-        Submit
-      </button>
-      <div *ngIf="submitting" class="spinner-grow text-secondary" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
+    <div class="mr-2 mb-2">
+        <button
+          type="button"
+          class="btn btn-secondary btn-sm"
+          [disabled]="submitting"
+          [routerLink]="[ './questions']"
+          *ngIf="test"
+        >
+          Questions
+        </button>    
     </div>
-    <div *ngIf="backendError" class="input-error" style="margin-top: 15px;">
-      <pre>{{ backendError }}</pre>
-    </div>
-  </form>
-
-  <form class="bg-primary form-container mt-2" [formGroup]="form">
-    <h4 class="mb-5">
-      Add Question
-    </h4>
-    <!--Title-->
-    <div class="input-container flex-column">
-      <label for="title">Title</label>
-      <input
-        class="input-field bg-info"
-        type="text"
-        placeholder="title"
-        name="title"
-        formControlName="title"
-        autocomplete="off"
-      />
-    </div>
-    <div
-      *ngIf="title.errors && (title.dirty || title.touched)"
-      class="input-error"
-    >
-      Title is required.
-    </div>
-    <!--Detail-->
-    <div class="input-container flex-column">
-      <label for="detail">Detail (?)</label>
-      <textarea
-        class="input-field bg-info"
-        type="text"
-        placeholder="detail"
-        name="detail"
-        formControlName="detail"
-        rows="2"
-      ></textarea>
-    </div>
-    <!--Time-->
-    <div class="input-container flex-column">
-      <label for="time">Time (?)</label>
-      <input
-        class="input-field bg-info"
-        type="text"
-        placeholder="time"
-        name="time"
-        formControlName="time"
-        autocomplete="off"
-      />
-    </div>
-
-    <!-- submit -->
     <div class="d-flex justify-content-center">
       <button
         id="submit-btn"
@@ -171,3 +161,4 @@
     </div>
   </form>
 </div>
+<router-outlet></router-outlet>

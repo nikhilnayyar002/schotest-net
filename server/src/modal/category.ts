@@ -4,7 +4,7 @@ import * as mongoose from "mongoose";
 
 export interface Category  {
     name:string;
-    tests: {_id:string, name:string}[];
+    tests:string[];
     lastUpdated: Date;
     _id:string;
     syllabus:string;
@@ -15,7 +15,7 @@ export interface Category  {
 
 export const CategorySchema = new mongoose.Schema<Category & mongoose.Document>({
     name:{type:String},
-    tests: {type:[mongoose.SchemaTypes.Mixed]},
+    tests: {type:[String]},
     lastUpdated: { type:Date },
     _id: { type:String },
     syllabus: {type:String},

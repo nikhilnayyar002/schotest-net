@@ -37,6 +37,9 @@ export class OverallComponent implements OnInit {
       }
     }
 
+    //avoiding negative score
+    if(this.overallProp.scoredMarks<0) this.overallProp.scoredMarks = 0
+
     //all done
     this.isAllSet = true;
   }

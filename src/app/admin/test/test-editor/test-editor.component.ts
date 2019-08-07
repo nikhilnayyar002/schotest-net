@@ -4,6 +4,7 @@ import { Validators, FormBuilder, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MainService } from '../../main.service';
 import config from 'src/data/config';
+import { QuestionOriginal } from 'src/app/amplitude-test/modals/question';
 
 @Component({
   selector: 'app-test-editor',
@@ -15,31 +16,27 @@ export class TestEditorComponent implements OnInit {
   pageTitle:string;
   configData = config;
   backendError: string;
-  testAddError:string;
   submitting: boolean = false;
-  tests:{_id: string, name: string}[]=[]
   @ViewChild("pageContent", {static:false}) pageContent:ElementRef<HTMLElement>;
 
   //work as "edit" component
   test:TestOriginal;
 
-  //* name: string;
-  // sections: { [index: string]: string };
-  //* detail: string;
-  //* _id: string;
-  //* oTime: number;
-  // questions: { [index: string]: Question };
-  // isTestReady?:boolean;
+  //new
+  questions:QuestionOriginal[]=[]
 
   form = this.fb.group({
     title: ["", [Validators.required]],
     detail: [""],
-    time:[""],
+    time:[0, [Validators.pattern('^[0-9]+$')]],
+    nOfQ:[0, [Validators.pattern('^[0-9]+$')]],
+    marks:[0, [Validators.pattern('^[0-9]+$')]],
     isTestReady:[false]
   });
 
   constructor(private fb: FormBuilder, private ms:MainService, private route: ActivatedRoute)
   {}
+
 
   ngOnInit(): void {
     this.test = this.route.snapshot.data["test"]
@@ -59,6 +56,8 @@ export class TestEditorComponent implements OnInit {
   get detail() {return this.form.get("detail") as FormControl;}  
   get time() {return this.form.get("time") as FormControl;} 
   get isTestReady() {return this.form.get("isTestReady") as FormControl;} 
+  get nOfQ() {return this.form.get("nOfQ") as FormControl;} 
+  get marks() {return this.form.get("marks") as FormControl;} 
 
   submit() {
     this.submitting = true
@@ -67,8 +66,10 @@ export class TestEditorComponent implements OnInit {
         name:this.title.value,
         sections:null,
         detail:this.detail.value,
-        oTime:this.time.value,
+        oTime:this.time.value?this.time.value:0,
         _id:id,
+        nOfQ:this.nOfQ.value?this.nOfQ.value:0,
+        marks:this.marks.value?this.marks.value:0,
         isTestReady:this.isTestReady.value
     }
     this.ms.postTest(test, !this.test).subscribe(

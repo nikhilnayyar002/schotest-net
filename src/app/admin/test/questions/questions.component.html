@@ -1,0 +1,24 @@
+<div class="overlay overlay-fixed overflow-auto">
+  <div class="bg-primary m-4 p-3">
+    <button
+      type="button"
+      class="close text-secondary"
+      aria-label="Close"
+      style="font-size: 40px; outline: none"
+      [routerLink]="['../']"
+      replaceUrl
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <div class="bg-info p-2">
+        <h3>Questions</h3>
+        <button
+         type="button"
+         class="btn btn-secondary btn-sm"
+         [disabled]="addNewQuestion"
+         (click)="addNewQuestion = true"
+         >Add</button>
+    </div>
+    <app-question-editor *ngIf="addNewQuestion"></app-question-editor>
+  </div>
+</div>
