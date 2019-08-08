@@ -3,7 +3,7 @@ import { QuestionOriginal, UserQuestion } from "./question";
 
 export interface TestOriginal {
   name: string;
-  sections: { [index: string]: string };
+  sections: { [index: string]: { qID:string, sectionOrder:number } };
   detail: string;
   _id: string;
   oTime: number;

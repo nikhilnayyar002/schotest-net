@@ -142,7 +142,9 @@ export class ParentComponent {
    * section dropdown items click handler
    */
   sectionClick(section: string) {
-    this.store.dispatch(SetIndex({ id: this.test.sections[section] }))
+    /** assuming section can be null also */
+    if(this.test.sections[section].qID)
+      this.store.dispatch(SetIndex({ id: this.test.sections[section].qID }))
     return false
   }
 

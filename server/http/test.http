@@ -49,17 +49,23 @@ POST http://localhost:3000/tests
 Content-Type: application/json
 
 {
-    "_id": "12349",
+    "_id": "12347",
     "name": "mockedTest2",
     "sections": {
-        "English": "123456",
-        "Mathematics": "123459"
+        "English": {
+            "qid":"123456",
+            "sectionOrder":0
+        },
+        "Mathematics": {
+            "qid":"123459",
+            "sectionOrder":0
+        }
     },
     "detail": "Simple mocked Test 2",
     "oTime": 1800,
-    "isTestReady":true,
-    "nOfQ":3,
-    "marks":4
+    "isTestReady": true,
+    "nOfQ": 3,
+    "marks": 4
 }
 
 ### Get Test

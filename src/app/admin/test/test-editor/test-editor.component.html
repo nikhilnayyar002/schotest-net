@@ -107,6 +107,90 @@
       </div>
     </div>
 
+    <!--sections-->
+    <div class="input-container flex-column">
+      <label>Add Sections<small>(?)</small></label>
+      <!--input test ID-->
+      <div class="d-flex align-items-baseline">
+          <div class="mr-1">
+        <input
+          class="input-field bg-info mr-1"
+          type="text"
+          placeholder="section name"
+          name="sectionName"
+          autocomplete="off"
+          style="max-width: 235px;"
+          formControlName="sectionName"
+        />
+        <div  *ngIf="sectionName.errors && (sectionName.dirty || sectionName.touched)" class="input-error">
+            Value cannot be empty.
+        </div>
+        </div>
+        <div>
+        <input
+          class="input-field bg-info"
+          type="text"
+          placeholder="section order"
+          name="sectionOrder"
+          autocomplete="off"
+          style="max-width: 235px;"
+          formControlName="sectionOrder"
+        />
+        <div *ngIf="sectionOrder.errors && (sectionOrder.dirty || sectionOrder.touched)" class="input-error">
+            Value is a no. greater than 0.
+        </div>
+        </div>
+        <button
+          type="button"
+          class="btn btn-secondary ml-2 btn-sm"
+          (click)="addSection()"
+          [disabled]="sectionName.errors || sectionOrder.errors ? true : false"
+        >
+          Add
+        </button>
+      </div>
+      <!--Added test ID's container-->
+      <div
+        formArrayName="sections"
+        *ngIf="sections.length"
+        class="my-2 pl-2 overflow-auto"
+        style="max-height: 200px"
+      >
+        <div
+          *ngFor="let ctr of sections.controls; let i = index"
+          class="row nik-gradient no-gutters mb-1"
+        >
+          <div class="col overflow-hidden text-truncate">
+            <form class="d-flex flex-column" [formGroupName]="i">
+              <div class="col-auto">
+                <input
+                class="input-field bg-info"
+                type="text"
+                placeholder="section order"
+                [name]="'sectionOrder' + i"
+                autocomplete="off"
+                style="max-width: 235px;"
+                formControlName="sectionOrder"
+              />
+              </div>
+              <div *ngIf="ctr.get('sectionOrder').errors" class="input-error">
+                  Value is a no. greater than 0.
+              </div>
+            </form>
+          </div>
+          <div class="col-auto p-1">
+            <button
+              type="button"
+              class="btn btn-danger btn-sm mr-2"
+              (click)="removeSection(i)"
+            >
+              Remove
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Test Ready (i think it should be shown when editing test)-->
     <div class="input-container" *ngIf="test">
       <label class="mr-4">Is test ready?</label>

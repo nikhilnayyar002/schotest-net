@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { TestOriginal } from 'src/app/amplitude-test/modals/test';
-import { Validators, FormBuilder, FormControl } from '@angular/forms';
+import { Validators, FormBuilder, FormControl, FormArray, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MainService } from '../../main.service';
 import config from 'src/data/config';
@@ -22,16 +22,17 @@ export class TestEditorComponent implements OnInit {
   //work as "edit" component
   test:TestOriginal;
 
-  //new
-  questions:QuestionOriginal[]=[]
-
   form = this.fb.group({
     title: ["", [Validators.required]],
     detail: [""],
     time:[0, [Validators.pattern('^[0-9]+$')]],
     nOfQ:[0, [Validators.pattern('^[0-9]+$')]],
     marks:[0, [Validators.pattern('^[0-9]+$')]],
-    isTestReady:[false]
+    isTestReady:[false],
+    sections:this.fb.array([]),
+
+    sectionOrder:[null, [Validators.pattern('^[0-9]+$')]],
+    sectionName: ["", [Validators.required]]
   });
 
   constructor(private fb: FormBuilder, private ms:MainService, private route: ActivatedRoute)
@@ -57,14 +58,46 @@ export class TestEditorComponent implements OnInit {
   get time() {return this.form.get("time") as FormControl;} 
   get isTestReady() {return this.form.get("isTestReady") as FormControl;} 
   get nOfQ() {return this.form.get("nOfQ") as FormControl;} 
-  get marks() {return this.form.get("marks") as FormControl;} 
+  get marks() {return this.form.get("marks") as FormControl;}
+  get sections() {return this.form.get("sections") as FormArray;}
+
+  get sectionOrder() {return this.form.get("sectionOrder") as FormControl;}
+  get sectionName() {return this.form.get("sectionName") as FormControl;}
+  removeSection(index:number) {
+    this.sections.removeAt(index)
+  }
+
+  addSection() {
+    //"section already Added !!"
+    for(let i of this.sections.controls)
+      if(i.value.name == this.sectionName.value)
+        return;
+    this.sections.push(this.fb.group({
+      name: [this.sectionName.value], /** unactive control */
+      sectionOrder:[this.sectionOrder.value, [Validators.pattern('^[0-9]+$')]],
+      qID:[null] /** hidden control */
+    }))
+    this.sectionOrder.reset(); this.sectionName.reset();
+  }
+
 
   submit() {
     this.submitting = true
     let id = this.test?this.test._id:(new Date()).getTime().toString();
+
+    //we need to create "sections":
+    //  sections: { [index: string]: { qID:string, sectionOrder:number } };
+    //
+    //and we have {sectionOrder: string, name: string, qID:string}
+    let sections = {}
+    for(let i of this.sections.controls) {
+      let index = i.value.name, sectionOrder = i.value.sectionOrder, qID = i.value.qID
+      sections[index] = {qID, sectionOrder:sectionOrder?+sectionOrder:null}
+    }
+
     let test:TestOriginal =  {
         name:this.title.value,
-        sections:null,
+        sections:sections,
         detail:this.detail.value,
         oTime:this.time.value?this.time.value:0,
         _id:id,
