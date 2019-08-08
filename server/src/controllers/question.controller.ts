@@ -33,19 +33,19 @@ export const getQuestion: express.RequestHandler = function(req, res, next) {
   });
 };
 
-// /**
-//  * Return @Questions
-//  */
-// export const getQuestions: express.RequestHandler = function(req, res, next) {
-//   let tID = req.params.tID;
-//   QuestionModal.find({tID}, (err, questions: Question[]) => {
-//     if (err) {
-//       return next(err);
-//     }
-//     if (questions && questions.length) res.json({ status: true, questions });
-//     else next(new Record404Exception());
-//   });
-// };
+/**
+ * Return @Questions
+ */
+export const getQuestions: express.RequestHandler = function(req, res, next) {
+  let tID = req.params.tID;
+  QuestionModal.find({tID}, (err, questions: QuestionOriginal[]) => {
+    if (err) {
+      return next(err);
+    }
+    if (questions && questions.length) res.json({ status: true, questions });
+    else next(new Record404Exception());
+  });
+};
 
 
 /**

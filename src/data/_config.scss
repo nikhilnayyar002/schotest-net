@@ -59,6 +59,11 @@
   vertical-align: middle;
 }
 
+//button close
+button.close {
+  padding: 5px;
+}
+
 // setting dropdown and radio
 @include createDropDown($secondary-bg-color);
 @include createCustomRadio($secondary-bg-color);

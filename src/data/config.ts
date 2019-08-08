@@ -34,6 +34,9 @@ let config = {
             getTest: id => `${domain}/tests/${id}`,
             getTestState: id => `${domain}/tests/${id}/state`,
             getQuestionsAnswers: id =>  `${domain}/tests/${id}/completed`
+        },
+        question:{
+            getQuestions: id => `${domain}/questions/test/${id}`
         }
     },
     clientRoutes:{
@@ -70,6 +73,7 @@ let config = {
         adminCategories: ()=>"/admin/category",
         adminEditCategory: (catID)=> `/admin/category/edit/${catID}`,
         adminTests:()=> "/admin/test",
+        adminTestEdit:()=> "/admin/test/edit",
         adminEditTest:(id)=> `/admin/test/edit/${id}`,
         categoryCreate:() => '/admin/category/create',
         testCreate:() => '/admin/test/create'  

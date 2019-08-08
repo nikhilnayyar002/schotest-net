@@ -19,6 +19,10 @@
          (click)="addNewQuestion = true"
          >Add</button>
     </div>
-    <app-question-editor *ngIf="addNewQuestion"></app-question-editor>
+    <app-question-editor
+      *ngIf="addNewQuestion"
+      [sections]="sections"
+    >
+    </app-question-editor>
   </div>
 </div>

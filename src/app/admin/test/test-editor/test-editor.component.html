@@ -47,7 +47,7 @@
               name="time"
               formControlName="time"
               autocomplete="off"
-              style="max-width: 150px;"
+              style="max-width: 100px;"
             />
             <span class="ml-3 text-secondary">{{ +time.value | timer }}</span>
           </div>
@@ -99,7 +99,7 @@
           </div>
         </div>
         <div
-          *ngIf="marks.errors && (marks.dirty || nOfQ.touched)"
+          *ngIf="marks.errors && (marks.dirty || marks.touched)"
           class="input-error"
         >
           Value should be a number.
@@ -112,33 +112,36 @@
       <label>Add Sections<small>(?)</small></label>
       <!--input test ID-->
       <div class="d-flex align-items-baseline">
-          <div class="mr-1">
-        <input
-          class="input-field bg-info mr-1"
-          type="text"
-          placeholder="section name"
-          name="sectionName"
-          autocomplete="off"
-          style="max-width: 235px;"
-          formControlName="sectionName"
-        />
-        <div  *ngIf="sectionName.errors && (sectionName.dirty || sectionName.touched)" class="input-error">
-            Value cannot be empty.
-        </div>
+        <div class="mr-1">
+          <input
+            class="input-field bg-info mr-1"
+            type="text"
+            placeholder="section name"
+            name="sectionName"
+            autocomplete="off"
+            style="max-width: 235px;"
+            formControlName="sectionName"
+          />
         </div>
         <div>
-        <input
-          class="input-field bg-info"
-          type="text"
-          placeholder="section order"
-          name="sectionOrder"
-          autocomplete="off"
-          style="max-width: 235px;"
-          formControlName="sectionOrder"
-        />
-        <div *ngIf="sectionOrder.errors && (sectionOrder.dirty || sectionOrder.touched)" class="input-error">
+          <input
+            class="input-field bg-info"
+            type="text"
+            placeholder="section order"
+            name="sectionOrder"
+            autocomplete="off"
+            style="max-width: 235px;"
+            formControlName="sectionOrder"
+          />
+          <div
+            *ngIf="
+              sectionOrder.errors &&
+              (sectionOrder.dirty || sectionOrder.touched)
+            "
+            class="input-error"
+          >
             Value is a no. greater than 0.
-        </div>
+          </div>
         </div>
         <button
           type="button"
@@ -160,21 +163,24 @@
           *ngFor="let ctr of sections.controls; let i = index"
           class="row nik-gradient no-gutters mb-1"
         >
+          <div class="col p-2 overflow-hidden text-truncate">
+            {{ ctr.get("name").value }}
+          </div>
           <div class="col overflow-hidden text-truncate">
             <form class="d-flex flex-column" [formGroupName]="i">
               <div class="col-auto">
                 <input
-                class="input-field bg-info"
-                type="text"
-                placeholder="section order"
-                [name]="'sectionOrder' + i"
-                autocomplete="off"
-                style="max-width: 235px;"
-                formControlName="sectionOrder"
-              />
+                  class="input-field bg-info"
+                  type="text"
+                  placeholder="section order"
+                  [name]="'sectionOrder' + i"
+                  autocomplete="off"
+                  style="max-width: 235px;"
+                  formControlName="sectionOrder"
+                />
               </div>
               <div *ngIf="ctr.get('sectionOrder').errors" class="input-error">
-                  Value is a no. greater than 0.
+                Value is a no. greater than 0.
               </div>
             </form>
           </div>
@@ -229,6 +235,7 @@
         [disabled]="submitting"
         [routerLink]="['./questions']"
         *ngIf="test"
+        [state]="{ hello: 'world' }"
       >
         Questions
       </button>

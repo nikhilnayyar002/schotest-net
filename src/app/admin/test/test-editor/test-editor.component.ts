@@ -4,7 +4,6 @@ import { Validators, FormBuilder, FormControl, FormArray, FormGroup } from '@ang
 import { ActivatedRoute } from '@angular/router';
 import { MainService } from '../../main.service';
 import config from 'src/data/config';
-import { QuestionOriginal } from 'src/app/amplitude-test/modals/question';
 
 @Component({
   selector: 'app-test-editor',
@@ -47,6 +46,20 @@ export class TestEditorComponent implements OnInit {
       this.title.setValue(this.test.name)
       this.detail.setValue(this.test.detail)
       this.time.setValue(this.test.oTime)
+      this.nOfQ.setValue(this.test.nOfQ)
+      this.marks.setValue(this.test.marks)
+      this.isTestReady.setValue(this.test.isTestReady)
+
+    //we need to create "sections":
+    //  sections: { [index: string]: { qID:string, sectionOrder:number } };
+    //and we have {sectionOrder: string, name: string, qID:string}      
+      for(let prop in this.test.sections) 
+        this.sections.push(this.fb.group({
+          name: [prop], /** unactive control */
+          sectionOrder:[this.test.sections[prop].sectionOrder, [Validators.pattern('^[0-9]+$')]],
+          qID:[this.test.sections[prop].qID] /** hidden control */
+        }))
+
     } else {
       this.pageTitle = "Create New Test"
     }
@@ -87,7 +100,6 @@ export class TestEditorComponent implements OnInit {
 
     //we need to create "sections":
     //  sections: { [index: string]: { qID:string, sectionOrder:number } };
-    //
     //and we have {sectionOrder: string, name: string, qID:string}
     let sections = {}
     for(let i of this.sections.controls) {
@@ -119,6 +131,5 @@ export class TestEditorComponent implements OnInit {
       }
     )
   }
-
 
 }

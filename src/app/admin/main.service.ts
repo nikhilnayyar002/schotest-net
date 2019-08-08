@@ -10,6 +10,7 @@ import { GLobalState } from "../shared/global.state";
 import { UserTest, TestOriginal } from "../amplitude-test/modals/test";
 import { BackendStatus, QuestionsAnswers } from "../shared/global";
 import { SetAppState } from "../state/state.actions";
+import { QuestionOriginal } from '../amplitude-test/modals/question';
 
 interface QuestionsAnswersRes extends QuestionsAnswers {
   status: boolean;
@@ -87,6 +88,18 @@ export class MainService {
     );
     return this.auth.tryWithRefreshIfNecc(
       config.routes.test.getTest(id),
+      recipe
+    );
+  }
+  
+  getQuestions(tid:string): Observable<QuestionOriginal[]> {
+    let recipe = pipe(
+      map(
+        (data: { status: boolean; questions: QuestionOriginal[] }) => data.questions
+      )
+    );
+    return this.auth.tryWithRefreshIfNecc(
+      config.routes.question.getQuestions(tid),
       recipe
     );
   }

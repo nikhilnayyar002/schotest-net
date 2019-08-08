@@ -1,4 +1,4 @@
-<h4 class="header bg-info py-4">
+<h4 class="header py-4">
   {{ pageTitle }}
 </h4>
 
@@ -16,6 +16,18 @@
         autocomplete="off"
       />
     </div>
+    <!--Image-->
+    <div class="input-container flex-column">
+      <label for="image">Image Url/Base64 <small>(?)</small></label>
+      <input
+        class="input-field bg-info"
+        type="text"
+        placeholder="image"
+        name="image"
+        formControlName="image"
+        autocomplete="off"
+      />
+    </div>
 
     <!-- <div
       *ngIf="title.errors && (title.dirty || title.touched)"
@@ -23,64 +35,10 @@
     >
       Title is required.
     </div> -->
-    <!--Detail-->
-    <div class="input-container flex-column">
-      <label for="detail">Detail <small>(?)</small></label>
-      <textarea
-        class="input-field bg-info"
-        type="text"
-        placeholder="detail"
-        name="detail"
-        formControlName="detail"
-        rows="2"
-      ></textarea>
-    </div>
-    <!--Time-->
-    <div class="input-container flex-column">
-      <label for="time">Time(s) <small>(?)</small></label>
-      <div>
-        <input
-          class="input-field bg-info"
-          type="text"
-          placeholder="time"
-          name="time"
-          formControlName="time"
-          autocomplete="off"
-          style="max-width: 150px;"
-        />
-        <span class="ml-3 text-secondary">{{ +time.value | timer }}</span>
-      </div>
-    </div>
-    <div
-      *ngIf="time.errors && (time.dirty || time.touched)"
-      class="input-error"
-    >
-      Time should be a number (represents time in seconds).
-    </div>
-    <!--No. of Questions-->
-    <div class="input-container flex-column">
-      <label for="nOfQ">No. of Questions <small>(?)</small></label>
-      <div>
-        <input
-          class="input-field bg-info"
-          type="text"
-          placeholder="number"
-          name="nOfQ"
-          formControlName="nOfQ"
-          autocomplete="off"
-          style="max-width: 150px;"
-        />
-      </div>
-    </div>
-    <div
-      *ngIf="nOfQ.errors && (nOfQ.dirty || nOfQ.touched)"
-      class="input-error"
-    >
-      Value should be a number.
-    </div>
+
     <!--Marks-->
     <div class="input-container flex-column">
-      <label for="marks">Total Marks<small>(?)</small></label>
+      <label for="marks">Marks<small>(?)</small></label>
       <div>
         <input
           class="input-field bg-info"
@@ -94,26 +52,55 @@
       </div>
     </div>
     <div
-      *ngIf="marks.errors && (marks.dirty || nOfQ.touched)"
+      *ngIf="marks.errors && (marks.dirty || marks.touched)"
       class="input-error"
     >
       Value should be a number.
     </div>
 
+    <!--test-->
+    <div class="input-container flex-column">
+      <label for="test">Add Test <small>(?)</small></label>
+      <!--input test ID-->
+      <div>
+        <input
+          class="input-field bg-info"
+          type="text"
+          placeholder="test"
+          name="test"
+          autocomplete="off"
+          style="max-width: 235px;"
+          #testID
+          (keyup)="(0)"
+        />
+        <button
+          type="button"
+          class="btn btn-secondary ml-2 btn-sm"
+          (click)="addTest(testID)"
+          [disabled]="testID.value ? false : true"
+        >
+          Add
+        </button>
+      </div>
+    </div>
+    <div *ngIf="testAddError" class="input-error">
+      {{ testAddError }}
+    </div>
+
     <!-- Test Ready (i think it should be shown when editing test)-->
-    <div class="input-container" *ngIf="test">
-      <label class="mr-4">Is test ready?</label>
+    <div class="input-container">
+      <label class="mr-4">Is comprehension?</label>
       <!--radio buttons-->
       <div class="custom-control custom-radio mx-2">
         <input
           type="radio"
-          name="isTestReady"
+          name="isComprehension"
           [value]="true"
-          id="isTestReadyYes"
+          id="isComprehensionYes"
           class="custom-control-input"
-          formControlName="isTestReady"
+          formControlName="isComprehension"
         />
-        <label class="custom-control-label" for="isTestReadyYes">
+        <label class="custom-control-label" for="isComprehensionYes">
           Yes
         </label>
       </div>
@@ -121,34 +108,126 @@
         <input
           type="radio"
           [value]="false"
-          name="isTestReady"
-          id="isTestReadyNo"
+          name="isComprehension"
+          id="isComprehensionNo"
           class="custom-control-input"
-          formControlName="isTestReady"
+          formControlName="isComprehension"
         />
-        <label class="custom-control-label" for="isTestReadyNo">
+        <label class="custom-control-label" for="isComprehensionNo">
           No
         </label>
       </div>
     </div>
-    <div class="mr-2 mb-2">
-      <button
-        type="button"
-        class="btn btn-secondary btn-sm"
-        [disabled]="submitting"
-        [routerLink]="['./questions']"
-        *ngIf="test"
+    <!--comprehensionContent-->
+    <div *ngIf="isComprehension.value" class="input-container flex-column">
+      <label>Comprehension Content <small>(?)</small></label>
+      <ckeditor
+        [editor]="editor"
+        (ready)="onReady($event)"
+        [config]="editorConfig"
+        class="border border-info"
+        formControlName="comprehensionContent"
       >
-        Questions
-      </button>
+      </ckeditor>
     </div>
+    <!-- section -->
+    <div class="input-container">
+      <label>Section <small>(?)</small></label>
+      <div class="col-auto dropdown d-inline-block">
+        <button
+          class="btn btn-secondary btn-sm dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+          [disabled]="sections.length ? false : true"
+        >
+          {{ selectedSection?.name }}
+        </button>
+        <div class="dropdown-menu">
+          <span
+            *ngFor="let sec of sections"
+            class="dropdown-item"
+            (click)="selectedSection = sec"
+          >
+            {{ sec.name }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!--answers-->
+    <div class="input-container flex-column">
+      <label>Add mcqs<small>(?)</small></label>
+      <!--input test ID-->
+      <div class="d-flex align-items-baseline">
+        <div class="mr-1">
+          <input
+            class="input-field bg-info mr-1"
+            type="text"
+            placeholder="section name"
+            name="answer"
+            autocomplete="off"
+            style="max-width: 235px;"
+            formControlName="answer"
+          />
+        </div>
+        <button
+          type="button"
+          class="btn btn-secondary ml-2 btn-sm"
+          (click)="addAnswer()"
+          [disabled]="answer.errors ? true : false"
+        >
+          Add
+        </button>
+      </div>
+      <!--Added test ID's container-->
+      <div
+        formArrayName="answers"
+        *ngIf="sections.length"
+        class="my-2 pl-2 overflow-auto"
+        style="max-height: 200px"
+      >
+        <div
+          *ngFor="let ctr of answers.controls; let i = index"
+          class="row nik-gradient no-gutters mb-1"
+        >
+          <div class="col overflow-hidden text-truncate">
+            <div class="d-flex flex-column">
+              <div class="col-auto">
+                <input
+                  class="input-field bg-transparent"
+                  type="text"
+                  autocomplete="off"
+                  [formControlName]="i"
+                />
+              </div>
+              <div *ngIf="ctr.errors" class="input-error">
+                Value cannot be empty
+              </div>
+            </div>
+          </div>
+          <div class="col-auto p-1">
+            <button
+              type="button"
+              class="btn btn-danger btn-sm mr-2"
+              (click)="removeAnswer(i)"
+            >
+              Remove
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="d-flex justify-content-center">
       <button
         id="submit-btn"
         type="submit"
         class="btn btn-secondary"
         [disabled]="form.invalid"
-        (click)="submit()"
+        (click)="(false)"
         *ngIf="!submitting"
       >
         Submit
