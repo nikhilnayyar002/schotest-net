@@ -1,1 +1,26 @@
-<p>parent works!</p>
+<h1 class="header py-4">
+  Instruction
+</h1>
+<div class="p-2 rounded-sm d-flex">
+  <button
+    type="button"
+    class="btn btn-secondary btn-sm ml-auto"
+    [routerLink]="[config.adminRoutes.instructionCreate()]"
+  >
+    Create
+  </button>
+</div>
+
+<div class="page-content">
+  <ul class="list-group list-group-flush mt-4">
+    <li
+      *ngFor="let ins of instructions"
+      class="list-group-item list-group-item-action bg-primary mb-1 p-1 px-3 d-flex"
+    >
+    <div class="text-truncate col py-1 p-0">{{ ins.name }}</div>
+      <button class="btn btn-sm btn-secondary col-auto"
+        [routerLink]="[config.adminRoutes.adminEditInstruction(ins._id)]"
+      >Visit</button>
+    </li>
+  </ul>
+</div>

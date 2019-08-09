@@ -1,0 +1,58 @@
+<h4 class="header py-4">
+    {{pageTitle}}
+  </h4>
+  
+  <div #pageContent class="page-content">
+    <form class="bg-primary form-container" [formGroup]="form">
+      <!--Title-->
+      <div class="input-container flex-column">
+        <label for="title">Title</label>
+        <input
+          class="input-field bg-info"
+          type="text"
+          placeholder="title"
+          name="title"
+          formControlName="title"
+          autocomplete="off"
+        />
+      </div>
+      <div
+        *ngIf="title.errors && (title.dirty || title.touched)"
+        class="input-error"
+      >
+        Title is required.
+      </div>
+
+      <!--Data-->
+      <div class="input-container flex-column">
+        <label>Instruction <small>(?)</small></label>
+        <ckeditor
+          [editor]="editor"
+          (ready)="onReady($event)"
+          [config]="editorConfig"
+          class="border border-info"
+          formControlName="data"
+        >
+        </ckeditor>
+      </div>
+  
+      <div class="d-flex justify-content-center">
+        <button
+          id="submit-btn"
+          type="submit"
+          class="btn btn-secondary"
+          [disabled]="form.invalid"
+          (click)="submit()"
+          *ngIf="!submitting"
+        >
+          Submit
+        </button>
+        <div *ngIf="submitting" class="spinner-grow text-secondary" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+      <div *ngIf="backendError" class="input-error" style="margin-top: 15px;">
+        <pre>{{ backendError }}</pre>
+      </div>
+    </form>
+  </div>

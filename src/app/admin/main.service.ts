@@ -11,6 +11,7 @@ import { UserTest, TestOriginal } from "../amplitude-test/modals/test";
 import { BackendStatus, QuestionsAnswers } from "../shared/global";
 import { SetAppState } from "../state/state.actions";
 import { QuestionOriginal } from '../amplitude-test/modals/question';
+import { Instruction } from '../modals/instruction';
 
 interface QuestionsAnswersRes extends QuestionsAnswers {
   status: boolean;
@@ -46,7 +47,7 @@ export class MainService {
       return this.http.put(config.routes.category.postCategory(),category,httpOptions)
   } 
 
-  getCategory(catID:string): Observable<Category[]> {
+  getCategory(catID:string): Observable<Category> {
     let recipe = pipe(
       map(
         (data: { status: boolean; category: Category }) => data.category
@@ -80,7 +81,7 @@ export class MainService {
     // else  /** update category */
     //   return this.http.put(config.routes.category.postCategory(),category,httpOptions)
   } 
-  getTest(id:string): Observable<Category[]> {
+  getTest(id:string): Observable<TestOriginal> {
     let recipe = pipe(
       map(
         (data: { status: boolean; test: TestOriginal }) => data.test
@@ -248,5 +249,39 @@ export class MainService {
   //     })
   //   )
   // }
-  
+
+  postInstruction(instruction: Instruction, post:boolean){
+    const httpOptions = {
+      headers: new HttpHeaders({ "Content-Type": "application/json" })
+    };
+    if(post) /** new test */
+      return this.http.post(config.routes.instruction.postInstruction(),instruction,httpOptions)
+    else  /** update category */
+      return this.http.put(config.routes.category.postCategory(),instruction,httpOptions)
+  } 
+
+  getInstruction(id:string): Observable<Instruction> {
+    let recipe = pipe(
+      map(
+        (data: { status: boolean; instruction: Instruction }) => data.instruction
+      )
+    );
+    return this.auth.tryWithRefreshIfNecc(
+      config.routes.instruction.getInstruction(id),
+      recipe
+    );
+  }
+
+  getInstructionStates(): Observable<Instruction[]> {
+    let recipe = pipe(
+      map(
+        (data: { status: boolean; instructions: Instruction[] }) => data.instructions
+      )
+    );
+    return this.auth.tryWithRefreshIfNecc(
+      config.routes.instruction.getInstructionStates(),
+      recipe
+    );
+  }
+    
 }

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import config from 'src/data/config';
+import { MainService } from '../../main.service';
+import { Instruction } from 'src/app/modals/instruction';
 
 @Component({
   selector: 'app-parent',
@@ -7,9 +10,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ParentComponent implements OnInit {
 
-  constructor() { }
+  config = config
+  instructions:Instruction[]
 
-  ngOnInit() {
+  constructor(
+    // private route:ActivatedRoute,
+    private ms:MainService
+  ) {}
+
+  ngOnInit(): void {
+    this.ms.getInstructionStates().subscribe((instructions)=>this.instructions = instructions)
   }
 
 }

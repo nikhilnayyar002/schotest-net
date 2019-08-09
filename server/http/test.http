@@ -282,3 +282,18 @@ Content-Type: application/json
 GET  http://localhost:3000/questions/test/12349
 
 ###
+
+POST  http://localhost:3000/instructions
+Content-Type: application/json
+
+{
+    "_id":"12345",
+    "name":"right angled",
+    "data":"<p>right angled</p>"
+}
+
+###
+GET  http://localhost:3000/instructions/12345
+
+###
+GET  http://localhost:3000/instructions/states

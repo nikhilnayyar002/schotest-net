@@ -24,11 +24,11 @@ export class AdminResolverService {
       if (route.component == TestEditorComponent) return this.ms.getTest(id)
       if(state.url.includes("questions")) return
       if(state.url.includes("answers")) return
-
     }
 
     switch(state.url) {
         case config.adminRoutes.adminEditCategory(id) : return this.ms.getCategory(id)
+        case config.adminRoutes.adminEditInstruction(id) : return this.ms.getInstruction(id)
         // case config.adminRoutes.adminEditTest(id) : return this.ms.getTest(id)
     //   case config.clientRoutes.dashboardCategory(id) : return this.ms.getTests(id)
     //   case config.clientRoutes.dashboardPaused() : return this.ms.getPausedTests()     

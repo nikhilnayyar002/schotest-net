@@ -37,6 +37,11 @@ let config = {
         },
         question:{
             getQuestions: id => `${domain}/questions/test/${id}`
+        },
+        instruction:{
+            postInstruction: () => `${domain}/instructions`,
+            getInstruction: id => `${domain}/instructions/${id}`,
+            getInstructionStates: () => `${domain}/instructions/states`
         }
     },
     clientRoutes:{
@@ -76,9 +81,9 @@ let config = {
         adminTestEdit:()=> "/admin/test/edit",
         adminEditTest:(id)=> `/admin/test/edit/${id}`,
         categoryCreate:() => '/admin/category/create',
-        testCreate:() => '/admin/test/create'  
-
-
+        testCreate:() => '/admin/test/create',
+        instructionCreate:() => '/admin/instruction/create',
+        adminEditInstruction: (id)=> `/admin/instruction/edit/${id}`
     },
     ckEditor:{
         config:{
