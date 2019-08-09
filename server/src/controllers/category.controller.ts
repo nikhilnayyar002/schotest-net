@@ -27,7 +27,7 @@ export const postCategory: express.RequestHandler = function(req, res, next) {
 };
 
 /**
- * Return @message | @Category
+ * Return @message
  */
 export const updateCategory: express.RequestHandler = function(req, res, next) {
   let category: Category = req.body;

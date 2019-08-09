@@ -77,8 +77,8 @@ export class MainService {
     };
     if(post) /** new test */
       return this.http.post(config.routes.test.postTest(),test,httpOptions)
-    // else  /** update category */
-    //   return this.http.put(config.routes.category.postCategory(),category,httpOptions)
+    else  /** update category */
+      return this.http.put(config.routes.test.postTest(),test,httpOptions)
   } 
   getTest(id:string): Observable<Category[]> {
     let recipe = pipe(
@@ -103,6 +103,16 @@ export class MainService {
       recipe
     );
   }
+
+  postQuestion(question:QuestionOriginal,post:boolean){
+    const httpOptions = {
+      headers: new HttpHeaders({ "Content-Type": "application/json" })
+    };
+    if(post) /** new test */
+      return this.http.post(config.routes.question.postQuestion(),question,httpOptions)
+    else  /** update category */
+      return this.http.put(config.routes.question.postQuestion(),question,httpOptions)
+  }   
 
   // getTests(categoryID: string): Observable<TestResponse[]> {
   //   return this.store

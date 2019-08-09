@@ -36,7 +36,9 @@ let config = {
             getQuestionsAnswers: id =>  `${domain}/tests/${id}/completed`
         },
         question:{
-            getQuestions: id => `${domain}/questions/test/${id}`
+            getQuestions: id => `${domain}/questions/test/${id}`,
+            postQuestion: () => `${domain}/questions`,
+            postQuestions: () => `${domain}/questions/all`,
         }
     },
     clientRoutes:{

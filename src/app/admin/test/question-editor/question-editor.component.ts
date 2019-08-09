@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { QuestionOriginal } from 'src/app/amplitude-test/modals/question';
 import { FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import { MainService } from '../../main.service';
@@ -26,6 +26,8 @@ export class QuestionEditorComponent implements OnInit {
   @Input() qNo:number=0;
   @Input() sections: {sectionOrder: number, name: string}[] = [];  
   selectedSection:{sectionOrder: number, name: string};
+  @Output() closeForm = new EventEmitter<boolean>();
+  
 
   form = this.fb.group({
     content: [""],
@@ -34,7 +36,7 @@ export class QuestionEditorComponent implements OnInit {
     comprehensionContent: [""],
     marks:[0, [Validators.pattern('^[0-9]+$')]],
     answers:this.fb.array([]),
-    answer: ["",[Validators.required]]
+    answer: [""]
   });
 
 
@@ -97,32 +99,37 @@ export class QuestionEditorComponent implements OnInit {
   }
 
 
-  // submit() {
-  //   this.submitting = true
-  //   let id = this.category?this.category._id:(new Date()).getTime().toString();
-  //   let category:Category =  {
-  //       name:this.title.value,
-  //       tests: this.tests,
-  //       lastUpdated: new Date(),
-  //       _id:id,
-  //       syllabus:this.syllabus.value,
-  //       image:this.image.value
-  //   }
-     
-  //   this.ms.postCategory(category, !this.category).subscribe(
-  //     () => {
-  //       this.submitting = false;
-  //       if(!this.category) { this.form.reset(); this.tests = []; }
-  //     },
-  //     (error:any) =>{
-  //       this.submitting = false;
-  //       this.backendError = error.error.message
-  //       setTimeout(() => {
-  //         this.pageContent.nativeElement.scrollTo(0, this.pageContent.nativeElement.scrollHeight)
-  //       }, 0);
-  //     }
-  //   )
-  // }
+  submit() {
+    this.submitting = true
+    let id = this.question?this.question._id:(new Date()).getTime().toString();
+
+    let question:QuestionOriginal =  {
+      content: this.content.value,
+      image: this.image.value,
+      isComprehension: this.isComprehension.value,
+      comprehensionContent: this.comprehensionContent.value,
+      answers: this.answers.controls.map(ctrl => ctrl.value),
+      _id: id,
+      section: this.selectedSection?this.selectedSection.name:null,
+      marks:this.marks.value,
+      sectionOrder:this.selectedSection?this.selectedSection.sectionOrder:null,
+      tID:this.test._id
+    }
+
+    this.ms.postQuestion(question, !this.question).subscribe(
+      () => {
+        this.submitting = false; this.backendError = ''
+        this.closeForm.emit(true)
+      },
+      (error:any) =>{
+        this.submitting = false;
+        this.backendError = error.error.message
+        setTimeout(() => {
+          this.pageContent.nativeElement.scrollTo(0, this.pageContent.nativeElement.scrollHeight)
+        }, 0);
+      }
+    )
+  }
 
   /**
    * CK Editor

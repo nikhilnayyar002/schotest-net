@@ -19,10 +19,15 @@ export class MainService {
     return this.http.get(config.routes.test.getTest(id)).pipe(
       map((data: { status: boolean; test: TestWithFeatures }) => {
         let questions:{ [index: string]: UserQuestion } = {},
-          test:TestWithFeaturesForUser
+          test:TestWithFeaturesForUser,
+          sections = data.test.sections
         data.test.questions.forEach((question)=>{
           questions[question._id] = <UserQuestion>question
+          sections[question.section].qID?null:(
+            sections[question.section].qID = question._id
+          )
         })
+        console.log( data.test.questions, questions)
         test = {...data.test, questions}
         return test
       }),

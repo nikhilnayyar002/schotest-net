@@ -31,7 +31,7 @@ export class TestEditorComponent implements OnInit {
     sections:this.fb.array([]),
 
     sectionOrder:[null, [Validators.pattern('^[0-9]+$')]],
-    sectionName: ["", [Validators.required]]
+    sectionName: [""]
   });
 
   constructor(private fb: FormBuilder, private ms:MainService, private route: ActivatedRoute)
@@ -119,7 +119,7 @@ export class TestEditorComponent implements OnInit {
     }
     this.ms.postTest(test, !this.test).subscribe(
       () => {
-        this.submitting = false;
+        this.submitting = false; this.backendError = ''
         if(!this.test) { this.form.reset();}
       },
       (error:any) =>{

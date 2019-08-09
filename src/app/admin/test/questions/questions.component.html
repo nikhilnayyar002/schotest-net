@@ -1,5 +1,5 @@
 <div class="overlay overlay-fixed overflow-auto">
-  <div class="bg-primary m-4 p-3">
+  <div class="page bg-primary m-4 p-3">
     <button
       type="button"
       class="close text-secondary"
@@ -10,19 +10,18 @@
     >
       <span aria-hidden="true">&times;</span>
     </button>
-    <div class="bg-info p-2">
-        <h3>Questions</h3>
+    <div class="head p-2 d-flex align-content-center">
+        <h3 class="mr-3 mb-0">Questions</h3>
         <button
          type="button"
          class="btn btn-secondary btn-sm"
-         [disabled]="addNewQuestion"
-         (click)="addNewQuestion = true"
-         >Add</button>
+         (click)="addNewQuestion = !addNewQuestion"
+         >{{addNewQuestion?'Cancel':'Add'}}</button>
     </div>
-    <app-question-editor
-      *ngIf="addNewQuestion"
-      [sections]="sections"
-    >
-    </app-question-editor>
+    <div class="content">
+      <app-question-editor
+        *ngIf="addNewQuestion" [sections]="sections" (closeForm)="addNewQuestion = !addNewQuestion"
+      ></app-question-editor>
+    </div>
   </div>
 </div>

@@ -110,7 +110,7 @@ export class CategoryEditorComponent {
         if(!this.category) { this.form.reset(); this.tests = []; }
       },
       (error:any) =>{
-        this.submitting = false;
+        this.submitting = false; this.backendError = ''
         this.backendError = error.error.message
         setTimeout(() => {
           this.pageContent.nativeElement.scrollTo(0, this.pageContent.nativeElement.scrollHeight)

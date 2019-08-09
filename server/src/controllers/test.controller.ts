@@ -1,6 +1,6 @@
 import * as express from "express";
 import * as mongoose from "mongoose";
-import { Record404Exception, returnTyped, simplifyMongoose } from "../config/global";
+import { Record404Exception, returnTyped, simplifyMongoose, HttpException } from "../config/global";
 import { TestModal, TestOriginal, TestWithFeatures } from "../modal/test";
 import { QuestionModal, QuestionOriginal } from "../modal/question";
 import { AnswerModal, Answer } from "../modal/answer";
@@ -24,7 +24,7 @@ export const getTest:express.RequestHandler = function(req, res, next) {
           } 
           else next(new Record404Exception());
         })
-        .sort({ section: 'asc', sectionOrder: 1 });
+        .sort({ section: 'asc', sectionOrder: 1, _id: 'asc' });
 
       else next(new Record404Exception())
     })
@@ -63,6 +63,26 @@ export const postTest:express.RequestHandler = function(req, res, next) {
     }
   })
 }
+
+/**
+ * Return @message
+ */
+export const updateTest: express.RequestHandler = function(req, res, next) {
+  let test: TestOriginal = req.body;
+
+  TestModal.updateOne(
+    { _id: test._id },
+    { ...test },
+    function(err, doc) {
+      if (err) {
+        return next(err);
+      }
+      if (doc) res.json({ status: true, message: "Success" });
+      else next(new HttpException("Failed", 400));
+    }
+  );
+
+};
 
 /**
  * Return @answers and @questions
