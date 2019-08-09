@@ -15,6 +15,7 @@ import "./config/passportConfig";
 import "./config/setupEnv"
 import { answerRouter } from './router/answer.router';
 import { questionRouter } from './router/question.router';
+import { instructionRouter } from './router/instruction.router';
 
 const environment: Environment = <any>process.env;
 
@@ -79,7 +80,8 @@ app.use('/tests', TestRouter);
 app.use('/categories', CategoryRouter);
 app.use('/userData', UserDataRouter);
 app.use('/answers', answerRouter);
-app.use('/questions', questionRouter)
+app.use('/questions', questionRouter);
+app.use('/instructions', instructionRouter)
 app.use("**", invalidPath)
 
 function invalidPath(req,res, next) {
