@@ -64,8 +64,10 @@ body, .animated, .modal-content{
   @include browser-based-property(animation, fadeInFromNone 0.5s ease-out);
 
   .spinner-border {
-    border-top: 8px solid;
-    border-left: 5px solid;
+    width: 8rem;
+    border-top: none;
+    border-width: 2px;
+    height: 8rem;
   }
 }
 

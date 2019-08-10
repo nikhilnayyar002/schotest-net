@@ -18,10 +18,21 @@
          (click)="addNewQuestion = !addNewQuestion"
          >{{addNewQuestion?'Cancel':'Add'}}</button>
     </div>
-    <div class="content">
-      <app-question-editor
+    <div class="content bg-info">
+      <!-- <app-question-editor
         *ngIf="addNewQuestion" [sections]="sections" (closeForm)="addNewQuestion = !addNewQuestion"
-      ></app-question-editor>
+      ></app-question-editor> -->
+
+      <div class="accordion p-2" id="accordionTests">
+        <app-question-card
+          *ngFor="let question of questions; let i = index"
+          [question]='question'
+          [index]='i'
+          accordianID='accordionTests'
+          (headClick) = "onCardHeaderClick($event)"
+        ></app-question-card>
+      </div>
+
     </div>
   </div>
 </div>

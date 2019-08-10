@@ -44,7 +44,7 @@ export const getQuestions: express.RequestHandler = function(req, res, next) {
     }
     if (questions && questions.length) res.json({ status: true, questions });
     else next(new Record404Exception());
-  });
+  }).sort({ section: 'asc', sectionOrder: 1, _id: 'asc' });
 };
 
 

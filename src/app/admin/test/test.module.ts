@@ -9,6 +9,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { QuestionsComponent } from './questions/questions.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { ComponentsModule } from '../components/components.module';
 
 @NgModule({
   declarations: [ParentComponent, TestEditorComponent, QuestionEditorComponent, QuestionsComponent],
@@ -17,7 +18,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     TestRoutingModule,
     ReactiveFormsModule,
     SharedModule,
-    CKEditorModule
+    CKEditorModule,
+    ComponentsModule
   ]
 })
 export class TestModule { }

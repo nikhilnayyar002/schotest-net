@@ -1,1 +1,65 @@
-<p>question-card works!</p>
+<div class="card bg-primary rounded-sm mb-1">
+    <div
+      class="card-header position-relative"
+      id="heading{{ index }}"
+      data-toggle="collapse"
+      attr.data-target="#collapse{{ index }}"
+      aria-expanded="false"
+      attr.aria-controls="collapse{{ index }}"
+      (click)="onCardHeaderClick($event.currentTarget)"
+    >
+      <h6 class="mb-0 font-weight-bold">
+        Question No. {{ index + 1 }}
+        <span
+            *ngIf="question.section"
+            class="p-1 px-2 bg-info d-inline-block mr-2 mt-2 small rounded-sm"
+        >{{ question.section }}</span>
+      </h6>
+      <div class="card-status-container">
+        <span class="card-status">&larr;</span>
+      </div>
+    </div>
+    <div
+      id="collapse{{ index }}"
+      class="collapse"
+      attr.aria-labelledby="heading{{ index }}"
+      [attr.data-parent]="'#'+accordianID"
+    >
+      <div class="card-body bg-white text-dark">
+        <img class="image" [src]="question.image">
+        <p>{{ question.content }}</p>
+        <span
+            *ngIf="question.isComprehension"
+            class="p-1 px-2 bg-info d-inline-block mr-2 mt-2 small rounded-sm"
+          >Comprehension
+        </span>
+        <span class="p-1 px-2 bg-info d-inline-block mr-2 mt-2 small rounded-sm"
+          >Marks: {{ question.marks }}</span
+        >
+        <hr />
+
+          <p class="font-weight-bold">Mcqs:</p>
+          <ul>
+            <li *ngFor="let mcq of question.answers">{{ mcq }}</li>
+          </ul>
+
+  
+        <!-- <button
+          *ngIf="!test.isTestOver; else completedTemplate"
+          [routerLink]="[config.clientRoutes.test(test._id)]"
+          class="btn btn-secondary"
+        >
+          {{ test.hasTestStarted ? "Continue" : "Start" }}
+        </button> -->
+        <!-- <ng-template #completedTemplate>
+          <button
+            [routerLink]="[config.clientRoutes.completedTest(test._id)]"
+            class="btn btn-secondary"
+          >
+            View Result
+          </button>
+        </ng-template> -->
+      </div>
+    </div>
+  </div>
+  

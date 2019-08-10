@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 import { TestOriginal } from 'src/app/amplitude-test/modals/test';
 import { QuestionOriginal } from 'src/app/amplitude-test/modals/question';
 import { MainService } from '../../main.service';
+import { createAccordianState } from 'src/app/shared/global';
 
 @Component({
   selector: 'app-questions',
@@ -33,6 +34,8 @@ export class QuestionsComponent {
       }
       this.ms.getQuestions(this.test._id).subscribe(questions=>this.questions = questions)
     }
-      
   }
+
+  onCardHeaderClick = createAccordianState();
+  
 }
