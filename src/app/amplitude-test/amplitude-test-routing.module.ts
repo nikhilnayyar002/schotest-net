@@ -1,17 +1,30 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ParentComponent } from './parent/parent.component';
-import { TestResolverService } from './guard/test.resolver';
+import { AmplitudeTestResolverService } from './guard/amplitude-test.resolver';
 import { AuthGuard } from '../guards/auth.guard';
+import { InstructionComponent } from './instruction/instruction.component';
 
 const routes: Routes = [
   {
     path: 'test/:id',
-    component: ParentComponent,
     canActivate: [AuthGuard],
     resolve: {
-      test: TestResolverService
-    }
+      test: AmplitudeTestResolverService
+    },
+    children:[
+      {
+        path:'',
+        component: ParentComponent
+      },
+      {
+        path:'instruction/:insID',
+        component: InstructionComponent,
+        resolve: {
+          instruction: AmplitudeTestResolverService
+        },        
+      },      
+    ]
   }
 ];
 

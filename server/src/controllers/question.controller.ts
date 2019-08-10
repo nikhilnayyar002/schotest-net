@@ -1,6 +1,6 @@
 import * as express from "express";
 import * as mongoose from "mongoose";
-import {Record404Exception} from "../config/global";
+import {Record404Exception, HttpException} from "../config/global";
 import { QuestionOriginal, QuestionModal } from "../modal/question";
 
 /**
@@ -60,5 +60,25 @@ export const postQuestions: express.RequestHandler = function(req, res, next) {
       else return next(err);
     }
   })
+
+};
+
+/**
+ * Return @message | @QuestionOriginal
+ */
+export const updateQuestion: express.RequestHandler = function(req, res, next) {
+  let question: QuestionOriginal = req.body;
+
+  QuestionModal.updateOne(
+    { _id: question._id },
+    { ...question },
+    function(err, doc) {
+      if (err) {
+        return next(err);
+      }
+      if (doc) res.json({ status: true, message: "Success" });
+      else next(new HttpException("Failed", 400));
+    }
+  );
 
 };

@@ -1,5 +1,5 @@
 <h4 class="header py-4">
-  {{pageTitle}}
+  {{ pageTitle }}
 </h4>
 
 <div #pageContent class="page-content">
@@ -34,6 +34,33 @@
         autocomplete="off"
       />
     </div>
+    <!--instruction ID-->
+    <div class="input-container flex-column">
+      <label for="insID">Instruction ID <small>(?)</small></label>
+      <!--input test ID-->
+      <div>
+        <input
+          class="input-field bg-info"
+          type="text"
+          placeholder="instruction ID"
+          name="insID"
+          autocomplete="off"
+          style="max-width: 235px;"
+          formControlName="insID"
+        />
+        <button
+          type="button"
+          class="btn btn-secondary ml-2 btn-sm"
+          (click)="addInstruction()"
+          [disabled]="insID.value ? false : true"
+        >
+          Add
+        </button>
+      </div>
+    </div>
+    <div *ngIf="insAddError" class="input-error">
+      {{ insAddError }}
+    </div>
     <!--tests-->
     <div class="input-container flex-column">
       <label for="test">Add Tests <small>(?)</small></label>
@@ -63,19 +90,34 @@
         class="my-2 pl-2 overflow-auto"
         style="max-height: 200px"
       >
-        <div *ngFor="let test of tests" class="bg-info row nik-gradient no-gutters p-2 mb-1">
-          <div class="col p-1 overflow-hidden text-truncate">{{ test.name?test.name:test._id }}</div>
+        <div
+          *ngFor="let test of tests"
+          class="bg-info row nik-gradient no-gutters p-2 mb-1"
+        >
+          <div class="col p-1 overflow-hidden text-truncate">
+            {{ test.name ? test.name : test._id }}
+          </div>
           <div class="col-auto">
-            <button type="button" class="btn btn-danger btn-sm mr-2" (click)="removeTest(test._id)">Remove</button>
-            <button type="button" class="btn btn-secondary btn-sm"
-              [routerLink]="[ configData.adminRoutes.adminEditTest(test._id)]"
-            >View</button>  
+            <button
+              type="button"
+              class="btn btn-danger btn-sm mr-2"
+              (click)="removeTest(test._id)"
+            >
+              Remove
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary btn-sm"
+              [routerLink]="[configData.adminRoutes.adminEditTest(test._id)]"
+            >
+              View
+            </button>
           </div>
         </div>
-      </div>      
+      </div>
     </div>
     <div *ngIf="testAddError" class="input-error">
-      {{testAddError}}
+      {{ testAddError }}
     </div>
     <!--Syllabus-->
     <div class="input-container flex-column">
@@ -111,17 +153,8 @@
   </form>
 </div>
 
-
-
-
-
-
-
-
-
-
-      <!--Added test ID's container-->
-      <!-- <div
+<!--Added test ID's container-->
+<!-- <div
         *ngIf="tests.length"
         class="d-flex mb-4 flex-nowrap overflow-auto"
       >

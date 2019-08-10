@@ -15,7 +15,8 @@ export class QuestionCardComponent  {
   @Input() accordianID:string;
   config = config;
   @Output() headClick = new EventEmitter<HTMLElement>() 
+  @Output() editCLick = new EventEmitter<boolean>() 
 
   onCardHeaderClick = (elem:HTMLElement) => this.headClick.emit(elem)
-
+  onEditClick = () => this.editCLick.emit(true)
 }

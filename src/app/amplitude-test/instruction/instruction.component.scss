@@ -1,0 +1,6 @@
+@import "../../../data/mixins";
+
+:host {
+    @include page-content;
+    padding: 0;
+}

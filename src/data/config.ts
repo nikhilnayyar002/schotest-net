@@ -44,7 +44,8 @@ let config = {
         instruction:{
             postInstruction: () => `${domain}/instructions`,
             getInstruction: id => `${domain}/instructions/${id}`,
-            getInstructionStates: () => `${domain}/instructions/states`
+            getInstructionStates: () => `${domain}/instructions/states`,
+            getInstructionState: (id) => `${domain}/instructions/${id}/state`
         }
     },
     clientRoutes:{
@@ -67,6 +68,11 @@ let config = {
         relfavourite:()=>  './favourite',
         relPaused:()=> './paused',
         relCompleted:()=> './completed',
+    },
+    amplitudeTestRoutes:{
+        /** AmplitudeTestResolverService */
+        test: (id)=>`/test/${id}`,
+        instruction: (id, insID)=> `/test/${id}/instruction/${insID}`
     },
     adminRoutes:{
         admin: ()=>  '/admin',

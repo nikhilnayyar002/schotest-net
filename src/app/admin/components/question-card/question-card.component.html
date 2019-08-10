@@ -43,22 +43,8 @@
             <li *ngFor="let mcq of question.answers">{{ mcq }}</li>
           </ul>
 
-  
-        <!-- <button
-          *ngIf="!test.isTestOver; else completedTemplate"
-          [routerLink]="[config.clientRoutes.test(test._id)]"
-          class="btn btn-secondary"
-        >
-          {{ test.hasTestStarted ? "Continue" : "Start" }}
-        </button> -->
-        <!-- <ng-template #completedTemplate>
-          <button
-            [routerLink]="[config.clientRoutes.completedTest(test._id)]"
-            class="btn btn-secondary"
-          >
-            View Result
-          </button>
-        </ng-template> -->
+        <button class="btn btn-secondary" (click)="onEditClick()">Edit</button>
+
       </div>
     </div>
   </div>

@@ -10,26 +10,42 @@
     >
       <span aria-hidden="true">&times;</span>
     </button>
-    <div class="head p-2 d-flex align-content-center">
-        <h3 class="mr-3 mb-0">Questions</h3>
+    <div class="head d-flex align-items-center">
+        <h3 class="mr-1 mb-0">Questions</h3>
+        <p class="m-0 mt-2 mr-3">({{test?.name}})</p>
         <button
          type="button"
-         class="btn btn-secondary btn-sm"
-         (click)="addNewQuestion = !addNewQuestion"
+         class="btn btn-secondary btn-sm mr-2"
+         *ngIf="!addNewQuestions"
+         (click)="addNewQuestion = !addNewQuestion; editQuestion.question = null;"
          >{{addNewQuestion?'Cancel':'Add'}}</button>
+         <button
+         type="button"
+         class="btn btn-secondary btn-sm"
+         *ngIf="!addNewQuestion"
+         (click)="addNewQuestions = !addNewQuestions;"
+         >{{addNewQuestions?'Cancel':'Batch Add'}}</button>         
     </div>
+    
     <div class="content bg-info">
-      <!-- <app-question-editor
-        *ngIf="addNewQuestion" [sections]="sections" (closeForm)="addNewQuestion = !addNewQuestion"
-      ></app-question-editor> -->
+      <!-- add/edit single question-->
+      <app-question-editor
+        *ngIf="addNewQuestion && !addNewQuestions" [sections]="sections" (closeForm)="onCloseForm()"
+        [question]='editQuestion.question' [qNo]="editQuestion.qNo" [testID]="test._id"
+      ></app-question-editor>
 
-      <div class="accordion p-2" id="accordionTests">
+      <app-batch-add-questions
+        *ngIf="addNewQuestions && !addNewQuestion" (closeForm)="onCloseForm()" [testID]="test._id"
+      ></app-batch-add-questions>
+
+      <div *ngIf="!addNewQuestion && !addNewQuestions" class="accordion p-2" id="accordionTests">
         <app-question-card
           *ngFor="let question of questions; let i = index"
           [question]='question'
           [index]='i'
           accordianID='accordionTests'
           (headClick) = "onCardHeaderClick($event)"
+          (editCLick)= "onEditQuestionClick(question,i)"
         ></app-question-card>
       </div>
 

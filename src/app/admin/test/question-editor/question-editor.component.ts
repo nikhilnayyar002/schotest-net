@@ -15,9 +15,7 @@ export class QuestionEditorComponent implements OnInit {
   pageTitle:string;
   configData = config;
   backendError: string;
-  testAddError:string;
   submitting: boolean = false;
-  test:{_id?: string, name?: string} = {}
 
   @ViewChild("pageContent", {static:false}) pageContent:ElementRef<HTMLElement>;
 
@@ -25,9 +23,13 @@ export class QuestionEditorComponent implements OnInit {
   @Input() question:QuestionOriginal;
   @Input() qNo:number=0;
   @Input() sections: {sectionOrder: number, name: string}[] = [];  
-  selectedSection:{sectionOrder: number, name: string};
+  @Input() displayHeader:boolean = true;
+  @Input() saveMode:boolean = false;
+  @Input() testID:string;
+  @Output() savedQuestion = new EventEmitter<QuestionOriginal>();
   @Output() closeForm = new EventEmitter<boolean>();
-  
+
+  selectedSection:{sectionOrder: number, name: string} = <any>{};
 
   form = this.fb.group({
     content: [""],
@@ -36,6 +38,7 @@ export class QuestionEditorComponent implements OnInit {
     comprehensionContent: [""],
     marks:[0, [Validators.pattern('^[0-9]+$')]],
     answers:this.fb.array([]),
+
     answer: [""]
   });
 
@@ -55,13 +58,12 @@ export class QuestionEditorComponent implements OnInit {
       this.selectedSection.name =  this.question.section;
       this.selectedSection.sectionOrder = this.question.sectionOrder
       this.marks.setValue(this.question.marks)
-      this.test._id = this.question.tID
       for(let answer of this.question.answers) 
         this.answers.push(this.fb.control(answer,Validators.required))
+
     } else {
       this.pageTitle = "Create New Question"
     }
-
   }
 
   get comprehensionContent() {return this.form.get("comprehensionContent") as FormControl;} 
@@ -71,19 +73,6 @@ export class QuestionEditorComponent implements OnInit {
   get marks() {return this.form.get("marks") as FormControl;} 
   get answer() {return this.form.get("answer") as FormControl;} 
   get answers() {return this.form.get("answers") as FormArray;}
-
-  addTest(id:HTMLInputElement) {
-    this.testAddError = ''
-    this.ms.getTestState(id.value).subscribe(
-      (data)=>{
-        if(typeof(data)=="string") this.testAddError = data
-        else this.test._id = id.value
-      },
-      error =>{
-        this.testAddError = "Error Occurred! Please try again."
-      }
-    )
-  }
 
   removeAnswer(index:number) {
     this.answers.removeAt(index)
@@ -97,7 +86,6 @@ export class QuestionEditorComponent implements OnInit {
     this.answers.push(this.fb.control(this.answer.value, Validators.required))
     this.answer.reset();
   }
-
 
   submit() {
     this.submitting = true
@@ -113,7 +101,13 @@ export class QuestionEditorComponent implements OnInit {
       section: this.selectedSection?this.selectedSection.name:null,
       marks:this.marks.value,
       sectionOrder:this.selectedSection?this.selectedSection.sectionOrder:null,
-      tID:this.test._id
+      tID:this.testID
+    }
+
+    if(this.saveMode) {
+     this.savedQuestion.emit(question)
+     this.submitting = false
+     return
     }
 
     this.ms.postQuestion(question, !this.question).subscribe(

@@ -15,13 +15,15 @@ import { AmplitudeTestRoutingModule } from './amplitude-test-routing.module';
 import { ParentComponent } from './parent/parent.component';
 import { SharedModule } from '../shared/shared.module';
 import { tReducer, oReducer } from './state/state.reducer';
-import { TestResolverService } from './guard/test.resolver';
+import { AmplitudeTestResolverService } from './guard/amplitude-test.resolver';
 import { MainService } from './main.service';
+import { InstructionComponent } from './instruction/instruction.component';
 
 @NgModule({
   declarations: [
     ParentComponent,
-    PageSwitchDirective
+    PageSwitchDirective,
+    InstructionComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +40,7 @@ import { MainService } from './main.service';
      */
     EffectsModule.forFeature([TestEffect])
   ],
-  providers:[TestResolverService, TestEffect, MainService],
+  providers:[AmplitudeTestResolverService, TestEffect, MainService],
   entryComponents:[McqsComponent,QuestionsComponent,InstructionsComponent]
 })
 export class AmplitudeTestModule { }

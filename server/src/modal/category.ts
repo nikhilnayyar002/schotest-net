@@ -9,6 +9,8 @@ export interface Category  {
     _id:string;
     syllabus:string;
     image:string;
+
+    insID:string;
 }
 
 /** Mongoose Schema and Modal */
@@ -19,7 +21,9 @@ export const CategorySchema = new mongoose.Schema<Category & mongoose.Document>(
     lastUpdated: { type:Date },
     _id: { type:String },
     syllabus: {type:String},
-    image: {type:String}
+    image: {type:String},
+
+    insID:{type:String}
 });
 
 

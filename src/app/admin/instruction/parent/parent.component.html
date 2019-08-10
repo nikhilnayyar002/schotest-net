@@ -12,15 +12,29 @@
 </div>
 
 <div class="page-content">
-  <ul class="list-group list-group-flush mt-4">
+  <ul
+    *ngIf="instructions; else loadingInstructions"
+    class="list-group list-group-flush mt-4"
+  >
     <li
       *ngFor="let ins of instructions"
       class="list-group-item list-group-item-action bg-primary mb-1 p-1 px-3 d-flex"
     >
-    <div class="text-truncate col py-1 p-0">{{ ins.name }}</div>
-      <button class="btn btn-sm btn-secondary col-auto"
+      <div class="text-truncate col py-1 p-0">{{ ins.name }}</div>
+      <button
+        class="btn btn-sm btn-secondary col-auto"
         [routerLink]="[config.adminRoutes.adminEditInstruction(ins._id)]"
-      >Edit</button>
+      >
+        Edit
+      </button>
     </li>
   </ul>
+
+  <ng-template #loadingInstructions>
+    <div class="py-3">
+      <div class="spinner-border text-secondary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  </ng-template>
 </div>

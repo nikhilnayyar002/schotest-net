@@ -17,8 +17,11 @@ export class CategoryEditorComponent {
   configData = config;
   backendError: string;
   testAddError:string;
+  insAddError:string;
   submitting: boolean = false;
   tests:{_id: string, name?: string}[]=[]
+  instructionID:string;
+
   @ViewChild("pageContent", {static:false}) pageContent:ElementRef<HTMLElement>;
 
   //work as "edit" component
@@ -28,7 +31,9 @@ export class CategoryEditorComponent {
     title: ["", [Validators.required]],
     syllabus: [""],
     image:[""],
-    testID:[""]
+
+    testID:[""],
+    insID:[""],  
   });
 
   constructor(private fb: FormBuilder, private ms:MainService, private route: ActivatedRoute)
@@ -46,6 +51,9 @@ export class CategoryEditorComponent {
       this.title.setValue(this.category.name)
       this.image.setValue(this.category.image)
       this.syllabus.setValue(this.category.syllabus)
+      this.insID.setValue(this.category.insID)
+      this.instructionID = this.category.insID
+
       for(let id of this.category.tests) {
         this.tests.push({_id:id})
         this.ms.getTestState(id).subscribe(
@@ -66,6 +74,7 @@ export class CategoryEditorComponent {
   get image() {return this.form.get("image") as FormControl;}  
   get syllabus() {return this.form.get("syllabus") as FormControl;} 
   get testID() {return this.form.get("testID") as FormControl;} 
+  get insID() {return this.form.get("insID") as FormControl;} 
   
   removeTest(id:string) {
     this.tests = this.tests.filter(test => test._id !=id)
@@ -92,6 +101,20 @@ export class CategoryEditorComponent {
     )
   }
 
+  addInstruction() {
+    let id = this.insID.value
+    this.insAddError = ''
+    this.ms.getInstructionState(id).subscribe(
+      (data)=>{
+        if(typeof(data)=="string") this.insAddError = data
+        else this.instructionID = this.insID.value
+      },
+      error =>{
+        this.insAddError = "Error Occurred! Please try again."
+      }
+    )
+  }
+
   submit() {
     this.submitting = true
     let id = this.category?this.category._id:(new Date()).getTime().toString();
@@ -101,7 +124,8 @@ export class CategoryEditorComponent {
         lastUpdated: new Date(),
         _id:id,
         syllabus:this.syllabus.value,
-        image:this.image.value
+        image:this.image.value,
+        insID:this.insID.value
     }
      
     this.ms.postCategory(category, !this.category).subscribe(

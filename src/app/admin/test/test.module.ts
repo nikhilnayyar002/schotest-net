@@ -10,9 +10,10 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { QuestionsComponent } from './questions/questions.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { ComponentsModule } from '../components/components.module';
+import { BatchAddQuestionsComponent } from './batch-add-questions/batch-add-questions.component';
 
 @NgModule({
-  declarations: [ParentComponent, TestEditorComponent, QuestionEditorComponent, QuestionsComponent],
+  declarations: [ParentComponent, TestEditorComponent, QuestionEditorComponent, QuestionsComponent, BatchAddQuestionsComponent],
   imports: [
     CommonModule,
     TestRoutingModule,

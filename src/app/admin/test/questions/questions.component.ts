@@ -13,17 +13,21 @@ import { createAccordianState } from 'src/app/shared/global';
 })
 export class QuestionsComponent {
 
-  addNewQuestion:boolean = false;
   test:TestOriginal;
   questions:QuestionOriginal[];
   sections: {sectionOrder: number, name: string}[]=[];
+
+  addNewQuestion:boolean = false;
+  addNewQuestions:boolean = false;
+
+  editQuestion: {question:QuestionOriginal, qNo:number} = {question:null, qNo:null};
 
   constructor(
     private route:ActivatedRoute,
     private ms:MainService
   ) { }
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.test = this.route.snapshot.parent.data.test
     if(this.test) {
       for(let prop in this.test.sections) {
@@ -37,5 +41,18 @@ export class QuestionsComponent {
   }
 
   onCardHeaderClick = createAccordianState();
-  
+  onCloseForm() {
+    /** "CloseForm" event is automatic and is done by "question-editor" when its done
+     *  saving the question at database server.
+     *  therefore refresh questions to get realtime changes:
+     */
+    this.questions = null;
+    this.addNewQuestion =  this.addNewQuestions = false;
+    this.ms.getQuestions(this.test._id).subscribe(questions=>this.questions = questions)
+  }
+  onEditQuestionClick(question:QuestionOriginal, index:number) {
+    this.editQuestion.question = question;
+    this.editQuestion.qNo = index + 1;
+    this.addNewQuestion = true;
+  }
 }

@@ -5,4 +5,6 @@ export interface Category {
     syllabus:string;
     _id:string;
     image:string;
+
+    insID:string;    
 }

@@ -54,7 +54,7 @@ export const updateInstruction: express.RequestHandler = function(req, res, next
 };
 
 /**
- * Return @string
+ * Return @Instruction_Arr
  */
 export const getInstructionStates:express.RequestHandler = function(req, res, next) {
   InstructionModal.find({},function (err, instructions:Instruction[]) {
@@ -64,6 +64,19 @@ export const getInstructionStates:express.RequestHandler = function(req, res, ne
         status:true,
         instructions:instructions.map(instruction => ({_id:instruction._id, name:instruction.name}))
       })
+    else next(new Record404Exception())
+  })
+}
+
+/**
+ * Return @Instruction
+ */
+export const getInstructionState:express.RequestHandler = function(req, res, next) {
+  let id=req.params.id;
+  InstructionModal.findById(id,function (err, instruction:Instruction) {
+    if (err) { return next(err); }
+    if(instruction)
+      res.json({status:true, instruction:{_id:instruction._id, name:instruction.name}})
     else next(new Record404Exception())
   })
 }

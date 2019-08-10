@@ -113,152 +113,14 @@ export class MainService {
       return this.http.post(config.routes.question.postQuestion(),question,httpOptions)
     else  /** update category */
       return this.http.put(config.routes.question.postQuestion(),question,httpOptions)
+  }
+
+  postQuestions(questions:QuestionOriginal[]){
+    const httpOptions = {
+      headers: new HttpHeaders({ "Content-Type": "application/json" })
+    };
+    return this.http.post(config.routes.question.postQuestions(),questions,httpOptions)
   }   
-
-  // getTests(categoryID: string): Observable<TestResponse[]> {
-  //   return this.store
-  //     .select(state => state.app.user)
-  //     .pipe(
-  //       take(1),
-  //       switchMap(user => {
-  //         let recipe = pipe(
-  //           map(
-  //             (data: { status: boolean; tests: TestResponse[] }) => data.tests
-  //           )
-  //         );
-  //         return this.auth.tryWithRefreshIfNecc(
-  //           config.routes.category.getCategoryTests(categoryID, user.email),
-  //           recipe
-  //         );
-  //       })
-  //     );
-  // }
-
-  // getPausedTests(): Observable<TestResponse[]> {
-  //   return this.store
-  //     .select(state => state.app.user)
-  //     .pipe(
-  //       take(1),
-  //       switchMap(user => {
-  //         let recipe = pipe(
-  //           map(
-  //             (data: { status: boolean; tests: TestResponse[] }) => data.tests
-  //           )
-  //         );
-  //         return this.auth.tryWithRefreshIfNecc(
-  //           config.routes.userData.getPausedTests(user.id),
-  //           recipe
-  //         );
-  //       })
-  //     );
-  // }
-
-  // getCompletedTests(): Observable<TestResponse[]> {
-  //   return this.store
-  //     .select(state => state.app.user)
-  //     .pipe(
-  //       take(1),
-  //       switchMap(user => {
-  //         let recipe = pipe(
-  //           map(
-  //             (data: { status: boolean; tests: TestResponse[] }) => data.tests
-  //           )
-  //         );
-  //         return this.auth.tryWithRefreshIfNecc(
-  //           config.routes.userData.getCompletedTests(user.id),
-  //           recipe
-  //         );
-  //       })
-  //     );
-  // }
-
-
-
-  // delFavourites(cid: string): Observable<BackendStatus | Error> {
-  //   const httpOptions = {
-  //     headers: new HttpHeaders({ "Content-Type": "application/json" })
-  //   };
-
-  //   return this.store
-  //     .select(state => state.app.user)
-  //     .pipe(
-  //       take(1),
-  //       switchMap(user =>
-  //         this.http
-  //           .post<BackendStatus>(
-  //             config.routes.userData.delUserFavourites(user.id),
-  //             { id: cid },
-  //             httpOptions
-  //           )
-  //           .pipe(
-  //             tap(() => {
-  //               /** Set the favourites */
-  //               let newUser = { ...user };
-  //               newUser.favourites = newUser.favourites.filter(id => id != cid);
-  //               this.store.dispatch(SetAppState({ app: { user: newUser } }));
-  //             })
-  //           )
-  //       )
-  //     );
-  // }
-
-  // getFavouriteCategories(): Observable<Category[]> {
-  //   return this.store
-  //     .select(state => state.app.user)
-  //     .pipe(
-  //       take(1),
-  //       switchMap(user => {
-  //         let recipe = pipe(
-  //           map(
-  //             (data: { status: boolean; categories: Category[] }) =>
-  //               data.categories
-  //           )
-  //         );
-  //         return this.auth.tryWithRefreshIfNecc(
-  //           config.routes.userData.getUserFavourites(user.id),
-  //           recipe
-  //         );
-  //       })
-  //     );
-  // }
-
-  // getQuestionsAnswers(testID: string)
-  // :Observable<{userTest:UserTest, questionsAnswers:QuestionsAnswers}|null>{
-  //   let recipeForQandA = pipe(
-  //     map((data: QuestionsAnswersRes) => ({
-  //       answers: data.answers,
-  //       questions: data.questions
-  //     }))
-  //   );
-  //   let recipeForUserTest = pipe(
-  //     map((data: {status:boolean, test:UserTest}) => data.test)
-  //   );
-
-  //   let arr = [
-  //     this.store.select(s=>s.app.user).pipe(
-  //       take(1),
-  //       switchMap(user => 
-  //         this.auth.tryWithRefreshIfNecc(
-  //           config.routes.userData.getUserTest(user.id, testID),
-  //           recipeForUserTest
-  //         )
-  //       )
-  //     ),
-  //     this.auth.tryWithRefreshIfNecc(
-  //       config.routes.test.getQuestionsAnswers(testID),
-  //       recipeForQandA
-  //     )
-  //   ]
-
-  //   return forkJoin(arr).pipe(
-  //     take(1),
-  //     map((data:(UserTest | QuestionsAnswers)[])=>{
-  //       let userTest=<UserTest>data[0], questionsAnswers=<QuestionsAnswers>data[1]
-  //       if(!userTest || !questionsAnswers) return null
-  //       return {  userTest,  questionsAnswers}
-  //     })
-  //   )
-  // }
 
   postInstruction(instruction: Instruction, post:boolean){
     const httpOptions = {
@@ -293,5 +155,18 @@ export class MainService {
       recipe
     );
   }
-    
+
+  getInstructionState(id:string): Observable<TestOriginal | string> {
+    let recipe = pipe(
+      map(
+        (data: { status: boolean; instruction: Instruction }) => data.instruction
+      ),
+      catchError(error=>of(error.error.message))
+    );
+    return this.auth.tryWithRefreshIfNecc(
+      config.routes.instruction.getInstructionState(id),
+      recipe
+    );
+  }
+
 }

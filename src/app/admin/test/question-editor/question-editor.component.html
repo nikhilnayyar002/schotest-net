@@ -1,4 +1,4 @@
-<h4 class="header py-4">
+<h4 class="header py-4" *ngIf="displayHeader">
   {{ pageTitle }}
 </h4>
 
@@ -7,15 +7,16 @@
     <!--content-->
     <div class="input-container flex-column">
       <label for="content">Content</label>
-      <input
+      <textarea
         class="input-field bg-info"
         type="text"
         placeholder="content"
         name="content"
         formControlName="content"
-        autocomplete="off"
-      />
+        rows="2"
+      ></textarea>      
     </div>
+
     <!--Image-->
     <div class="input-container flex-column">
       <label for="image">Image Url/Base64 <small>(?)</small></label>
@@ -58,36 +59,7 @@
       Value should be a number.
     </div>
 
-    <!--test-->
-    <div class="input-container flex-column">
-      <label for="test">Add Test <small>(?)</small></label>
-      <!--input test ID-->
-      <div>
-        <input
-          class="input-field bg-info"
-          type="text"
-          placeholder="test ID"
-          name="test"
-          autocomplete="off"
-          style="max-width: 235px;"
-          #testID
-          (keyup)="(0)"
-        />
-        <button
-          type="button"
-          class="btn btn-secondary ml-2 btn-sm"
-          (click)="addTest(testID)"
-          [disabled]="testID.value ? false : true"
-        >
-          Add
-        </button>
-      </div>
-    </div>
-    <div *ngIf="testAddError" class="input-error">
-      {{ testAddError }}
-    </div>
-
-    <!-- Test Ready (i think it should be shown when editing test)-->
+    <!-- isComprehension -->
     <div class="input-container">
       <label class="mr-4">Is comprehension?</label>
       <!--radio buttons-->
@@ -118,6 +90,7 @@
         </label>
       </div>
     </div>
+
     <!--comprehensionContent-->
     <div *ngIf="isComprehension.value" class="input-container flex-column">
       <label>Comprehension Content <small>(?)</small></label>
@@ -130,6 +103,7 @@
       >
       </ckeditor>
     </div>
+    
     <!-- section -->
     <div class="input-container">
       <label>Section <small>(?)</small></label>
@@ -160,7 +134,7 @@
     <!--answers-->
     <div class="input-container flex-column">
       <label>Add mcqs<small>(?)</small></label>
-      <!--input test ID-->
+      <!--input answer-->
       <div class="d-flex align-items-baseline">
         <div class="mr-1 w-100">
           <input
@@ -177,15 +151,14 @@
           type="button"
           class="btn btn-secondary ml-2 btn-sm"
           (click)="addAnswer()"
-          [disabled]="answer.errors ? true : false"
+          [disabled]="answer.value ? false : true"
         >
           Add
         </button>
       </div>
-      <!--Added test ID's container-->
+      <!--Added answers container-->
       <div
         formArrayName="answers"
-        *ngIf="sections.length"
         class="my-2 pl-2 overflow-auto"
         style="max-height: 200px"
       >
@@ -224,13 +197,13 @@
     <div class="d-flex justify-content-center">
       <button
         id="submit-btn"
-        type="submit"
+        [type]="saveMode?'button':'submit'"
         class="btn btn-secondary"
         [disabled]="form.invalid"
         (click)="submit()"
         *ngIf="!submitting"
       >
-        Submit
+        {{saveMode?"Save":"Submit"}}
       </button>
       <div *ngIf="submitting" class="spinner-grow text-secondary" role="status">
         <span class="sr-only">Loading...</span>

@@ -4,16 +4,18 @@ import {
   HttpErrorResponse,
   HttpHeaders
 } from "@angular/common/http";
-import { Observable, throwError } from "rxjs";
+import { Observable, throwError, pipe } from "rxjs";
 import { catchError, tap, map, debounceTime } from "rxjs/operators";
 import config from "../../data/config";
 import { QuestionStateDB } from "./shared/indexDB";
 import { UserTest, TestWithFeatures, TestWithFeaturesForUser } from "./modals/test";
 import { UserQuestion } from './modals/question';
+import { Instruction } from '../modals/instruction';
+import { AuthService } from '../auth.service';
 
 @Injectable()
 export class MainService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private auth:AuthService) {}
 
   getTest(userID: string, id: string): Observable<TestWithFeaturesForUser> {
     return this.http.get(config.routes.test.getTest(id)).pipe(
@@ -27,7 +29,6 @@ export class MainService {
             sections[question.section].qID = question._id
           )
         })
-        console.log( data.test.questions, questions)
         test = {...data.test, questions}
         return test
       }),
@@ -87,4 +88,17 @@ export class MainService {
     // return an observable with a user-facing error message
     return throwError("Something bad happened; please try reloading the page");
   }
+
+  getInstruction(id:string): Observable<Instruction> {
+    let recipe = pipe(
+      map(
+        (data: { status: boolean; instruction: Instruction }) => data.instruction
+      )
+    );
+    return this.auth.tryWithRefreshIfNecc(
+      config.routes.instruction.getInstruction(id),
+      recipe
+    );
+  }
+
 }
