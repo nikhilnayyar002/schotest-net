@@ -27,13 +27,14 @@ let config = {
             getCategories: ()=>`${domain}/categories`,
             postCategory: ()=>`${domain}/categories`,
             getCategory:(cid)=>`${domain}/categories/${cid}`,
-            getCategoryTests:(cid, email)=> `${domain}/categories/${cid}/tests?email=${email}`,
+            getCategoryStates: ()=>`${domain}/categories/states`
         },
         test:{
             postTest: () => `${domain}/tests`,
             getTest: id => `${domain}/tests/${id}`,
             getTestState: id => `${domain}/tests/${id}/state`,
-            getQuestionsAnswers: id =>  `${domain}/tests/${id}/completed`
+            getQuestionsAnswers: id =>  `${domain}/tests/${id}/completed`,
+            getTestsByCategory: (cid, email)=> `${domain}/tests/category/${cid}?email=${email}`
         },
         question:{
             getQuestions: id => `${domain}/questions/test/${id}`,
@@ -45,7 +46,13 @@ let config = {
             postInstruction: () => `${domain}/instructions`,
             getInstruction: id => `${domain}/instructions/${id}`,
             getInstructionStates: () => `${domain}/instructions/states`,
-            getInstructionState: (id) => `${domain}/instructions/${id}/state`
+            getInstructionState: (id) => `${domain}/instructions/${id}/state`,
+            getInstructionByCategory: (cid) => `${domain}/instructions/category/${cid}`
+        },
+        answer:{
+            postAnswer: () => `${domain}/answers`,
+            postAnswers: () => `${domain}/answers/all`,
+            getAnswers: tid => `${domain}/answers/all/${tid}`,
         }
     },
     clientRoutes:{

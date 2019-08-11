@@ -9,6 +9,7 @@ export interface TestOriginal {
   nOfQ:number;
   marks:number;
   isTestReady?:boolean;
+  catID:string;
 }
 
 export interface UserTestFeatures {

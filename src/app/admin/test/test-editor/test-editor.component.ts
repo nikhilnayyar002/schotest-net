@@ -4,6 +4,7 @@ import { Validators, FormBuilder, FormControl, FormArray, FormGroup } from '@ang
 import { ActivatedRoute } from '@angular/router';
 import { MainService } from '../../main.service';
 import config from 'src/data/config';
+import { Category } from 'src/app/modals/category';
 
 @Component({
   selector: 'app-test-editor',
@@ -17,6 +18,9 @@ export class TestEditorComponent implements OnInit {
   backendError: string;
   submitting: boolean = false;
   @ViewChild("pageContent", {static:false}) pageContent:ElementRef<HTMLElement>;
+
+  categories:Category[] = <any>[{_id:null,name:"-----"}];
+  selectedCategory:Category = <any>{};
 
   //work as "edit" component
   test:TestOriginal;
@@ -39,7 +43,11 @@ export class TestEditorComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.test = this.route.snapshot.data["test"]
+    if(this.route.snapshot.data.data) {
+      this.test =  this.route.snapshot.data.data["test"];
+      if(this.route.snapshot.data.data["categories"])
+        this.categories = this.categories.concat(this.route.snapshot.data.data["categories"]);
+    }
     /** Display the values */
     if(this.test) {
       this.pageTitle = "Edit "+ this.test.name
@@ -56,12 +64,19 @@ export class TestEditorComponent implements OnInit {
       for(let prop in this.test.sections) 
         this.sections.push(this.fb.group({
           name: [prop], /** unactive control */
-          sectionOrder:[this.test.sections[prop].sectionOrder, [Validators.pattern('^[0-9]+$')]],
+          sectionOrder:[this.test.sections[prop].sectionOrder.toString(),
+            [Validators.required,Validators.pattern('^[0-9]+$')]
+          ],
           qID:[this.test.sections[prop].qID] /** hidden control */
         }))
 
+        this.selectedCategory._id = this.test.catID
+        let data = this.categories.filter(cat=>cat._id ==  this.test.catID)
+        if(data.length) this.selectedCategory.name = data[0].name
+
     } else {
       this.pageTitle = "Create New Test"
+      this.selectedCategory = this.categories[0]
     }
 
   }
@@ -87,7 +102,9 @@ export class TestEditorComponent implements OnInit {
         return;
     this.sections.push(this.fb.group({
       name: [this.sectionName.value], /** unactive control */
-      sectionOrder:[this.sectionOrder.value, [Validators.pattern('^[0-9]+$')]],
+      sectionOrder:[
+        this.sectionOrder.value?this.sectionOrder.value:'0',
+        [Validators.required,Validators.pattern('^[0-9]+$')]],
       qID:[null] /** hidden control */
     }))
     this.sectionOrder.reset(); this.sectionName.reset();
@@ -103,8 +120,8 @@ export class TestEditorComponent implements OnInit {
     //and we have {sectionOrder: string, name: string, qID:string}
     let sections = {}
     for(let i of this.sections.controls) {
-      let index = i.value.name, sectionOrder = i.value.sectionOrder, qID = i.value.qID
-      sections[index] = {qID, sectionOrder:sectionOrder?+sectionOrder:null}
+      let index = i.value.name, sectionOrder = +i.value.sectionOrder, qID = i.value.qID
+      sections[index] = {qID, sectionOrder:+sectionOrder}
     }
 
     let test:TestOriginal =  {
@@ -115,7 +132,8 @@ export class TestEditorComponent implements OnInit {
         _id:id,
         nOfQ:this.nOfQ.value?this.nOfQ.value:0,
         marks:this.marks.value?this.marks.value:0,
-        isTestReady:this.isTestReady.value
+        isTestReady:this.isTestReady.value,
+        catID:this.selectedCategory._id
     }
     this.ms.postTest(test, !this.test).subscribe(
       () => {

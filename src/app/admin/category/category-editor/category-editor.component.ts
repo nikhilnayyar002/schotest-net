@@ -16,11 +16,7 @@ export class CategoryEditorComponent {
   pageTitle:string;
   configData = config;
   backendError: string;
-  testAddError:string;
-  insAddError:string;
   submitting: boolean = false;
-  tests:{_id: string, name?: string}[]=[]
-  instructionID:string;
 
   @ViewChild("pageContent", {static:false}) pageContent:ElementRef<HTMLElement>;
 
@@ -31,9 +27,6 @@ export class CategoryEditorComponent {
     title: ["", [Validators.required]],
     syllabus: [""],
     image:[""],
-
-    testID:[""],
-    insID:[""],  
   });
 
   constructor(private fb: FormBuilder, private ms:MainService, private route: ActivatedRoute)
@@ -51,20 +44,6 @@ export class CategoryEditorComponent {
       this.title.setValue(this.category.name)
       this.image.setValue(this.category.image)
       this.syllabus.setValue(this.category.syllabus)
-      this.insID.setValue(this.category.insID)
-      this.instructionID = this.category.insID
-
-      for(let id of this.category.tests) {
-        this.tests.push({_id:id})
-        this.ms.getTestState(id).subscribe(
-          (data)=>{
-            if(typeof(data)!="string") {
-              let results = this.tests.filter((test)=>test._id == id)
-              if(results.length) results[0].name = data.name
-            }
-          }
-        )
-      }
     } else {
       this.pageTitle = "Create New Category"
     }
@@ -73,65 +52,22 @@ export class CategoryEditorComponent {
   get title() {return this.form.get("title") as FormControl;}
   get image() {return this.form.get("image") as FormControl;}  
   get syllabus() {return this.form.get("syllabus") as FormControl;} 
-  get testID() {return this.form.get("testID") as FormControl;} 
-  get insID() {return this.form.get("insID") as FormControl;} 
-  
-  removeTest(id:string) {
-    this.tests = this.tests.filter(test => test._id !=id)
-    // this.tests.splice(i, 1); // i is index(number)
-  }
-
-  addTest() {
-    let id = this.testID.value
-    this.testAddError = ''
-    if(this.tests.find(test => test._id == id)) {
-      this.testAddError = "Test already Added !!"
-      return
-    }
-    this.ms.getTestState(id).subscribe(
-      (data)=>{
-        if(typeof(data)=="string") this.testAddError = data
-        else this.tests.push(<any>{_id:id, name:data.name})
-        this.testID.reset()
-      },
-      error =>{
-        this.testAddError = "Error Occurred! Please try again."
-        this.testID.reset()
-      }
-    )
-  }
-
-  addInstruction() {
-    let id = this.insID.value
-    this.insAddError = ''
-    this.ms.getInstructionState(id).subscribe(
-      (data)=>{
-        if(typeof(data)=="string") this.insAddError = data
-        else this.instructionID = this.insID.value
-      },
-      error =>{
-        this.insAddError = "Error Occurred! Please try again."
-      }
-    )
-  }
 
   submit() {
     this.submitting = true
     let id = this.category?this.category._id:(new Date()).getTime().toString();
     let category:Category =  {
         name:this.title.value,
-        tests: this.tests.map(test => test._id),
         lastUpdated: new Date(),
         _id:id,
         syllabus:this.syllabus.value,
-        image:this.image.value,
-        insID:this.insID.value
+        image:this.image.value
     }
      
     this.ms.postCategory(category, !this.category).subscribe(
       () => {
-        this.submitting = false;
-        if(!this.category) { this.form.reset(); this.tests = []; }
+        this.submitting = false; this.backendError = ''
+        if(!this.category)  this.form.reset()
       },
       (error:any) =>{
         this.submitting = false; this.backendError = ''

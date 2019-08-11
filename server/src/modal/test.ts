@@ -10,6 +10,7 @@ export interface TestOriginal {
   nOfQ:number;
   marks:number;
   isTestReady?:boolean;
+  catID:string;
 }
 
 export interface UserTestFeatures {
@@ -46,7 +47,8 @@ export const TestSchema = new mongoose.Schema<TestOriginal & mongoose.Document>(
   isTestReady:{ type: Boolean },
 
   nOfQ:Number,
-  marks:Number
+  marks:Number,
+  catID:String
 });
 
 export const TestModal = mongoose.model("Test", TestSchema);

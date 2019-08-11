@@ -11,9 +11,11 @@ import { QuestionsComponent } from './questions/questions.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { ComponentsModule } from '../components/components.module';
 import { BatchAddQuestionsComponent } from './batch-add-questions/batch-add-questions.component';
+import { AnswerEditorComponent } from './answer-editor/answer-editor.component';
+import { AnswersComponent } from './answers/answers.component';
 
 @NgModule({
-  declarations: [ParentComponent, TestEditorComponent, QuestionEditorComponent, QuestionsComponent, BatchAddQuestionsComponent],
+  declarations: [ParentComponent, TestEditorComponent, QuestionEditorComponent, QuestionsComponent, BatchAddQuestionsComponent, AnswerEditorComponent, AnswersComponent],
   imports: [
     CommonModule,
     TestRoutingModule,

@@ -20,7 +20,7 @@ const routes: Routes = [
     path: 'edit/:id',
     component: TestEditorComponent,
     resolve:{
-      test:AdminResolverService
+      data:AdminResolverService
     },
     children:[
       {

@@ -179,8 +179,8 @@
                   formControlName="sectionOrder"
                 />
               </div>
-              <div *ngIf="ctr.get('sectionOrder').errors" class="input-error">
-                Value is a no. greater than 0.
+              <div *ngIf="ctr.get('sectionOrder').errors" class="input-error pl-3">
+                Value has to be >= 0.
               </div>
             </form>
           </div>
@@ -228,6 +228,33 @@
         </label>
       </div>
     </div>
+
+    <!-- category -->
+    <div class="input-container">
+      <label>Category <small>(?)</small></label>
+      <div class="col-auto dropdown d-inline-block">
+        <button
+          class="btn btn-secondary btn-sm dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          {{ selectedCategory?.name }}
+        </button>
+        <div class="dropdown-menu">
+          <span
+            *ngFor="let cat of categories"
+            class="dropdown-item"
+            (click)="selectedCategory = cat"
+          >
+            {{ cat.name }}
+          </span>
+        </div>
+      </div>
+    </div>
+
     <div class="mr-2 mb-2">
       <button
         type="button"

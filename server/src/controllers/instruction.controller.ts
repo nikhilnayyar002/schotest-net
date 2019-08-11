@@ -80,3 +80,15 @@ export const getInstructionState:express.RequestHandler = function(req, res, nex
     else next(new Record404Exception())
   })
 }
+
+
+export const getInstructionByCategory: express.RequestHandler = function(req,res,next) {
+  let catID = req.params.catID;
+
+  InstructionModal.find({ catID }, function(err, instructions: Instruction[]) {
+    if (err) return next(err);
+    if (instructions && instructions.length)
+      res.json({ status: true, instruction:instructions[0] });
+    else next(new Record404Exception());
+  });
+};

@@ -10,8 +10,9 @@ import { GLobalState } from "../shared/global.state";
 import { UserTest, TestOriginal } from "../amplitude-test/modals/test";
 import { BackendStatus, QuestionsAnswers } from "../shared/global";
 import { SetAppState } from "../state/state.actions";
-import { QuestionOriginal } from '../amplitude-test/modals/question';
-import { Instruction } from '../modals/instruction';
+import { QuestionOriginal } from "../amplitude-test/modals/question";
+import { Instruction } from "../modals/instruction";
+import { Answer } from '../amplitude-test/modals/answer';
 
 interface QuestionsAnswersRes extends QuestionsAnswers {
   status: boolean;
@@ -21,8 +22,7 @@ interface QuestionsAnswersRes extends QuestionsAnswers {
 export class MainService {
   constructor(
     private http: HttpClient,
-    private auth: AuthService,
-    private store: Store<GLobalState>
+    private auth: AuthService
   ) {}
 
   getCategories(): Observable<Category[]> {
@@ -37,21 +37,28 @@ export class MainService {
     );
   }
 
-  postCategory(category: Category, post:boolean){
+  postCategory(category: Category, post: boolean) {
     const httpOptions = {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     };
-    if(post) /** new category */
-      return this.http.post(config.routes.category.postCategory(),category,httpOptions)
-    else  /** update category */
-      return this.http.put(config.routes.category.postCategory(),category,httpOptions)
-  } 
+    if (post)
+      /** new category */
+      return this.http.post(
+        config.routes.category.postCategory(),
+        category,
+        httpOptions
+      );
+    /** update category */ else
+      return this.http.put(
+        config.routes.category.postCategory(),
+        category,
+        httpOptions
+      );
+  }
 
-  getCategory(catID:string): Observable<Category> {
+  getCategory(catID: string): Observable<Category> {
     let recipe = pipe(
-      map(
-        (data: { status: boolean; category: Category }) => data.category
-      )
+      map((data: { status: boolean; category: Category }) => data.category)
     );
     return this.auth.tryWithRefreshIfNecc(
       config.routes.category.getCategory(catID),
@@ -59,12 +66,10 @@ export class MainService {
     );
   }
 
-  getTestState(id:string): Observable<TestOriginal | string> {
+  getTestState(id: string): Observable<TestOriginal | string> {
     let recipe = pipe(
-      map(
-        (data: { status: boolean; test: TestOriginal }) => data.test
-      ),
-      catchError(error=>of(error.error.message))
+      map((data: { status: boolean; test: TestOriginal }) => data.test),
+      catchError(error => of(error.error.message))
     );
     return this.auth.tryWithRefreshIfNecc(
       config.routes.test.getTestState(id),
@@ -72,31 +77,62 @@ export class MainService {
     );
   }
 
-  postTest(test: TestOriginal, post:boolean){
+  postTest(test: TestOriginal, post: boolean) {
     const httpOptions = {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     };
-    if(post) /** new test */
-      return this.http.post(config.routes.test.postTest(),test,httpOptions)
-    else  /** update category */
-      return this.http.put(config.routes.test.postTest(),test,httpOptions)
-  } 
-  getTest(id:string): Observable<TestOriginal> {
-    let recipe = pipe(
+    if (post)
+      /** new test */
+      return this.http.post(config.routes.test.postTest(), test, httpOptions);
+    /** update category */ else
+      return this.http.put(config.routes.test.postTest(), test, httpOptions);
+  }
+
+
+  getTest(id: string): Observable<{ test:TestOriginal; categories:Category[]; }> {
+    let recipe1 = pipe(
+      map((data: { status: boolean; test: TestOriginal }) => data.test)
+    );
+    let recipe2 = pipe(
       map(
-        (data: { status: boolean; test: TestOriginal }) => data.test
+        (data: { status: boolean; categories: Category[] }) => data.categories
       )
     );
-    return this.auth.tryWithRefreshIfNecc(
-      config.routes.test.getTest(id),
-      recipe
+
+    let arr = [
+      this.auth.tryWithRefreshIfNecc(
+        config.routes.test.getTest(id),
+        pipe(recipe1)
+      ),
+      this.auth.tryWithRefreshIfNecc(
+        config.routes.category.getCategoryStates(),
+        pipe(recipe2)
+      )
+    ];
+
+    return forkJoin(arr).pipe(
+      take(1),
+      map((datas: Array<TestOriginal | Category[]>) => {
+        let test = <TestOriginal>datas[0],
+          categories = <Category[]>datas[1];
+
+        return { test, categories };
+      }),
+      catchError(error => {
+        /** Probably not called. */
+        return of(null);
+      })
     );
   }
-  
-  getQuestions(tid:string): Observable<QuestionOriginal[]> {
+
+
+
+
+  getQuestions(tid: string): Observable<QuestionOriginal[]> {
     let recipe = pipe(
       map(
-        (data: { status: boolean; questions: QuestionOriginal[] }) => data.questions
+        (data: { status: boolean; questions: QuestionOriginal[] }) =>
+          data.questions
       )
     );
     return this.auth.tryWithRefreshIfNecc(
@@ -105,49 +141,99 @@ export class MainService {
     );
   }
 
-  postQuestion(question:QuestionOriginal,post:boolean){
+  postQuestion(question: QuestionOriginal, post: boolean) {
     const httpOptions = {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     };
-    if(post) /** new test */
-      return this.http.post(config.routes.question.postQuestion(),question,httpOptions)
-    else  /** update category */
-      return this.http.put(config.routes.question.postQuestion(),question,httpOptions)
+    if (post)
+      /** new test */
+      return this.http.post(
+        config.routes.question.postQuestion(),
+        question,
+        httpOptions
+      );
+    /** update category */ else
+      return this.http.put(
+        config.routes.question.postQuestion(),
+        question,
+        httpOptions
+      );
   }
 
-  postQuestions(questions:QuestionOriginal[]){
+  postQuestions(questions: QuestionOriginal[]) {
     const httpOptions = {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     };
-    return this.http.post(config.routes.question.postQuestions(),questions,httpOptions)
-  }   
+    return this.http.post(
+      config.routes.question.postQuestions(),
+      questions,
+      httpOptions
+    );
+  }
 
-  postInstruction(instruction: Instruction, post:boolean){
+  postInstruction(instruction: Instruction, post: boolean) {
     const httpOptions = {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     };
-    if(post) /** new test */
-      return this.http.post(config.routes.instruction.postInstruction(),instruction,httpOptions)
-    else  /** update category */
-      return this.http.put(config.routes.category.postCategory(),instruction,httpOptions)
-  } 
+    if (post)
+      /** new test */
+      return this.http.post(
+        config.routes.instruction.postInstruction(),
+        instruction,
+        httpOptions
+      );
+    /** update instruction */ else
+      return this.http.put(
+        config.routes.instruction.postInstruction(),
+        instruction,
+        httpOptions
+      );
+  }
 
-  getInstruction(id:string): Observable<Instruction> {
-    let recipe = pipe(
+  getInstruction(id: string): Observable<{ instruction:Instruction, categories:Category[] }> {
+    let recipe1 = pipe(
       map(
-        (data: { status: boolean; instruction: Instruction }) => data.instruction
+        (data: { status: boolean; instruction: Instruction }) =>
+          data.instruction
       )
     );
-    return this.auth.tryWithRefreshIfNecc(
-      config.routes.instruction.getInstruction(id),
-      recipe
+    let recipe2 = pipe(
+      map(
+        (data: { status: boolean; categories: Category[] }) => data.categories
+      )
+    );
+
+    let arr = [
+      this.auth.tryWithRefreshIfNecc(
+        config.routes.instruction.getInstruction(id),
+        pipe(recipe1)
+      ),
+      this.auth.tryWithRefreshIfNecc(
+        config.routes.category.getCategoryStates(),
+        pipe(recipe2)
+      )
+    ];
+
+    return forkJoin(arr).pipe(
+      take(1),
+      map((datas: Array<Instruction | Category[]>) => {
+        let instruction = <Instruction>datas[0],
+          categories = <Category[]>datas[1];
+
+        return { instruction, categories };
+      }),
+      catchError(error => {
+        /** Probably not called. */
+        return of(null);
+      })
     );
   }
 
   getInstructionStates(): Observable<Instruction[]> {
     let recipe = pipe(
       map(
-        (data: { status: boolean; instructions: Instruction[] }) => data.instructions
+        (data: { status: boolean; instructions: Instruction[] }) =>
+          data.instructions
       )
     );
     return this.auth.tryWithRefreshIfNecc(
@@ -156,17 +242,38 @@ export class MainService {
     );
   }
 
-  getInstructionState(id:string): Observable<TestOriginal | string> {
+  getInstructionState(id: string): Observable<TestOriginal | string> {
     let recipe = pipe(
       map(
-        (data: { status: boolean; instruction: Instruction }) => data.instruction
+        (data: { status: boolean; instruction: Instruction }) =>
+          data.instruction
       ),
-      catchError(error=>of(error.error.message))
+      catchError(error => of(error.error.message))
     );
     return this.auth.tryWithRefreshIfNecc(
       config.routes.instruction.getInstructionState(id),
       recipe
     );
+  }
+
+
+
+  postAnswer(answer: Answer, post: boolean) {
+    const httpOptions = {
+      headers: new HttpHeaders({ "Content-Type": "application/json" })
+    };
+    if (post)
+      return this.http.post(config.routes.answer.postAnswer(),answer,httpOptions);
+    else
+      return this.http.put(config.routes.answer.postAnswer(),answer,httpOptions);
+  }
+
+  postAnswers(answers: Answer[]) {
+    const httpOptions = {
+      headers: new HttpHeaders({ "Content-Type": "application/json" })
+    };
+    
+    return this.http.put(config.routes.answer.postAnswers(),answers,httpOptions);
   }
 
 }

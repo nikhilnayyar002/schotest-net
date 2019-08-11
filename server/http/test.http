@@ -49,24 +49,26 @@ POST http://localhost:3000/tests
 Content-Type: application/json
 
 {
-    "_id": "12347",
-    "name": "mockedTest2",
+    "_id": "12349",
+    "name": "mockedTest",
     "sections": {
         "English": {
-            "qid":"123456",
-            "sectionOrder":0
+            "qID": null,
+            "sectionOrder": 0
         },
         "Mathematics": {
-            "qid":"123459",
-            "sectionOrder":0
+            "qID": null,
+            "sectionOrder": 0
         }
     },
-    "detail": "Simple mocked Test 2",
-    "oTime": 1800,
+    "detail": "Simple mocked Test",
+    "oTime": 3600,
     "isTestReady": true,
     "nOfQ": 3,
-    "marks": 4
+    "marks": 4,
+    "catID":"12349"
 }
+
 
 ### Get Test
 GET http://localhost:3000/tests/12347
@@ -77,6 +79,9 @@ GET http://localhost:3000/tests/12347/state
 ### Get questions and answers 
 GET http://localhost:3000/tests/12349/completed
 
+### Get category tests (matched with user if possible)
+GET  http://localhost:3000/tests/category/12349?email=nikhilnayyar002@gmail.com
+
 
 ### @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Category @@@@@@@@@@@@@@@@@@@@@
 
@@ -86,9 +91,6 @@ Content-Type: application/json
 
 {
     "_id": "12349",
-    "tests": [
-        "12347"
-    ],
     "name": "mockedCategory1",
     "lastUpdated": "2019-07-23T05:37:45.006Z",
     "syllabus": "<p>You know well<\/p>",
@@ -101,12 +103,6 @@ Content-Type: application/json
 
 {
     "name":"mockedCategory",
-    "tests": [
-        {
-            "_id":"12347",
-            "name":"mockedTest"
-        }
-    ],
     "lastUpdated": "2019-07-23T05:37:45.006Z",
     "_id":"12349",
     "syllabus":"<p>You know well</p>",
@@ -116,10 +112,8 @@ Content-Type: application/json
 ### Get category 
 GET  http://localhost:3000/categories/12349
 
-
-### Get category tests (matched with user if possible)
-GET  http://localhost:3000/categories/12349/tests?email=nikhilnayyar002@gmail.com
-
+### Get category 
+GET  http://localhost:3000/categories/states
 
 ### @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ userData @@@@@@@@@@@@@@@@@@@@@
 
@@ -192,6 +186,16 @@ Content-Type: application/json
     "value":"right angled",
     "data":"<p>right angled</p>"
 }
+###
+PUT   http://localhost:3000/answers
+Content-Type: application/json
+
+{
+    "_id":"123451",
+    "tID":"12349",
+    "value":"right angled",
+    "data":"<p>right angled</p>"
+}
 
 ###
 GET  http://localhost:3000/answers/123459
@@ -207,8 +211,21 @@ Content-Type: application/json
     {
     "_id":"123451",
     "tID":"12349",
-    "value":"right angled",
+    "value":"right angle",
     "data":"<p>right angled</p>"
+    }
+]
+
+###
+PUT  http://localhost:3000/answers/all
+Content-Type: application/json
+
+[
+    {
+    "_id":"123451",
+    "tID":"12349",
+    "value":"right angle",
+    "data":"<p>right angle</p>"
     }
 ]
 
@@ -289,9 +306,10 @@ POST  http://localhost:3000/instructions
 Content-Type: application/json
 
 {
-    "_id":"12345",
+    "_id": "1565351212911",
     "name":"right angled",
-    "data":"<p>right angled</p>"
+    "data":"<p>right angled</p>",
+    "catID":"12349"
 }
 
 ###
@@ -299,3 +317,7 @@ GET  http://localhost:3000/instructions/1565351212911
 
 ###
 GET  http://localhost:3000/instructions/states
+
+#### router.get('/category/:catID', getInstructionByCategory);
+###
+GET  http://localhost:3000/instructions/category/12349

@@ -39,25 +39,36 @@
   </ng-template>
 </div>
 <div class="bg-primary p-4">
-  <div class="custom-control custom-radio mr-sm-2">
-    <input
-      (change)="(0)"
-      #agreement
-      type="checkbox"
-      class="custom-control-input"
-      id="customControlAutosizing"
-    />
-    <label class="custom-control-label" for="customControlAutosizing">
-      I agree to the instructions provided and will be responsible for any bad
-      result in case i do not follow the instructions well.
-    </label>
-  </div>
-  <br />
-  <button
-    class="btn btn-sm btn-secondary float-right"
-    [disabled]="!agreement.checked"
-    [routerLink]="['../../']"
-  >
-    Start the test
-  </button>
+  <ng-container *ngIf="test; else testNotFetchedFooter">
+    <div class="custom-control custom-radio mr-sm-2">
+      <input
+        (change)="(0)"
+        #agreement
+        type="checkbox"
+        class="custom-control-input"
+        id="customControlAutosizing"
+      />
+      <label class="custom-control-label" for="customControlAutosizing">
+        I agree to the instructions provided and will be responsible for any bad
+        result in case i do not follow the instructions well.
+      </label>
+    </div>
+    <br />
+    <button
+      class="btn btn-sm btn-secondary float-right"
+      [disabled]="!agreement.checked"
+      [routerLink]="[configData.amplitudeTestRoutes.test(test._id)]"
+    >
+      Start the test
+    </button>
+  </ng-container>
+  <ng-template #testNotFetchedFooter>
+    <p>Test could not be fetched! Try reloading or goto dashboard.</p>
+    <button
+      class="btn btn-sm btn-secondary float-right"
+      [routerLink]="[configData.clientRoutes.dashboard()]"
+    >
+      Go to dashboard
+    </button>
+  </ng-template>
 </div>

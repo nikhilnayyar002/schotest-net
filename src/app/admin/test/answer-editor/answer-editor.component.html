@@ -1,0 +1,62 @@
+<div class="page-content">
+  <form class="bg-primary form-container" [formGroup]="form">
+
+    <!-- answer -->
+    <div class="input-container">
+      <label>Answer <small>(?)</small></label>
+      <div class="col-auto dropdown d-inline-block">
+        <button
+          class="btn btn-secondary btn-sm dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          {{ correctOption}}
+        </button>
+        <div class="dropdown-menu">
+          <span
+            *ngFor="let option of options"
+            class="dropdown-item"
+            (click)="correctOption = option"
+          >
+            {{ option }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!--solution-->
+    <div class="input-container flex-column">
+      <label>Solution <small>(?)</small></label>
+      <ckeditor
+        [editor]="editor"
+        (ready)="onReady($event)"
+        [config]="editorConfig"
+        class="border border-info"
+        formControlName="data"
+      >
+      </ckeditor>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <button
+        id="submit-btn"
+        type="submit"
+        class="btn btn-secondary"
+        [disabled]="form.invalid"
+        (click)="submit()"
+        *ngIf="!submitting"
+      >
+        Submit
+      </button>
+      <div *ngIf="submitting" class="spinner-grow text-secondary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+    <div *ngIf="backendError" class="input-error" style="margin-top: 15px;">
+      <pre>{{ backendError }}</pre>
+    </div>
+  </form>
+</div>

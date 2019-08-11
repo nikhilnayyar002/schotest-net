@@ -51,7 +51,7 @@ export class MainService {
             )
           );
           return this.auth.tryWithRefreshIfNecc(
-            config.routes.category.getCategoryTests(categoryID, user.email),
+            config.routes.test.getTestsByCategory(categoryID, user.email),
             recipe
           );
         })

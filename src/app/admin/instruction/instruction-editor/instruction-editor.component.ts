@@ -5,6 +5,7 @@ import { Instruction } from 'src/app/modals/instruction';
 import { Validators, FormBuilder, FormControl } from '@angular/forms';
 import { MainService } from '../../main.service';
 import { ActivatedRoute } from '@angular/router';
+import { Category } from 'src/app/modals/category';
 
 @Component({
   selector: 'app-instruction-editor',
@@ -19,12 +20,15 @@ export class InstructionEditorComponent implements OnInit {
   submitting: boolean = false;
   @ViewChild("pageContent", {static:false}) pageContent:ElementRef<HTMLElement>;
 
+  categories:Category[] = <any>[{_id:null,name:"-----"}];
+  selectedCategory:Category = <any>{};
+
   //work as "edit" component
   instruction:Instruction;
 
   form = this.fb.group({
     title: ["", [Validators.required]],
-    data: [""]
+    data: [""],
   });
 
   constructor(private fb: FormBuilder, private ms:MainService, private route: ActivatedRoute)
@@ -34,14 +38,24 @@ export class InstructionEditorComponent implements OnInit {
   {}
 
   ngOnInit(): void {
-    this.instruction = this.route.snapshot.data["instruction"]
+    if(this.route.snapshot.data.data) {
+      this.instruction =  this.route.snapshot.data.data["instruction"];
+      if(this.route.snapshot.data.data["categories"])
+        this.categories = this.categories.concat(this.route.snapshot.data.data["categories"]);
+    }
     /** Display the values */
     if(this.instruction) {
       this.pageTitle = "Edit "+ this.instruction.name
       this.title.setValue(this.instruction.name)
       this.data.setValue(this.instruction.data)
+
+      this.selectedCategory._id = this.instruction.catID
+      let data = this.categories.filter(cat=>cat._id ==  this.instruction.catID)
+      if(data.length) this.selectedCategory.name = data[0].name
+
     } else {
       this.pageTitle = "Create New Instruction"
+      this.selectedCategory = this.categories[0]
     }
   }
 
@@ -55,10 +69,12 @@ export class InstructionEditorComponent implements OnInit {
         name:this.title.value,
         data:this.data.value,
         _id:id,
+        catID:this.selectedCategory._id
     }
     this.ms.postInstruction(instruction, !this.instruction).subscribe(
       () => {
         this.submitting = false;
+        this.backendError = ''
         if(!this.instruction) { this.form.reset(); }
       },
       (error:any) =>{

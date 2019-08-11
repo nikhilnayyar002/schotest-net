@@ -28,7 +28,9 @@ export class QuestionsComponent {
   ) { }
 
   ngOnInit(): void {
-    this.test = this.route.snapshot.parent.data.test
+    if(this.route.snapshot.parent.data.data) {
+      this.test =  this.route.snapshot.parent.data.data["test"];
+    }
     if(this.test) {
       for(let prop in this.test.sections) {
         this.sections.push({

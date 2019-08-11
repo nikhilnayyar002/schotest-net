@@ -48,7 +48,6 @@ export const intialOtherState:TestOtherState={
 
 const otherStateReducer = createReducer(
     intialOtherState,
-    on(TestActions.InitializeTestOtherState,(state)=>intialOtherState),
     on(TestActions.SetIndex,(state,action)=>({...state,id:action.id})),
     on(TestActions.TestOver,(state)=>{
         /** Note this the function name has not the usual meaning

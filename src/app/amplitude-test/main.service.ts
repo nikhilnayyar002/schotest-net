@@ -89,14 +89,14 @@ export class MainService {
     return throwError("Something bad happened; please try reloading the page");
   }
 
-  getInstruction(id:string): Observable<Instruction> {
+  getInstructionByCategory(cid:string): Observable<Instruction> {
     let recipe = pipe(
       map(
         (data: { status: boolean; instruction: Instruction }) => data.instruction
       )
     );
     return this.auth.tryWithRefreshIfNecc(
-      config.routes.instruction.getInstruction(id),
+      config.routes.instruction.getInstructionByCategory(cid),
       recipe
     );
   }

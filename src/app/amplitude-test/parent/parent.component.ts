@@ -16,6 +16,8 @@ import { AutoUnsubscribe, takeWhileAlive} from 'take-while-alive';
 import { intialOtherState } from '../state/state.reducer';
 import { TestWithFeatures, TestWithFeaturesForUser } from '../modals/test';
 import { UserProfile } from 'src/app/modals/user';
+import { Instruction } from 'src/app/modals/instruction';
+import { LocationStrategy } from '@angular/common';
 
 @Component({
   selector: 'app-parent',
@@ -31,6 +33,7 @@ export class ParentComponent {
   sections:string[];
   user:UserProfile;
   testPaused:boolean = false;
+  instruction:Instruction;
 
   //local config
   configData = config;
@@ -42,8 +45,10 @@ export class ParentComponent {
     private ps: PageService,
     private store: Store<GLobalState>,
     private route:ActivatedRoute,
-    private router:Router
+    private router:Router,
+    private locationStrategy:LocationStrategy
   ) {
+
   }
 
   // media state and side toggler state
@@ -83,7 +88,17 @@ export class ParentComponent {
     */
     this.pageItems = this.ps.getPages();
     this.loadComponent('');
-    this.test = <TestWithFeaturesForUser> this.route.snapshot.data.test
+    if(this.route.snapshot.data.data) {
+
+      /** prevent from navigating away from this component */
+      history.pushState(null, null, location.href);
+      this.locationStrategy.onPopState(() => {
+        history.pushState(null, null, location.href);
+      })
+
+      this.test = <TestWithFeaturesForUser> this.route.snapshot.data.data.test
+      this.instruction = <Instruction> this.route.snapshot.data.data.instruction      
+    }
     if(this.test) {
       this.start(); 
       //set index

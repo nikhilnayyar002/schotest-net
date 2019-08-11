@@ -16,7 +16,7 @@ import {
   TestWithFeaturesForUser
 } from "../modals/test";
 import config from "src/data/config";
-import { InstructionComponent } from '../instruction/instruction.component';
+import { InstructionComponent } from "../instruction/instruction.component";
 
 @Injectable()
 export class AmplitudeTestResolverService {
@@ -26,79 +26,64 @@ export class AmplitudeTestResolverService {
     private router: Router
   ) {}
 
-  resolve(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ) {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     let testID = route.paramMap.get("id");
 
-    if(state.url.includes(config.amplitudeTestRoutes.test(testID))) {
-      if (route.component == InstructionComponent) {
-        let insID = route.paramMap.get("insID");
-        return this.ms.getInstruction(insID)
-      }
-      else {
-        let arr = [
-          this.store
-            .select(s => s.app.user)
-            .pipe(
-              take(1),
-              switchMap(user => this.ms.getTest(user.id, testID))
-            ),
-          this.store
-            .select(s => s.app.user)
-            .pipe(
-              take(1),
-              switchMap(user => this.ms.getUserTest(user.id, testID))
-            )
-        ];
-
-        return forkJoin(arr).pipe(
+    let arr = [
+      this.store
+        .select(s => s.app.user)
+        .pipe(
           take(1),
-          map((tests: (TestWithFeaturesForUser | UserTest)[]) => {
-            let test = <TestWithFeaturesForUser>tests[0],
-              userTest = <UserTest>tests[1];
-            if (userTest && userTest.isTestOver) test.isTestOver = true;
-            else if (userTest) {
-              if (userTest.time != undefined || userTest.time != null)
-                test.time = userTest.time;
-              for (let i in userTest.questions) {
-                let answer = userTest.questions[i],
-                  index = answer
-                    ? test.questions[i].answers.indexOf(answer)
-                    : null;
-                test.questions[i].checkedAnswerIndex = index;
-              }
-            }
-            return test;
-          }),
-          switchMap((test: TestWithFeaturesForUser) => {
-            /**
-             * Test is over
-             */
+          switchMap(user => this.ms.getTest(user.id, testID))
+        ),
+      this.store
+        .select(s => s.app.user)
+        .pipe(
+          take(1),
+          switchMap(user => this.ms.getUserTest(user.id, testID))
+        )
+    ];
 
-            if (test.isTestOver) {
-              this.router.navigate([
-                config.clientRoutes.completedTest(test._id)
-              ]);
-              return of(null);
-            }
-            /**
-             * Test can be set now
-             */
-            this.store.dispatch(SetTest({ test }));
-            return of(test);
-          }),
-          catchError(error => {
-            /**
-             * Error no test resolved
-             */
-            return of(null);
-          })
-        );
-      }
-    }
-
-
+    return forkJoin(arr).pipe(
+      take(1),
+      map((tests: (TestWithFeaturesForUser | UserTest)[]) => {
+        let test = <TestWithFeaturesForUser>tests[0],
+          userTest = <UserTest>tests[1];
+        if (userTest && userTest.isTestOver) test.isTestOver = true;
+        else if (userTest) {
+          if (userTest.time != undefined || userTest.time != null)
+            test.time = userTest.time;
+          for (let i in userTest.questions) {
+            let answer = userTest.questions[i],
+              index = answer ? test.questions[i].answers.indexOf(answer) : null;
+            test.questions[i].checkedAnswerIndex = index;
+          }
+        }
+        return test;
+      }),
+      switchMap((test: TestWithFeaturesForUser) => {
+        /**
+         * Test is over
+         */
+        if (test.isTestOver) {
+          this.router.navigate([config.clientRoutes.completedTest(test._id)]);
+          return of(null);
+        }
+        /**
+         * Test can be set now
+         */
+        this.store.dispatch(SetTest({ test }));
+        return this.ms
+          .getInstructionByCategory(test.catID)
+          .pipe(map(instruction => ({ test, instruction })));
+      }),
+      catchError(error => {
+        /**
+         * Error no test resolved
+         */
+        this.store.dispatch(SetTest({ test:null }));
+        return of(null);
+      })
+    );
   }
 }

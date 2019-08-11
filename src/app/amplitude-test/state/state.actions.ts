@@ -89,9 +89,6 @@ export const TestSubmitting =createAction(
   props<{submittingTest:boolean}>()
 )
 
-export const InitializeTestOtherState =createAction(
-  '[Test Other State] Initialize',
-)
 
 
 /** *************************************** Error Actions ******************** */

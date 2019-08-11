@@ -22,13 +22,13 @@ export class QuestionEditorComponent implements OnInit {
   //work as "edit" component
   @Input() question:QuestionOriginal;
   @Input() qNo:number=0;
-  @Input() sections: {sectionOrder: number, name: string}[] = [];  
   @Input() displayHeader:boolean = true;
   @Input() saveMode:boolean = false;
   @Input() testID:string;
   @Output() savedQuestion = new EventEmitter<QuestionOriginal>();
   @Output() closeForm = new EventEmitter<boolean>();
-
+  
+  @Input() sections: {sectionOrder: number, name: string}[] = [];  
   selectedSection:{sectionOrder: number, name: string} = <any>{};
 
   form = this.fb.group({

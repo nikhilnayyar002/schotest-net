@@ -10,7 +10,7 @@ const routes: Routes = [
     path: 'test/:id',
     canActivate: [AuthGuard],
     resolve: {
-      test: AmplitudeTestResolverService
+      data: AmplitudeTestResolverService
     },
     children:[
       {
@@ -18,11 +18,8 @@ const routes: Routes = [
         component: ParentComponent
       },
       {
-        path:'instruction/:insID',
-        component: InstructionComponent,
-        resolve: {
-          instruction: AmplitudeTestResolverService
-        },        
+        path:'instruction',
+        component: InstructionComponent        
       },      
     ]
   }
