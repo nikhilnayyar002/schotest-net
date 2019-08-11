@@ -1,32 +1,63 @@
 <!-- navbar -->
 <nav class="navbar bg-primary navbar-expand-lg shadow">
   <!-- logo-->
-  <a class="navbar-brand" [routerLink]=[configData.clientRoutes.dashboard()]>
+  <a class="navbar-brand" [routerLink]="[configData.clientRoutes.dashboard()]">
     <span id="nav-bar-logo">{{ configData.company.name }}</span>
   </a>
 </nav>
-<div class="p-3 pb-0 bg-primary"><h2>Instruction</h2></div>
+<div class="p-3 pb-0 bg-primary"><h4>Instruction</h4></div>
 <div class="page-content p-3 bg-info">
-    
-    <div *ngIf="test" class="row no-gutters text-center border-bottom border-primary">
-        <div class="col-12"><h3>{{test.name}}</h3></div>
-        <div class="col-6"><h6>Total Time: {{test.oTime/60}} <small>mins</small></h6></div> 
-        <div class="col-6"><h6>Total Marks: {{test.marks}}</h6></div> 
+  <div
+    *ngIf="test; else testNotFetched"
+    class="row no-gutters text-center border-bottom border-primary"
+  >
+    <div class="col-12">
+      <h4>{{ test.name }}</h4>
     </div>
-
-    <div *ngIf="instruction" class="pt-3" [innerHTML]="instruction.data | safeStyle:'dom'">
+    <div class="col-6">
+      <h6>Total Time: {{ test.oTime / 60 }} <small>mins</small></h6>
     </div>
+    <div class="col-6">
+      <h6>Total Marks: {{ test.marks }}</h6>
+    </div>
+  </div>
+  <ng-template #testNotFetched>
+    <div class="p-2 bg-danger">
+      There is proble fetching test. Try reloading.
+    </div>
+  </ng-template>
 
-
+  <div
+    *ngIf="instruction; else instructionNotFetched"
+    class="pt-3"
+    [innerHTML]="instruction.data | safeStyle: 'dom'"
+  ></div>
+  <ng-template #instructionNotFetched>
+    <div class="p-2 bg-danger">
+      There is proble fetching instruction. Try reloading.
+    </div>
+  </ng-template>
 </div>
 <div class="bg-primary p-4">
-      <div class="custom-control custom-radio mr-sm-2">
-        <input type="checkbox" class="custom-control-input" id="customControlAutosizing">
-        <label class="custom-control-label" for="customControlAutosizing">
-          I agree to the instructions provided and will be responsible for any
-          bad result in case i do not follow the instructions well.
-        </label>
-      </div>
-      <br/>
-      <button class="btn btn-sm btn-secondary float-right">Start the test</button>
+  <div class="custom-control custom-radio mr-sm-2">
+    <input
+      (change)="(0)"
+      #agreement
+      type="checkbox"
+      class="custom-control-input"
+      id="customControlAutosizing"
+    />
+    <label class="custom-control-label" for="customControlAutosizing">
+      I agree to the instructions provided and will be responsible for any bad
+      result in case i do not follow the instructions well.
+    </label>
+  </div>
+  <br />
+  <button
+    class="btn btn-sm btn-secondary float-right"
+    [disabled]="!agreement.checked"
+    [routerLink]="['../../']"
+  >
+    Start the test
+  </button>
 </div>

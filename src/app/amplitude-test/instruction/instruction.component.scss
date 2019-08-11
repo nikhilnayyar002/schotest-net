@@ -1,6 +1,9 @@
 @import "../../../data/mixins";
 
 :host {
-    @include page-content;
-    padding: 0;
+  @include page-content;
+  padding: 0;
+}
+label {
+  font-size: 14px;
 }

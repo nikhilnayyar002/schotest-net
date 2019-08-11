@@ -52,7 +52,7 @@
 
       <button
         *ngIf="!test.isTestOver; else completedTemplate"
-        [routerLink]="[config.clientRoutes.test(test._id)]"
+        [routerLink]="[config.amplitudeTestRoutes.test(test._id)]"
         class="btn btn-secondary"
       >
         {{ test.hasTestStarted ? "Continue" : "Start" }}

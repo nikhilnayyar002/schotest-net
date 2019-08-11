@@ -3,6 +3,7 @@ import config from 'src/data/config';
 import { ActivatedRoute } from '@angular/router';
 import { TestOriginal } from 'server/src/modal/test';
 import { Instruction } from 'src/app/modals/instruction';
+import { LocationStrategy } from '@angular/common';
 
 @Component({
   selector: 'app-instruction',
@@ -15,12 +16,17 @@ export class InstructionComponent implements OnInit {
   instruction:Instruction;
 
   constructor(
-    private route:ActivatedRoute
-  ) { }
+    private route:ActivatedRoute,
+    private locationStrategy:LocationStrategy
+    ) {
+    }
 
   ngOnInit() {
-    this.test = this.route.snapshot.data.test
-    this.instruction = this.route.snapshot.data.instruction
+    if(this.route.snapshot.data.data) {
+      this.test = this.route.snapshot.data.data.test
+      this.instruction = this.route.snapshot.data.data.instruction
+    }
+
   }
 
 }

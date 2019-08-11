@@ -51,7 +51,6 @@ let config = {
     clientRoutes:{
         root:()=> '/',
         login:()=> '/login',
-        test: (id)=> '/test/'+id,
         dashboard: ()=>  '/dashboard',
         completedTest:(id)=> '/dashboard/completed/'+ id,
 
@@ -72,7 +71,7 @@ let config = {
     amplitudeTestRoutes:{
         /** AmplitudeTestResolverService */
         test: (id)=>`/test/${id}`,
-        instruction: (id, insID)=> `/test/${id}/instruction/${insID}`
+        instruction: (id)=> `/test/${id}/instruction`
     },
     adminRoutes:{
         admin: ()=>  '/admin',
