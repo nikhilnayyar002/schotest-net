@@ -26,7 +26,9 @@ import config from 'src/data/config';
 export class AuthService {
   constructor(private http: HttpClient, private store: Store<GLobalState>) {}
 
+  /** default as "dashboard is neccessary" */
   lastUrlLoaded:string=config.clientRoutes.dashboard()
+  queryParam:object = {};
 
   authenticate(email: string, pass: string): Observable<BackendStatus | Error> {
     const httpOptions = {

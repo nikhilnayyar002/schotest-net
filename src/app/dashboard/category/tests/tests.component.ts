@@ -14,7 +14,6 @@ export class TestsComponent implements OnInit {
 
   config = config
   tests:TestWithFeatures[];
-  sections:string[];
   constructor(
     private route:ActivatedRoute
   ) {

@@ -35,7 +35,6 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         .pipe(take(1))
         .subscribe(app => {
           if (!app.loggedIn) {
-            this.auth.lastUrlLoaded = routerState.url
             this.router.navigate([config.clientRoutes.login()], {skipLocationChange:true});
           }
           /**

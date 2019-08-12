@@ -83,6 +83,14 @@ GET http://localhost:3000/tests/12349/completed
 GET  http://localhost:3000/tests/category/12349?email=nikhilnayyar002@gmail.com
 
 
+### Get count
+GET  http://localhost:3000/tests/count
+
+### Get count
+GET  http://localhost:3000/tests/all/1
+
+
+
 ### @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Category @@@@@@@@@@@@@@@@@@@@@
 
 ### Post Category
@@ -225,7 +233,7 @@ Content-Type: application/json
     "_id":"123451",
     "tID":"12349",
     "value":"right angle",
-    "data":"<p>right angle</p>"
+    "data":"<p>right angled</p>"
     }
 ]
 

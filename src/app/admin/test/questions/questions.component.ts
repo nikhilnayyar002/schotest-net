@@ -19,6 +19,7 @@ export class QuestionsComponent {
 
   addNewQuestion:boolean = false;
   addNewQuestions:boolean = false;
+  addAnswers:boolean = false;
 
   editQuestion: {question:QuestionOriginal, qNo:number} = {question:null, qNo:null};
 

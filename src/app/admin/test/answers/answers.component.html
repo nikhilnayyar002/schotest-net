@@ -1,1 +1,64 @@
-<p>answers works!</p>
+<div class="d-flex align-items-center">
+  <span
+    class="ml-auto p-1 mr-2"
+    *ngIf="!problemFetchingAnswers; else answersFetchFailed"
+  >
+    Everything is Fine.
+  </span>
+  <ng-template #answersFetchFailed>
+    <span
+      class="ml-auto p-1 mr-2"
+      *ngIf="!problemFetchingAnswers; else answersFetchFailed"
+    >
+      Problems fetching Answers!
+    </span>
+  </ng-template>
+
+  <div>
+    <button
+      type="button"
+      class="btn btn-sm btn-secondary"
+      (click)="submit()"
+      *ngIf="!submitting"
+    >
+      Submit All
+    </button>
+    <div *ngIf="submitting" class="spinner-grow text-secondary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+</div>
+<div *ngIf="backendError" class="mt-2">
+  <pre class="text-secondary" style="text-align: end;margin: 0;">{{
+    backendError
+  }}</pre>
+</div>
+
+<hr />
+<div class="page-content">
+  <div
+    class="position-relative"
+    *ngFor="let question of questions; let i = index"
+  >
+    <div
+      class="mcq-question-badge badge rounded-circle badge-secondary position-absolute"
+      style="z-index: 2"
+    >
+      {{ i + 1 }}
+    </div>
+    <app-answer-editor
+      [question]="question"
+      [testID]="testID"
+      [answer]="answers[answersMap[question._id]]"
+      (savedAnswer)="saveAnswer($event)"
+    >
+    </app-answer-editor>
+    <!-- <app-question-editor
+        [question]="question"
+        [displayHeader]="false"
+        [saveMode]="true"
+        (savedQuestion)="saveQuestion(i, $event)"
+        [testID]="testID"
+      ></app-question-editor> -->
+  </div>
+</div>

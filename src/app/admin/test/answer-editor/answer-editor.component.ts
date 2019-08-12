@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { QuestionOriginal } from 'src/app/amplitude-test/modals/question';
 import { Validators, FormBuilder, FormControl } from '@angular/forms';
 import { MainService } from '../../main.service';
@@ -22,6 +22,7 @@ export class AnswerEditorComponent {
   @Input() question:QuestionOriginal;
   @Input() testID:string;
   @Input() answer:Answer;
+  @Output() savedAnswer= new EventEmitter<Answer>();
 
   options:string[] = ["-----"];
   correctOption:string;
@@ -37,11 +38,18 @@ export class AnswerEditorComponent {
   {}
 
   ngAfterViewInit(): void {
-    this.data.setValue(this.answer.data?this.answer.data:"")
     if(this.question.answers) {
-      this.options.concat(this.question.answers)
+      setTimeout(() => {
+        this.options = this.options.concat(this.question.answers)
+      }, 0);
     }
-    if(this.answer) this.correctOption = this.answer.value
+  }
+
+  ngOnChanges(): void {
+    if(this.answer) {
+      this.correctOption = this.answer.value
+      this.data.setValue(this.answer.data)
+    }
     else this.correctOption = this.options[0]
   }
 
@@ -56,7 +64,6 @@ export class AnswerEditorComponent {
       value:this.correctOption,
       data:this.data.value
     }
-     
     this.ms.postAnswer(answer, !this.answer).subscribe(
       () => {
         this.submitting = false; this.backendError = ''
@@ -67,6 +74,15 @@ export class AnswerEditorComponent {
         this.backendError = error.error.message
       }
     )
+  }
+  save() {
+    let answer:Answer =  {
+      _id:this.question._id,
+      tID:this.testID,
+      value:this.correctOption,
+      data:this.data.value
+    }
+    this.savedAnswer.emit(answer)
   }
 
   /**

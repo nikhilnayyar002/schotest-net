@@ -34,7 +34,9 @@ let config = {
             getTest: id => `${domain}/tests/${id}`,
             getTestState: id => `${domain}/tests/${id}/state`,
             getQuestionsAnswers: id =>  `${domain}/tests/${id}/completed`,
-            getTestsByCategory: (cid, email)=> `${domain}/tests/category/${cid}?email=${email}`
+            getTestsByCategory: (cid, email)=> `${domain}/tests/category/${cid}?email=${email}`,
+            getTestsCount: ()=> `${domain}/tests/count`,  
+            getTests:(pNo)=> `${domain}/tests/all/${pNo}`
         },
         question:{
             getQuestions: id => `${domain}/questions/test/${id}`,

@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpErrorResponse } from "@angular/common/http";
 import { Category } from "../modals/category";
 import { Observable, pipe, forkJoin, of } from "rxjs";
 import { map, take, switchMap, tap, catchError } from "rxjs/operators";
@@ -66,13 +66,12 @@ export class MainService {
     );
   }
 
-  getTestState(id: string): Observable<TestOriginal | string> {
+  getCategoryStates(): Observable<Category[]> {
     let recipe = pipe(
-      map((data: { status: boolean; test: TestOriginal }) => data.test),
-      catchError(error => of(error.error.message))
+      map((data: { status: boolean; categories: Category[] }) => data.categories)
     );
     return this.auth.tryWithRefreshIfNecc(
-      config.routes.test.getTestState(id),
+      config.routes.category.getCategoryStates(),
       recipe
     );
   }
@@ -242,20 +241,21 @@ export class MainService {
     );
   }
 
-  getInstructionState(id: string): Observable<TestOriginal | string> {
+  getAnswers(tid: string): Observable<Answer[] | string> {
     let recipe = pipe(
-      map(
-        (data: { status: boolean; instruction: Instruction }) =>
-          data.instruction
-      ),
-      catchError(error => of(error.error.message))
+      map((data: { status: boolean; answers: Answer[] }) => data.answers),
+      catchError((error:HttpErrorResponse) => {
+        if(error.status != 404)
+         return of("Some Error")
+        else
+        return of(null)
+      })
     );
     return this.auth.tryWithRefreshIfNecc(
-      config.routes.instruction.getInstructionState(id),
+      config.routes.answer.getAnswers(tid),
       recipe
     );
   }
-
 
 
   postAnswer(answer: Answer, post: boolean) {
@@ -275,5 +275,45 @@ export class MainService {
     
     return this.http.put(config.routes.answer.postAnswers(),answers,httpOptions);
   }
+
+  getTests(pNo:number): Observable<{ tests:TestOriginal[], count:number }> {
+    let recipe1 = pipe(
+      map(
+        (data: { status: boolean; tests: TestOriginal[] }) =>
+          data.tests
+      )
+    );
+    let recipe2 = pipe(
+      map(
+        (data: { status: boolean; count: number[] }) => data.count
+      )
+    );
+
+    let arr = [
+      this.auth.tryWithRefreshIfNecc(
+        config.routes.test.getTests(pNo),
+        pipe(recipe1)
+      ),
+      this.auth.tryWithRefreshIfNecc(
+        config.routes.test.getTestsCount(),
+        pipe(recipe2)
+      )
+    ];
+
+    return forkJoin(arr).pipe(
+      take(1),
+      map((datas: Array<TestOriginal[] | number>) => {
+        let tests = <TestOriginal[]>datas[0],
+          count = <number>datas[1];
+        return { tests, count };
+      }),
+      catchError(error => {
+        /** Probably not called. */
+        return of(null);
+      })
+    );
+  } 
+
+
 
 }

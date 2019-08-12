@@ -1,14 +1,22 @@
 // theming dropdown
 @mixin createDropDown($bg, $color: pick-visible-color($bg, black, white)) {
   .dropdown {
+    max-width: 90%;
     .dropdown-toggle {
       background: $bg !important;
       border: none !important;
+
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      max-width: 100%;
     }
     .dropdown-menu {
       padding: 0;
       border: none;
       box-shadow: black 0px 3px 8px;
+
+      max-width: 100%;
     }
     .dropdown-item {
       background: $bg;
@@ -20,6 +28,11 @@
       &:active {
         background: darken($bg, 10%);
       }
+
+      overflow: hidden;
+      white-space: initial;
+      text-overflow: ellipsis;
+      max-width: 100%;
     }
   }
   .dropdown > * {

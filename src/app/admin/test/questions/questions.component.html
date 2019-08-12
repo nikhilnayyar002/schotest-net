@@ -16,29 +16,40 @@
         <button
          type="button"
          class="btn btn-secondary btn-sm mr-2"
-         *ngIf="!addNewQuestions"
+         *ngIf="!addNewQuestions && !addAnswers"
          (click)="addNewQuestion = !addNewQuestion; editQuestion.question = null;"
          >{{addNewQuestion?'Cancel':'Add'}}</button>
          <button
          type="button"
-         class="btn btn-secondary btn-sm"
-         *ngIf="!addNewQuestion"
+         class="btn btn-secondary btn-sm mr-2"
+         *ngIf="!addNewQuestion && !addAnswers"
          (click)="addNewQuestions = !addNewQuestions;"
-         >{{addNewQuestions?'Cancel':'Batch Add'}}</button>         
+         >{{addNewQuestions?'Cancel':'Batch Add'}}</button>
+         <button
+         type="button"
+         class="btn btn-secondary btn-sm"
+         *ngIf="!addNewQuestion && !addNewQuestions"
+         (click)="addAnswers = !addAnswers;"
+         >{{addAnswers?'Back':'Answers'}}</button>             
     </div>
     
     <div class="content bg-info">
       <!-- add/edit single question-->
       <app-question-editor
-        *ngIf="addNewQuestion && !addNewQuestions" [sections]="sections" (closeForm)="onCloseForm()"
+        *ngIf="addNewQuestion" [sections]="sections" (closeForm)="onCloseForm()"
         [question]='editQuestion.question' [qNo]="editQuestion.qNo" [testID]="test._id"
       ></app-question-editor>
 
       <app-batch-add-questions
-        *ngIf="addNewQuestions && !addNewQuestion" (closeForm)="onCloseForm()" [testID]="test._id"
+        *ngIf="addNewQuestions" (closeForm)="onCloseForm()" [testID]="test._id"
       ></app-batch-add-questions>
 
-      <div *ngIf="!addNewQuestion && !addNewQuestions" class="accordion p-2" id="accordionTests">
+      <app-answers [questions]="questions" [testID]="test._id"
+        *ngIf="addAnswers"
+      ></app-answers>
+
+      <div *ngIf="!addNewQuestion && !addNewQuestions && !addAnswers"
+        class="accordion p-2" id="accordionTests">
         <app-question-card
           *ngFor="let question of questions; let i = index"
           [question]='question'

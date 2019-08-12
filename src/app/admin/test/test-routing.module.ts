@@ -14,7 +14,10 @@ const routes: Routes = [
   },
   {
     path: 'create',
-    component: TestEditorComponent
+    component: TestEditorComponent,
+    resolve:{
+      categories:AdminResolverService
+    }
   },
   {
     path: 'edit/:id',
@@ -22,6 +25,7 @@ const routes: Routes = [
     resolve:{
       data:AdminResolverService
     },
+    runGuardsAndResolvers: 'always',
     children:[
       {
         path: 'questions',

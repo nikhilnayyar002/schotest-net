@@ -75,7 +75,8 @@ export class QuestionEditorComponent implements OnInit {
   get answers() {return this.form.get("answers") as FormArray;}
 
   removeAnswer(index:number) {
-    this.answers.removeAt(index)
+    let t = window.confirm( 'Is it OK?')
+    if(t) this.answers.removeAt(index)
   }
 
   addAnswer() {

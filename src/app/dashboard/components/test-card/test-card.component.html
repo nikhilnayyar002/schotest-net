@@ -52,10 +52,12 @@
 
       <button
         *ngIf="!test.isTestOver; else completedTemplate"
-        [routerLink]="[config.amplitudeTestRoutes.test(test._id)]"
+        [routerLink]="[directingLink((test._id))]"
         class="btn btn-secondary"
       >
-        {{ test.hasTestStarted ? "Continue" : "Start" }}
+        {{ directingLabel ? directingLabel :(
+          test.hasTestStarted ? "Continue" : "Start" 
+        ) }}
       </button>
       <ng-template #completedTemplate>
         <button

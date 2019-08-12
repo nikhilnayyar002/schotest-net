@@ -16,6 +16,9 @@ export class TestCardComponent  {
   config = config;
   @Output() headClick = new EventEmitter<HTMLElement>() 
 
+  @Input() directingLink:(id:string)=>string = config.amplitudeTestRoutes.test
+  @Input() directingLabel:string;
+
   getSections(test:TestWithFeatures) {
     if(test.sections) return Object.keys(test.sections)
     else return null

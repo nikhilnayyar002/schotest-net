@@ -1,14 +1,51 @@
-<h1 class="header py-4">
-  Test
-</h1>
-<div class=" p-2 rounded-sm d-flex">
+<div class="header py-4 d-flex align-items-end flex-wrap">
+  <h1>
+    Test
+  </h1>
   <button
     type="button"
     class="btn btn-secondary btn-sm ml-auto"
-    [routerLink]="[config.adminRoutes.categoryCreate()]"
+    [routerLink]="[config.adminRoutes.testCreate()]"
   >
     Create
   </button>
+  <div class="w-100">
+    <p class="font-weight-bold">Pages</p>
+    <div class="d-flex flex-wrap mb-3">
+      <button
+        *ngFor="let page of pages"
+        type="button"
+        class="btn btn-primary rounded-0"
+        [ngClass]="{ 'btn-secondary': no == 5 }"
+        [routerLink]="['./']"
+        [queryParams]="{ p: page }"
+      >
+        {{ page }}
+      </button>
+    </div>
+  </div>
 </div>
 
-<div class="page-content"></div>
+<div class="page-content">
+  <p class="font-weight-bold">Tests</p>
+
+  <div class="accordion page-content" id="accordionTests">
+    <app-test-card
+      *ngFor="let test of tests; let i = index"
+      [test]="test"
+      [index]="i"
+      accordianID="accordionTests"
+      (headClick)="onCardHeaderClick($event)"
+      [directingLink]="config.adminRoutes.adminEditTest"
+      [directingLabel]="'Edit'"
+    ></app-test-card>
+  </div>
+
+  <!--Loading-->
+  <div *ngIf="tests && !tests.length" class="py-3">
+    <div class="spinner-border text-secondary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+
+</div>

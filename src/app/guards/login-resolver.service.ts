@@ -28,7 +28,7 @@ export class LoginResolverService {
         switchMap(appState => {
         
           if (appState.loggedIn) {
-            this.router.navigate([this.auth.lastUrlLoaded])
+            this.router.navigate([this.auth.lastUrlLoaded], {queryParams:this.auth.queryParam})
             return of(true);
           }
 
@@ -47,7 +47,7 @@ export class LoginResolverService {
                     }
                   })
                 );
-                this.router.navigate([this.auth.lastUrlLoaded])
+                this.router.navigate([this.auth.lastUrlLoaded], {queryParams:this.auth.queryParam})
                 return true;
               }),
               catchError(()=> of(false))
@@ -58,7 +58,7 @@ export class LoginResolverService {
           else 
             return this.auth.refreshToken(appState).pipe(
               tap(()=> {
-                this.router.navigate([this.auth.lastUrlLoaded])
+                this.router.navigate([this.auth.lastUrlLoaded], {queryParams:this.auth.queryParam})
               }),
               catchError(()=> of(false))
             )

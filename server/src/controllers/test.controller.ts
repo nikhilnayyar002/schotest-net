@@ -118,7 +118,7 @@ export const getQuestionsAnswers: express.RequestHandler = function(
 };
 
 /**
- * Return @Questions
+ * Return @TestWithFeatures
  */
 export const getTestsByCategory: express.RequestHandler = function(req,res,next) {
   let catID = req.params.catID;
@@ -153,3 +153,25 @@ export const getTestsByCategory: express.RequestHandler = function(req,res,next)
     } else next(new Record404Exception());
   });
 };
+
+/**
+ * Return @Number
+ */
+export const getTestsCount: express.RequestHandler = function(req,res,next) {
+  TestModal.estimatedDocumentCount((err, count)=>{
+    if (!err) res.json({ status: true, count});
+    else next(err);
+  });
+}
+
+/**
+ * Return @Number
+ */
+export const getTests: express.RequestHandler = function(req,res,next) {
+  let pNo = req.params.pNo;
+  TestModal.find({},null,{skip:(pNo-1)*10, limit: 10},(err, tests)=>{
+    if (err) next(err);
+    else if(tests.length) res.json({ status: true, tests});
+    else next(new Record404Exception());
+  });
+}

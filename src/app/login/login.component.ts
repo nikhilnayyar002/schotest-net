@@ -37,7 +37,7 @@ export class LoginComponent {
      */
     let data = this.route.snapshot.data;
     if (data.status) 
-      this.router.navigate([this.auth.lastUrlLoaded]);  
+      this.router.navigate([this.auth.lastUrlLoaded],{queryParams:this.auth.queryParam});  
   }
 
   get email(): any {
@@ -65,7 +65,7 @@ export class LoginComponent {
             })
           );
 
-          this.router.navigate([this.auth.lastUrlLoaded]);
+          this.router.navigate([this.auth.lastUrlLoaded],{queryParams:this.auth.queryParam});
         },
         (error: string) => {
           this.loggingIn = false; /** set logged in to false */

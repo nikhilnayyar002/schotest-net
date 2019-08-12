@@ -14,7 +14,7 @@
         name="content"
         formControlName="content"
         rows="2"
-      ></textarea>      
+      ></textarea>
     </div>
 
     <!--Image-->
@@ -103,30 +103,32 @@
       >
       </ckeditor>
     </div>
-    
+
     <!-- section -->
     <div class="input-container">
       <label>Section <small>(?)</small></label>
-      <div class="col-auto dropdown d-inline-block">
-        <button
-          class="btn btn-secondary btn-sm dropdown-toggle"
-          type="button"
-          id="dropdownMenuButton"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-          [disabled]="sections.length ? false : true"
-        >
-          {{ selectedSection?.name }}
-        </button>
-        <div class="dropdown-menu">
-          <span
-            *ngFor="let sec of sections"
-            class="dropdown-item"
-            (click)="selectedSection = sec"
+      <div class="col">
+        <div class="dropdown">
+          <button
+            class="btn btn-secondary btn-sm dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            [disabled]="sections.length ? false : true"
           >
-            {{ sec.name }}
-          </span>
+            {{ selectedSection?.name }}
+          </button>
+          <div class="dropdown-menu">
+            <span
+              *ngFor="let sec of sections"
+              class="dropdown-item"
+              (click)="selectedSection = sec"
+            >
+              {{ sec.name }}
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -197,13 +199,13 @@
     <div class="d-flex justify-content-center">
       <button
         id="submit-btn"
-        [type]="saveMode?'button':'submit'"
+        [type]="saveMode ? 'button' : 'submit'"
         class="btn btn-secondary"
         [disabled]="form.invalid"
         (click)="submit()"
         *ngIf="!submitting"
       >
-        {{saveMode?"Save":"Submit"}}
+        {{ saveMode ? "Save" : "Submit" }}
       </button>
       <div *ngIf="submitting" class="spinner-grow text-secondary" role="status">
         <span class="sr-only">Loading...</span>

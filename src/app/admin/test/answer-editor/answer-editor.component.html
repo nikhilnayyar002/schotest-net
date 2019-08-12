@@ -4,26 +4,28 @@
     <!-- answer -->
     <div class="input-container">
       <label>Answer <small>(?)</small></label>
-      <div class="col-auto dropdown d-inline-block">
-        <button
-          class="btn btn-secondary btn-sm dropdown-toggle"
-          type="button"
-          id="dropdownMenuButton"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
-          {{ correctOption}}
-        </button>
-        <div class="dropdown-menu">
-          <span
-            *ngFor="let option of options"
-            class="dropdown-item"
-            (click)="correctOption = option"
-          >
-            {{ option }}
-          </span>
-        </div>
+      <div class="col">
+          <div class="dropdown">
+              <button
+                class="btn btn-secondary btn-sm dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                {{ correctOption}}
+              </button>
+              <div class="dropdown-menu">
+                <span
+                  *ngFor="let option of options"
+                  class="dropdown-item"
+                  (click)="correctOption = option"
+                >
+                  {{ option }}
+                </span>
+              </div>
+            </div>
       </div>
     </div>
 
@@ -41,6 +43,16 @@
     </div>
 
     <div class="d-flex justify-content-center">
+      <button
+        id="submit-btn"
+        type="button"
+        class="btn btn-secondary mr-2"
+        [disabled]="form.invalid"
+        (click)="save()"
+      >
+        Save
+      </button>
+
       <button
         id="submit-btn"
         type="submit"
