@@ -1,4 +1,4 @@
-<div class="main bg-info">
+
   <!--
       Heading: Eg: Question No. 1, Instructions, Questions
     -->
@@ -14,12 +14,22 @@
       Basically <MCQ component> should be placed inside here.
     -->
   <!-- suppressing error (dev only)-->
-  <div class="page-content">
+  <div class="page-content p-3">
     <ul class="list-unstyled">
       <li *ngFor="let question of questions; let i = index">
-        <p class="font-weight-bold">Question No. {{ i + 1 }}</p>
-        <p [innerHTML]="test.questions[id].content | safeStyle: 'dom'"></p>
-      </li>
+        <h4 class="my-4">{{
+          test.sections[test.questions[question].section].qID == test.questions[question]._id ?
+          test.questions[question].section : ''
+        }}</h4>
+        <p class="font-weight-bold mb-2">Q-No. {{ i + 1 }}
+          <span class="font-weight-normal">[
+            {{test.questions[question].marks?test.questions[question].marks+'M ':''}} 
+            {{test.questions[question].isComprehension? 'Comprehension ':'' }}
+            {{test.questions[question].image? 'Image':''}}
+          ]</span>
+        </p>
+        <p class="ml-3" [innerHTML]="test.questions[question].content | safeStyle: 'dom'"></p>
+      </li> 
     </ul>
   </div>
   <!--
@@ -35,4 +45,4 @@
       Back
     </button>
   </div>
-</div>
+
