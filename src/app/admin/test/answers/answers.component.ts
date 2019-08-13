@@ -31,8 +31,6 @@ export class AnswersComponent {
       this.answersMap[this.questions[i]._id] = i;
       this.answers.push(null);
     }
-    console.log(this.answersMap)
-
     this.ms.getAnswers(this.testID).subscribe(data => {
       if (typeof data == "string") {
         this.problemFetchingAnswers = true;
@@ -49,7 +47,6 @@ export class AnswersComponent {
 
   saveAnswer(answer: Answer) {
       this.answers[this.answersMap[answer._id]] = answer;
-      console.log( this.answers)
   }
 
   submit() {

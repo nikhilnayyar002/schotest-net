@@ -175,3 +175,17 @@ export const getTests: express.RequestHandler = function(req,res,next) {
     else next(new Record404Exception());
   });
 }
+
+/**
+ * Return @message
+ */
+export const delTest: express.RequestHandler = function(req, res, next) {
+  let proms =[
+   TestModal.deleteOne({_id:req.params.tID}).exec(),
+   QuestionModal.deleteMany({tID:req.params.tID}).exec(),
+   AnswerModal.deleteMany({tID:req.params.tID}).exec()
+  ]
+  Promise.all(proms)
+  .then(() => res.json({ status: true, message:"Success" }))
+  .catch(()=> res.status(422).json({ status: false, message:"Failed" }))
+ };

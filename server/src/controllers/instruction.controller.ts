@@ -1,12 +1,16 @@
 import * as express from "express";
 import * as mongoose from "mongoose";
-import {Record404Exception, HttpException} from "../config/global";
+import { Record404Exception, HttpException } from "../config/global";
 import { Instruction, InstructionModal } from "../modal/instruction";
 
 /**
  * Return @Instruction
  */
-export const postInstruction: express.RequestHandler = function(req, res, next) {
+export const postInstruction: express.RequestHandler = function(
+  req,
+  res,
+  next
+) {
   let instruction: Instruction & mongoose.Document = <any>(
     new InstructionModal(req.body)
   );
@@ -36,7 +40,11 @@ export const getInstruction: express.RequestHandler = function(req, res, next) {
 /**
  * Return @message | @Instruction
  */
-export const updateInstruction: express.RequestHandler = function(req, res, next) {
+export const updateInstruction: express.RequestHandler = function(
+  req,
+  res,
+  next
+) {
   let instruction: Instruction = req.body;
 
   InstructionModal.updateOne(
@@ -50,45 +58,75 @@ export const updateInstruction: express.RequestHandler = function(req, res, next
       else next(new HttpException("Failed", 400));
     }
   );
-
 };
 
 /**
  * Return @Instruction_Arr
  */
-export const getInstructionStates:express.RequestHandler = function(req, res, next) {
-  InstructionModal.find({},function (err, instructions:Instruction[]) {
-    if (err) { return next(err); }
-    if(instructions && instructions.length)
+export const getInstructionStates: express.RequestHandler = function(
+  req,
+  res,
+  next
+) {
+  InstructionModal.find({}, function(err, instructions: Instruction[]) {
+    if (err) {
+      return next(err);
+    }
+    if (instructions && instructions.length)
       res.json({
-        status:true,
-        instructions:instructions.map(instruction => ({_id:instruction._id, name:instruction.name}))
-      })
-    else next(new Record404Exception())
-  })
-}
+        status: true,
+        instructions: instructions.map(instruction => ({
+          _id: instruction._id,
+          name: instruction.name
+        }))
+      });
+    else next(new Record404Exception());
+  });
+};
 
 /**
  * Return @Instruction
  */
-export const getInstructionState:express.RequestHandler = function(req, res, next) {
-  let id=req.params.id;
-  InstructionModal.findById(id,function (err, instruction:Instruction) {
-    if (err) { return next(err); }
-    if(instruction)
-      res.json({status:true, instruction:{_id:instruction._id, name:instruction.name}})
-    else next(new Record404Exception())
-  })
-}
+export const getInstructionState: express.RequestHandler = function(
+  req,
+  res,
+  next
+) {
+  let id = req.params.id;
+  InstructionModal.findById(id, function(err, instruction: Instruction) {
+    if (err) {
+      return next(err);
+    }
+    if (instruction)
+      res.json({
+        status: true,
+        instruction: { _id: instruction._id, name: instruction.name }
+      });
+    else next(new Record404Exception());
+  });
+};
 
-
-export const getInstructionByCategory: express.RequestHandler = function(req,res,next) {
+export const getInstructionByCategory: express.RequestHandler = function(
+  req,
+  res,
+  next
+) {
   let catID = req.params.catID;
 
   InstructionModal.find({ catID }, function(err, instructions: Instruction[]) {
     if (err) return next(err);
     if (instructions && instructions.length)
-      res.json({ status: true, instruction:instructions[0] });
+      res.json({ status: true, instruction: instructions[0] });
     else next(new Record404Exception());
   });
+};
+
+/**
+ * Return @message
+ */
+export const delInstruction: express.RequestHandler = function(req, res, next) {
+  InstructionModal.deleteOne({ _id: req.params.id })
+    .exec()
+    .then(() => res.json({ status: true, message: "Success" }))
+    .catch(() => res.status(422).json({ status: false, message: "Failed" }));
 };

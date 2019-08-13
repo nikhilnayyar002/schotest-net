@@ -13,17 +13,18 @@
 
 <div class="page-content">
   <app-category-cards
-    *ngIf="categories; else loadingCategories"
+    *ngIf="categories && categories.length"
     [categories]="categories"
     [directingLabel]="'Edit'"
     [directingLink]="config.adminRoutes.adminEditCategory"
     [showFavourite]="false"
   ></app-category-cards>
-  <ng-template #loadingCategories>
-    <div class="py-3">
-      <div class="spinner-border text-secondary" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
+
+  <!--Loading-->
+  <div *ngIf="categories && !categories.length" class="py-3">
+    <div class="spinner-border text-secondary" role="status">
+      <span class="sr-only">Loading...</span>
     </div>
-  </ng-template>
+  </div>
+
 </div>

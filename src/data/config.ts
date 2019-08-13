@@ -111,6 +111,11 @@ let config = {
                 "alignment", "fontSize"
             ]
         }
+    },
+    backend:{
+        tests:{
+            testsPerPage:10
+        }
     }
 };
 export default config;

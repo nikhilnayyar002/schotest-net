@@ -13,7 +13,7 @@ import config from 'src/data/config';
 export class ParentComponent  {
 
   config = config
-  categories:Category[]
+  categories:Category[] = []
 
   constructor(
     private route:ActivatedRoute,

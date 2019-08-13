@@ -2,6 +2,7 @@ import * as express from "express";
 import * as mongoose from "mongoose";
 import {Record404Exception, HttpException} from "../config/global";
 import { QuestionOriginal, QuestionModal } from "../modal/question";
+import { AnswerModal } from "src/modal/answer";
 
 /**
  * Return @Question
@@ -81,4 +82,30 @@ export const updateQuestion: express.RequestHandler = function(req, res, next) {
     }
   );
 
+};
+
+/**
+ * Return @message
+ */
+export const delQuestion: express.RequestHandler = function(req, res, next) {
+ let proms =[
+  QuestionModal.deleteOne({_id:req.params.qID}).exec(),
+  AnswerModal.deleteOne({_id:req.params.qID}).exec()
+ ]
+ Promise.all(proms)
+ .then(() => res.json({ status: true, message:"Success" }))
+ .catch(()=> res.status(422).json({ status: false, message:"Failed" }))
+};
+
+/**
+ * Return @message
+ */
+export const delQuestions: express.RequestHandler = function(req, res, next) {
+  let proms = [
+    QuestionModal.deleteMany({tID:req.params.tID}).exec(),
+    AnswerModal.deleteMany({tID:req.params.tID}).exec()
+  ]
+  Promise.all(proms)
+  .then(() => res.json({ status: true, message:"Success" }))
+  .catch(()=> res.status(422).json({ status: false, message:"Failed" }))
 };

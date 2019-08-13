@@ -11,7 +11,7 @@ import { Instruction } from 'src/app/modals/instruction';
 export class ParentComponent implements OnInit {
 
   config = config
-  instructions:Instruction[]
+  instructions:Instruction[] = []
 
   constructor(
     // private route:ActivatedRoute,

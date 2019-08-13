@@ -2,3 +2,28 @@
 :host {
   @include page-content;
 }
+
+.search {
+  $input-width: 300px;
+  $box-padding: 10px;
+  $box-margin: 10px;
+  $box-max-height: 400px;
+  $box-z-index: 5;
+  input {
+    width: $input-width;
+  }
+  .box {
+    padding: $box-padding;
+    max-height: $box-max-height;
+    position: absolute;
+    max-width: calc(100% - #{2 * $box-padding} - #{2 * $box-margin});
+    min-width: $input-width;
+    z-index: $box-z-index;
+    margin-top: 2px;
+    span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}

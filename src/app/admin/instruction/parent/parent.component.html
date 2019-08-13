@@ -13,7 +13,7 @@
 
 <div class="page-content">
   <ul
-    *ngIf="instructions; else loadingInstructions"
+    *ngIf="instructions"
     class="list-group list-group-flush mt-4"
   >
     <li
@@ -30,11 +30,11 @@
     </li>
   </ul>
 
-  <ng-template #loadingInstructions>
-    <div class="py-3">
+  <!--Loading-->
+  <div *ngIf="instructions && !instructions.length"  class="py-3">
       <div class="spinner-border text-secondary" role="status">
         <span class="sr-only">Loading...</span>
       </div>
     </div>
-  </ng-template>
+
 </div>

@@ -89,6 +89,14 @@ export const getCategoryStates:express.RequestHandler = function(req, res, next)
   })
 }
 
+/**
+ * Return @message
+ */
+export const delCategory: express.RequestHandler = function(req, res, next) {
+  CategoryModal.deleteOne({_id:req.params.categoryID}).exec()
+  .then(() => res.json({ status: true, message:"Success" }))
+  .catch(()=> res.status(422).json({ status: false, message:"Failed" }))
+ };
 
 /** **************************** Old code ********************** */
 

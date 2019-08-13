@@ -14,7 +14,7 @@ import { createAccordianState } from 'src/app/shared/global';
 export class QuestionsComponent {
 
   test:TestOriginal;
-  questions:QuestionOriginal[];
+  questions:QuestionOriginal[] = [];
   sections: {sectionOrder: number, name: string}[]=[];
 
   addNewQuestion:boolean = false;
@@ -51,6 +51,7 @@ export class QuestionsComponent {
      */
     this.questions = null;
     this.addNewQuestion =  this.addNewQuestions = false;
+    this.questions = [] /** set the loading "spinner" for questions*/
     this.ms.getQuestions(this.test._id).subscribe(questions=>this.questions = questions)
   }
   onEditQuestionClick(question:QuestionOriginal, index:number) {
