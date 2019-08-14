@@ -17,13 +17,13 @@ import { SharedModule } from '../shared/shared.module';
 import { tReducer, oReducer } from './state/state.reducer';
 import { AmplitudeTestResolverService } from './guard/amplitude-test.resolver';
 import { MainService } from './main.service';
-import { InstructionComponent } from './instruction/instruction.component';
+import { TestDeclarationComponent } from './test-declaration/test-declaration.component';
 
 @NgModule({
   declarations: [
     ParentComponent,
     PageSwitchDirective,
-    InstructionComponent
+    TestDeclarationComponent
   ],
   imports: [
     BrowserModule,

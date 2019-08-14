@@ -15,7 +15,9 @@
 }
 
 .main-container {
-  height: calc(100vh - #{ $navbar-height + $nav-height-sections});
+  &> .col {
+    height: calc(100vh - #{ $navbar-height + $nav-height-sections});
+  }
 }
 
 // .side {

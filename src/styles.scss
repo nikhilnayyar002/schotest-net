@@ -341,3 +341,36 @@ See how dashboard->category->tests component look cool!!
 }
 
 /* END - Parent Component Code */
+
+/* tests Component Code */
+
+.search {
+  $input-width: 300px;
+  $box-padding: 10px;
+  $box-margin: 10px;
+  $box-max-height: 400px;
+  $box-z-index: 5;
+  input {
+    width: $input-width;
+    outline: none;
+  }
+  .box {
+    padding: $box-padding;
+    max-height: $box-max-height;
+    position: absolute;
+    max-width: calc(100% - #{2 * $box-padding} - #{2 * $box-margin});
+    min-width: $input-width;
+    z-index: $box-z-index;
+    margin-top: 2px;
+    span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      &:hover {
+        box-shadow: 0 0 5px black;
+      }
+    }
+  }
+}
+
+/* END - tests Component Code */

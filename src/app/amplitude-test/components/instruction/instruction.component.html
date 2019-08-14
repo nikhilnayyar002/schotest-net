@@ -1,0 +1,30 @@
+<div
+  *ngIf="test; else testNotFetched"
+  class="row no-gutters text-center border-bottom border-primary"
+>
+  <div class="col-12">
+    <h4>{{ test.name }}</h4>
+  </div>
+  <div class="col-6">
+    <h6>Total Time: {{ test.oTime / 60 }} <small>mins</small></h6>
+  </div>
+  <div class="col-6">
+    <h6>Total Marks: {{ test.marks }}</h6>
+  </div>
+</div>
+<ng-template #testNotFetched>
+  <div class="p-2 bg-danger">
+    There is proble fetching test. Try reloading.
+  </div>
+</ng-template>
+
+<div
+  *ngIf="instruction; else instructionNotFetched"
+  class="pt-3"
+  [innerHTML]="instruction.data | safeStyle: 'dom'"
+></div>
+<ng-template #instructionNotFetched>
+  <div class="p-2 bg-danger">
+    There is proble fetching instruction. Try reloading.
+  </div>
+</ng-template>

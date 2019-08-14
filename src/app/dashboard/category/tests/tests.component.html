@@ -1,18 +1,42 @@
-<div class="header py-4">
-  <h1 class="mb-4">
+<div class="header pt-4 d-flex align-items-end flex-wrap">
+  <h1>
     Tests
   </h1>
-  <p>
-    Click to pop down details of particular test in given list of tests.
-  </p>
+  <div class="w-100">
+    <p class="font-weight-bold">Pages</p>
+    <div class="d-flex flex-wrap mb-3">
+      <button
+        *ngFor="let page of pages"
+        type="button"
+        class="btn btn-primary rounded-0"
+        [ngClass]="{ 'btn-secondary': no == 5 }"
+        [routerLink]="['./']"
+        [queryParams]="{ p: page }"
+      >
+        {{ page }}
+      </button>
+    </div>
+  </div>
+
 </div>
 
-<div class="accordion page-content" id="accordionTests">
-  <app-test-card
-    *ngFor="let test of tests; let i = index"
-    [test]='test'
-    [index]='i'
-    accordianID='accordionTests'
-    (headClick) = "onCardHeaderClick($event)"
-  ></app-test-card>
+<div class="page-content">
+  <p class="font-weight-bold">Tests</p>
+
+  <div class="accordion page-content" id="accordionTests">
+    <app-test-card
+      *ngFor="let test of tests; let i = index"
+      [test]="test"
+      [index]="i"
+      accordianID="accordionTests"
+      (headClick)="onCardHeaderClick($event)"
+    ></app-test-card>
+  </div>
+
+  <!--Loading-->
+  <div *ngIf="tests && !tests.length" class="py-3">
+    <div class="spinner-border text-secondary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
 </div>

@@ -3,7 +3,7 @@ import { take } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 import { PageService } from '../page/page.service';
 import {  TestOtherState } from '../state/test.state';
-import {  TestOver, SetIndex, PauseTestServer, PauseTest } from '../state/state.actions';
+import {  TestOver, SetIndex, PauseTestServer, PauseTest, SetInstruction } from '../state/state.actions';
 import { PageItem } from '../page/page-items';
 import { PageSwitchDirective } from '../page-switch.directive';
 import { PageComponent } from '../page/page-component.modal';
@@ -33,8 +33,7 @@ export class ParentComponent {
   sections:string[];
   user:UserProfile;
   testPaused:boolean = false;
-  instruction:Instruction;
-
+  
   //local config
   configData = config;
 
@@ -97,7 +96,10 @@ export class ParentComponent {
       })
 
       this.test = <TestWithFeaturesForUser> this.route.snapshot.data.data.test
-      this.instruction = <Instruction> this.route.snapshot.data.data.instruction      
+      /** Set the instruction */
+      let instruction = <Instruction> this.route.snapshot.data.data.instruction
+      if(instruction) this.store.dispatch(SetInstruction({ instruction }));
+      else  this.store.dispatch(SetInstruction({ instruction:null }));
     }
     if(this.test) {
       this.start(); 

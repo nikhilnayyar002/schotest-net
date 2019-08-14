@@ -21,6 +21,8 @@ export class ParentComponent implements OnInit {
 
   tests: TestOriginal[] = [];
 
+  onCardHeaderClick = createAccordianState();
+
   constructor(private ms: MainService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
@@ -50,7 +52,6 @@ export class ParentComponent implements OnInit {
   }
 
   /** Search Feature */
-  onCardHeaderClick = createAccordianState();
   searchResults$: Observable<TestOriginal[]>;
 
   private searchTerms = new Subject<string>();
@@ -59,9 +60,9 @@ export class ParentComponent implements OnInit {
   }
   searchTests(term: string) {
     if (!term.trim()) {
-      return of([]);
+      return of(null);
     }
-    return of([]);
+    return this.ms.findTests(term)
   }
   /** */
 }

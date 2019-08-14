@@ -120,72 +120,147 @@ export const getQuestionsAnswers: express.RequestHandler = function(
 /**
  * Return @TestWithFeatures
  */
-export const getTestsByCategory: express.RequestHandler = function(req,res,next) {
+export const getTestsByCategory: express.RequestHandler = function(
+  req,
+  res,
+  next
+) {  
   let catID = req.params.catID;
-  TestModal.find({ catID }, (err, datas: TestOriginal[]) => {
-    if (err) {
-      return next(err);
-    }
-    if (datas && datas.length) {
-      let tests = returnTyped<TestWithFeatures[]>(
-        simplifyMongoose<TestOriginal[]>(datas)
-      );
+  let pNo = req.params.pNo;
+  TestModal.find(
+    { catID },
+    null,
+    { skip: (pNo - 1) * 10, limit: 10 },
+    (err, tests) => {
+      if (err) next(err);
+      else if (tests.length) res.json({ status: true, tests });
+      else next(new Record404Exception());
+  });
 
-      /** Find user */
-      UserModal.find({ email: req.query.email }, (err, user: User[]) => {
-        if (err) {
-          return next(err);
-        }
-        if (user.length && user[0] && user[0].tests) {
-          /** Map . Specific operation */
-          let docs = tests.map(test => {
-            let t = user[0].tests[test._id];
-            if (t && (t.time != null || t.time != undefined)) {
-              if (test.time != t.time) test.hasTestStarted = true;
-              test.time = t.time;
-              test.isTestOver = t.isTestOver;
-            }
-            return test;
-          });
-          res.json({ status: true, tests: docs });
-        } else res.json({ status: true, tests: tests });
-      });
-    } else next(new Record404Exception());
+};
+
+/**
+ * Return @Number
+ */
+export const getTestsByCategoryCount: express.RequestHandler = function(req, res, next) {
+  let catID = req.params.catID;
+  TestModal.countDocuments({ catID }, (err, count) => {
+    if (!err) res.json({ status: true, count });
+    else next(err);
+  });
+};
+
+
+/**
+ * Return @Number
+ */
+export const getTestsCount: express.RequestHandler = function(req, res, next) {
+  TestModal.estimatedDocumentCount((err, count) => {
+    if (!err) res.json({ status: true, count });
+    else next(err);
   });
 };
 
 /**
  * Return @Number
  */
-export const getTestsCount: express.RequestHandler = function(req,res,next) {
-  TestModal.estimatedDocumentCount((err, count)=>{
-    if (!err) res.json({ status: true, count});
-    else next(err);
-  });
-}
+export const getTests: express.RequestHandler = function(req, res, next) {
+  let pNo = req.params.pNo;
+  TestModal.find(
+    {},
+    null,
+    { skip: (pNo - 1) * 10, limit: 10 },
+    (err, tests) => {
+      if (err) next(err);
+      else if (tests.length) res.json({ status: true, tests });
+      else next(new Record404Exception());
+    }
+  );
+};
+
+
 
 /**
- * Return @Number
+ * Return @TestOriginal_Arr
  */
-export const getTests: express.RequestHandler = function(req,res,next) {
-  let pNo = req.params.pNo;
-  TestModal.find({},null,{skip:(pNo-1)*10, limit: 10},(err, tests)=>{
+export const findTests: express.RequestHandler = function(req, res, next) {
+  TestModal.find({ name: { $regex: req.body.search, $options: "i" } }, function(
+    err,
+    tests: TestOriginal[]
+  ) {
     if (err) next(err);
-    else if(tests.length) res.json({ status: true, tests});
+    else if (tests.length)
+      res.json({
+        status: true,
+        tests: tests.map(test => ({
+          _id: test._id,
+          name: test.name
+        }))
+      });
     else next(new Record404Exception());
   });
-}
+};
+
 
 /**
  * Return @message
  */
 export const delTest: express.RequestHandler = function(req, res, next) {
-  let proms =[
-   TestModal.deleteOne({_id:req.params.tID}).exec(),
-   QuestionModal.deleteMany({tID:req.params.tID}).exec(),
-   AnswerModal.deleteMany({tID:req.params.tID}).exec()
-  ]
+  let proms = [
+    TestModal.deleteOne({ _id: req.params.tID }).exec(),
+    QuestionModal.deleteMany({ tID: req.params.tID }).exec(),
+    AnswerModal.deleteMany({ tID: req.params.tID }).exec()
+  ];
   Promise.all(proms)
-  .then(() => res.json({ status: true, message:"Success" }))
-  .catch(()=> res.status(422).json({ status: false, message:"Failed" }))
- };
+    .then(() => res.json({ status: true, message: "Success" }))
+    .catch(() => res.status(422).json({ status: false, message: "Failed" }));
+};
+
+
+// Version 1
+// /**
+//  * Return @TestWithFeatures
+//  */
+// export const getTestsByCategory: express.RequestHandler = function(
+//   req,
+//   res,
+//   next
+// ) {  
+//   let catID = req.params.catID;
+//   let pNo = req.params.pNo;
+//   TestModal.find(
+//     { catID },
+//     null,
+//     { skip: (pNo - 1) * 10, limit: 10 },
+//     (err, datas) => {
+//     if (err) {
+//       return next(err);
+//     }
+//     if (datas && datas.length) {
+//       let tests = returnTyped<TestWithFeatures[]>(
+//         simplifyMongoose<TestOriginal[]>(datas)
+//       );
+
+//       /** Find user */
+//       UserModal.find({ email: req.query.email }, (err, user: User[]) => {
+//         if (err) {
+//           return next(err);
+//         }
+//         if (user.length && user[0] && user[0].tests) {
+//           /** Map . Specific operation */
+//           let docs = tests.map(test => {
+//             let t = user[0].tests[test._id];
+//             if (t && (t.time != null || t.time != undefined)) {
+//               if (test.time != t.time) test.hasTestStarted = true;
+//               test.time = t.time;
+//               test.isTestOver = t.isTestOver;
+//             }
+//             return test;
+//           });
+//           res.json({ status: true, tests: docs });
+//         } else res.json({ status: true, tests: tests });
+//       });
+//     } else next(new Record404Exception());
+//   });
+
+// };

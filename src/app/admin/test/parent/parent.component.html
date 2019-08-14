@@ -13,13 +13,16 @@
     <input
       class="bg-info border-0 p-2 mr-3"
       type="text"
-      placeholder="search"
+      placeholder="search tests"
       name="search"
+      (input)="search($event.target.value)"
+      autocomplete="off"
     />
-    <div class="box bg-info">
-      <span class="d-block p-2">Yo man</span>
-      <span class="d-block p-2">Yo man</span>
-      <span class="d-block p-2">Yo man</span>
+    <div class="box bg-info" *ngIf="searchResults$ | async as searchResults">
+      <span
+        *ngFor="let test of searchResults" class="d-block p-2"
+        [routerLink]="[config.adminRoutes.adminEditTest(test._id)]"
+      >{{test.name}}</span>
     </div>
   </div>    
 
@@ -39,7 +42,6 @@
     </div>
   </div>
 </div>
-
 <div class="page-content">
   <p class="font-weight-bold">Tests</p>
 

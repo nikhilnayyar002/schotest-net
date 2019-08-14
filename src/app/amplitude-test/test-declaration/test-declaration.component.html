@@ -1,0 +1,46 @@
+<!-- navbar -->
+<nav class="navbar bg-primary navbar-expand-lg shadow">
+    <!-- logo-->
+    <a class="navbar-brand" [routerLink]="[configData.clientRoutes.dashboard()]">
+      <span id="nav-bar-logo">{{ configData.company.name }}</span>
+    </a>
+  </nav>
+  <div class="p-3 pb-0 bg-primary"><h4>Instruction</h4></div>
+  <div class="page-content p-3 bg-info">
+  <app-instruction [test]="test" [instruction]="instruction"></app-instruction>
+  </div>
+  <div class="bg-primary p-4">
+    <ng-container *ngIf="test; else testNotFetchedFooter">
+      <div class="custom-control custom-radio mr-sm-2">
+        <input
+          (change)="(0)"
+          #agreement
+          type="checkbox"
+          class="custom-control-input"
+          id="customControlAutosizing"
+        />
+        <label class="custom-control-label" for="customControlAutosizing">
+          I agree to the instructions provided and will be responsible for any bad
+          result in case i do not follow the instructions well.
+        </label>
+      </div>
+      <br />
+      <button
+        class="btn btn-sm btn-secondary float-right"
+        [disabled]="!agreement.checked"
+        [routerLink]="[configData.amplitudeTestRoutes.test(test._id)]"
+      >
+        Start the test
+      </button>
+    </ng-container>
+    <ng-template #testNotFetchedFooter>
+      <p>Test could not be fetched! Try reloading or goto dashboard.</p>
+      <button
+        class="btn btn-sm btn-secondary float-right"
+        [routerLink]="[configData.clientRoutes.dashboard()]"
+      >
+        Go to dashboard
+      </button>
+    </ng-template>
+  </div>
+  

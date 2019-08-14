@@ -43,7 +43,8 @@ export function tReducer (state:TestWithFeaturesForUser|undefined,action:Action)
 export const intialOtherState:TestOtherState={
     id:null,
     isTestOver:false,
-    submittingTest:false
+    submittingTest:false,
+    instruction:null
 };
 
 const otherStateReducer = createReducer(
@@ -57,7 +58,8 @@ const otherStateReducer = createReducer(
         onTestNotFetched(null,true);
         return {...state,isTestOver:true}
     }),
-    on(TestActions.TestSubmitting,(state,action)=>({...state,submittingTest:action.submittingTest}))
+    on(TestActions.TestSubmitting,(state,action)=>({...state,submittingTest:action.submittingTest})),
+    on(TestActions.SetInstruction,(state,action)=>({...state,instruction:action.instruction}))
 );
 
 export function oReducer (state:TestOtherState|undefined,action:Action) {

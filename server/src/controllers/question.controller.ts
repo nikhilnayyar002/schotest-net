@@ -2,7 +2,7 @@ import * as express from "express";
 import * as mongoose from "mongoose";
 import {Record404Exception, HttpException} from "../config/global";
 import { QuestionOriginal, QuestionModal } from "../modal/question";
-import { AnswerModal } from "src/modal/answer";
+import { AnswerModal } from "../modal/answer";
 
 /**
  * Return @Question

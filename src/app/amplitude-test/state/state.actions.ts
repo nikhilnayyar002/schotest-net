@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { QuestionState } from '../shared/global';
 import { TestWithFeaturesForUser } from '../modals/test';
 import { UserQuestion } from '../modals/question';
+import { Instruction } from 'src/app/modals/instruction';
 
 /**
  * Set the state of question. Eg: Answered, Marked etc.
@@ -89,7 +90,13 @@ export const TestSubmitting =createAction(
   props<{submittingTest:boolean}>()
 )
 
-
+/**
+ * Actions for currently selected question index
+ */
+export const SetInstruction = createAction(
+  '[Instruction] Set',
+  props<{instruction:Instruction}>()
+);
 
 /** *************************************** Error Actions ******************** */
 

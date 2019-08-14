@@ -1,4 +1,5 @@
 import { TestWithFeatures, TestWithFeaturesForUser } from '../modals/test';
+import { Instruction } from 'src/app/modals/instruction';
 
 export interface TestOtherState {
     /**
@@ -15,6 +16,7 @@ export interface TestOtherState {
      *  Yeah! it is not something cool. 
      */
     submittingTest?:boolean;
+    instruction:Instruction;
 }
 
 export interface TestState {

@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ParentComponent } from './parent/parent.component';
 import { AmplitudeTestResolverService } from './guard/amplitude-test.resolver';
 import { AuthGuard } from '../guards/auth.guard';
-import { InstructionComponent } from './instruction/instruction.component';
+import { TestDeclarationComponent } from './test-declaration/test-declaration.component';
 
 const routes: Routes = [
   {
@@ -19,7 +19,7 @@ const routes: Routes = [
       },
       {
         path:'instruction',
-        component: InstructionComponent        
+        component: TestDeclarationComponent        
       },      
     ]
   }

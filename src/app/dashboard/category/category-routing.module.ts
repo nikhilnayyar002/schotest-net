@@ -13,10 +13,7 @@ export const categoryRoutes: Routes = [
   },
   {
     path:':id',
-    component: TestsComponent,
-    resolve:{
-      tests:DashboardResolverService
-    }
+    component: TestsComponent
   }
 ];
 

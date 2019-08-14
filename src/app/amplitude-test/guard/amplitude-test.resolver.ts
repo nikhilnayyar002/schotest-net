@@ -8,7 +8,7 @@ import { MainService } from "../main.service";
 import { Store } from "@ngrx/store";
 import { GLobalState } from "src/app/shared/global.state";
 import { take, switchMap, catchError, map, tap } from "rxjs/operators";
-import { SetTest } from "../state/state.actions";
+import { SetTest, SetInstruction } from "../state/state.actions";
 import { of, forkJoin, Observable } from "rxjs";
 import {
   TestWithFeatures,
@@ -16,7 +16,6 @@ import {
   TestWithFeaturesForUser
 } from "../modals/test";
 import config from "src/data/config";
-import { InstructionComponent } from "../instruction/instruction.component";
 
 @Injectable()
 export class AmplitudeTestResolverService {
@@ -73,6 +72,7 @@ export class AmplitudeTestResolverService {
          * Test can be set now
          */
         this.store.dispatch(SetTest({ test }));
+
         return this.ms
           .getInstructionByCategory(test.catID)
           .pipe(map(instruction => ({ test, instruction })));

@@ -79,9 +79,12 @@ GET http://localhost:3000/tests/12347/state
 ### Get questions and answers 
 GET http://localhost:3000/tests/12349/completed
 
-### Get category tests (matched with user if possible)
-GET  http://localhost:3000/tests/category/12349?email=nikhilnayyar002@gmail.com
+### Get category tests 
+# version 1: GET  http://localhost:3000/tests/category/12349/1?email=nikhilnayyar002@gmail.com
+GET  http://localhost:3000/tests/category/12349/1
 
+### Get category tests count
+GET  http://localhost:3000/tests/category/12349/count
 
 ### Get count
 GET  http://localhost:3000/tests/count
@@ -89,7 +92,13 @@ GET  http://localhost:3000/tests/count
 ### Get count
 GET  http://localhost:3000/tests/all/1
 
+### Get count
+POST   http://localhost:3000/tests/find
+Content-Type: application/json
 
+{
+    "search":"mocked"
+}
 
 ### @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Category @@@@@@@@@@@@@@@@@@@@@
 
