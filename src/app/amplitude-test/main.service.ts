@@ -95,10 +95,9 @@ export class MainService {
         (data: { status: boolean; instruction: Instruction }) => data.instruction
       )
     );
-    return this.auth.tryWithRefreshIfNecc(
-      config.routes.instruction.getInstructionByCategory(cid),
+    return this.http.get(config.routes.instruction.getInstructionByCategory(cid)).pipe(
       recipe
-    );
+    )
   }
 
 }

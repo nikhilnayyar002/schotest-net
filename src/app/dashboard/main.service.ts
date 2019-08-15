@@ -33,10 +33,10 @@ export class MainService {
         (data: { status: boolean; categories: Category[] }) => data.categories
       )
     );
-    return this.auth.tryWithRefreshIfNecc(
-      config.routes.category.getCategories(),
+
+    return this.http.get(config.routes.category.getCategories()).pipe(
       recipe
-    );
+    )
   }
 
   getTests(categoryID: string, pNo:number): Observable<{ tests: TestOriginal[]; count: number }> {
@@ -48,13 +48,11 @@ export class MainService {
     );
 
     let arr = [
-      this.auth.tryWithRefreshIfNecc(
-        config.routes.test.getTestsByCategory(categoryID,pNo),
-        pipe(recipe1)
+       this.http.get(config.routes.test.getTestsByCategory(categoryID,pNo)).pipe(
+        recipe1
       ),
-      this.auth.tryWithRefreshIfNecc(
-        config.routes.test.getTestsByCategoryCount(categoryID),
-        pipe(recipe2)
+       this.http.get(config.routes.test.getTestsByCategoryCount(categoryID)).pipe(
+        recipe2
       )
     ];
 
@@ -85,10 +83,9 @@ export class MainService {
               (data: { status: boolean; tests: TestWithFeaturesForUser[] }) => data.tests
             )
           );
-          return this.auth.tryWithRefreshIfNecc(
-            config.routes.userData.getPausedTests(user.id),
+          return this.http.get(config.routes.userData.getPausedTests(user.id)).pipe(
             recipe
-          );
+          )
         })
       );
   }
@@ -104,10 +101,9 @@ export class MainService {
               (data: { status: boolean; tests: TestWithFeaturesForUser[] }) => data.tests
             )
           );
-          return this.auth.tryWithRefreshIfNecc(
-            config.routes.userData.getCompletedTests(user.id),
+          return this.http.get(config.routes.userData.getCompletedTests(user.id)).pipe(
             recipe
-          );
+          )
         })
       );
   }
@@ -180,10 +176,9 @@ export class MainService {
                 data.categories
             )
           );
-          return this.auth.tryWithRefreshIfNecc(
-            config.routes.userData.getUserFavourites(user.id),
+          return this.http.get(config.routes.userData.getUserFavourites(user.id)).pipe(
             recipe
-          );
+          )
         })
       );
   }
@@ -209,14 +204,14 @@ export class MainService {
       this.store.select(s=>s.app.user).pipe(
         take(1),
         switchMap(user => 
-          this.auth.tryWithRefreshIfNecc(
-            config.routes.userData.getUserTest(user.id, testID),
+
+          this.http.get(config.routes.userData.getUserTest(user.id, testID)).pipe(
             recipeForUserTest
           )
+
         )
       ),
-      this.auth.tryWithRefreshIfNecc(
-        config.routes.test.getQuestionsAnswers(testID),
+      this.http.get(config.routes.test.getQuestionsAnswers(testID)).pipe(
         recipeForQandA
       )
     ]

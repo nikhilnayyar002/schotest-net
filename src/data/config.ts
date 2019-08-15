@@ -27,7 +27,8 @@ let config = {
             getCategories: ()=>`${domain}/categories`,
             postCategory: ()=>`${domain}/categories`,
             getCategory:(cid)=>`${domain}/categories/${cid}`,
-            getCategoryStates: ()=>`${domain}/categories/states`
+            getCategoryStates: ()=>`${domain}/categories/states`,
+            delete:(cid)=>`${domain}/categories/${cid}`,
         },
         test:{
             postTest: () => `${domain}/tests`,
@@ -38,20 +39,24 @@ let config = {
             getTestsByCategoryCount: (cid)=> `${domain}/tests/category/${cid}/count`,
             getTestsCount: ()=> `${domain}/tests/count`,  
             getTests:(pNo)=> `${domain}/tests/all/${pNo}`,
-            findTests:()=> `${domain}/tests/find`
+            findTests:()=> `${domain}/tests/find`,
+            delete:(id)=>`${domain}/tests/${id}`,
         },
         question:{
             getQuestions: id => `${domain}/questions/test/${id}`,
             postQuestion: () => `${domain}/questions`,
             postQuestions: () => `${domain}/questions/all`,
-            getQuestion: id => `${domain}/questions/test/${id}`
+            getQuestion: id => `${domain}/questions/test/${id}`,
+            delete:(id)=>`${domain}/questions/${id}`, 
+            deleteAll:(tid)=>`${domain}/questions/all/${tid}`,                      
         },
         instruction:{
             postInstruction: () => `${domain}/instructions`,
             getInstruction: id => `${domain}/instructions/${id}`,
             getInstructionStates: () => `${domain}/instructions/states`,
             getInstructionState: (id) => `${domain}/instructions/${id}/state`,
-            getInstructionByCategory: (cid) => `${domain}/instructions/category/${cid}`
+            getInstructionByCategory: (cid) => `${domain}/instructions/category/${cid}`,
+            delete:  id=> `${domain}/instructions/${id}` 
         },
         answer:{
             postAnswer: () => `${domain}/answers`,
@@ -101,6 +106,7 @@ let config = {
         adminEditTest:(id)=> `/admin/test/edit/${id}`,
         categoryCreate:() => '/admin/category/create',
         testCreate:() => '/admin/test/create',
+        adminInstructions:() => '/admin/instruction',
         instructionCreate:() => '/admin/instruction/create',
         adminEditInstruction: (id)=> `/admin/instruction/edit/${id}`
     },

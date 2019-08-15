@@ -100,6 +100,10 @@ Content-Type: application/json
     "search":"mocked"
 }
 
+### del
+DELETE   http://localhost:3000/tests/1565782882210
+
+
 ### @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Category @@@@@@@@@@@@@@@@@@@@@
 
 ### Post Category
@@ -132,6 +136,8 @@ GET  http://localhost:3000/categories/12349
 ### Get category 
 GET  http://localhost:3000/categories/states
 
+### Delete category 
+DELETE   http://localhost:3000/categories/1565775355220
 ### @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ userData @@@@@@@@@@@@@@@@@@@@@
 
 # {

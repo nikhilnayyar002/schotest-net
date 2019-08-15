@@ -59,4 +59,16 @@ export class QuestionsComponent {
     this.editQuestion.qNo = index + 1;
     this.addNewQuestion = true;
   }
+
+  deleting:boolean = false;
+  remove() {
+    this.deleting = true
+    this.ms.delAllQuestion(this.test._id).subscribe(
+      ()=> { 
+        this.deleting = false;
+        this.questions = null
+      },
+      ()=>this.deleting = false
+    )
+  }
 }

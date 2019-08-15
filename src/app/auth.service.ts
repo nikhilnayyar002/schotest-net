@@ -123,40 +123,8 @@ export class AuthService {
         }),
         retry(1)
       );
-    else return throwError("Please re-login");
+    else return throwError({ login:true });
   }
   
-/**
- * actually it should be "Refresh token if necessary"
- */
-  tryWithRefreshIfNecc(url, recipe) {
-    return this.http.get(url)
-      .pipe(
-        recipe,
-        catchError(() => 
-          this.store.select(state=> state.app).pipe(
-            take(1),
-            switchMap(appState => {
-              /**
-               * Refresh token and use original recipe
-               */
-              return this.refreshToken(appState).pipe(
-                switchMapTo(this.http.get(url).pipe(recipe))
-              )
-              /**end  */
-            }),
-            catchError(()=> of(null))
-          )
-        )
-      )
-  }
-
-
-
-
-
-
-
-
 
 }

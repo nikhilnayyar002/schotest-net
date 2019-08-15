@@ -207,4 +207,15 @@ export class TestEditorComponent implements OnInit {
       }
     );
   }
+  remove() {
+    this.submitting = true
+    this.ms.delTest(this.test._id).subscribe(
+      ()=> { 
+        this.submitting = false;
+        this.router.navigate([config.adminRoutes.adminTests()])
+      },
+      ()=>this.submitting = false
+    )
+  }
+
 }

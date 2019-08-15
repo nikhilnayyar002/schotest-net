@@ -125,6 +125,17 @@ export class QuestionEditorComponent implements OnInit {
       }
     )
   }
+  remove() {
+    this.submitting = true
+    this.ms.delQuestion(this.question._id).subscribe(
+      ()=> { 
+        this.submitting = false;
+        this.closeForm.emit(true)
+      },
+      ()=>this.submitting = false
+    )
+  }
+
 
   /**
    * CK Editor

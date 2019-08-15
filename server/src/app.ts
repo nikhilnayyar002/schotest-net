@@ -9,7 +9,7 @@ import { UserRouter } from './router/user.router';
 import { TestRouter } from './router/test.router';
 import { CategoryRouter } from './router/category.router';
 import { UserDataRouter } from './router/userData.router';
-import { HttpException } from './config/global';
+import { HttpException, verifyJwtToken } from './config/global';
 
 import "./config/passportConfig";
 import "./config/setupEnv"
@@ -76,12 +76,13 @@ app.use(passport.initialize());
 // })
 
 app.use('/auth', UserRouter);
-app.use('/tests', TestRouter);
-app.use('/categories', CategoryRouter);
-app.use('/userData', UserDataRouter);
-app.use('/answers', answerRouter);
-app.use('/questions', questionRouter);
-app.use('/instructions', instructionRouter)
+
+app.use('/tests', verifyJwtToken, TestRouter);
+app.use('/categories', verifyJwtToken, CategoryRouter);
+app.use('/userData', verifyJwtToken, UserDataRouter);
+app.use('/answers', verifyJwtToken, answerRouter);
+app.use('/questions', verifyJwtToken, questionRouter);
+app.use('/instructions', verifyJwtToken, instructionRouter)
 app.use("**", invalidPath)
 
 function invalidPath(req,res, next) {

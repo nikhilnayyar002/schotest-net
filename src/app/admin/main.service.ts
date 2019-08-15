@@ -32,10 +32,9 @@ export class MainService {
         (data: { status: boolean; categories: Category[] }) => data.categories
       )
     );
-    return this.auth.tryWithRefreshIfNecc(
-      config.routes.category.getCategories(),
+    return this.http.get( config.routes.category.getCategories()).pipe(
       recipe
-    );
+    )
   }
 
   postCategory(category: Category, post: boolean) {
@@ -61,10 +60,9 @@ export class MainService {
     let recipe = pipe(
       map((data: { status: boolean; category: Category }) => data.category)
     );
-    return this.auth.tryWithRefreshIfNecc(
-      config.routes.category.getCategory(catID),
+    return this.http.get( config.routes.category.getCategory(catID)).pipe(
       recipe
-    );
+    )
   }
 
   getCategoryStates(): Observable<Category[]> {
@@ -73,10 +71,29 @@ export class MainService {
         (data: { status: boolean; categories: Category[] }) => data.categories
       )
     );
-    return this.auth.tryWithRefreshIfNecc(
-      config.routes.category.getCategoryStates(),
+    return this.http.get( config.routes.category.getCategoryStates()).pipe(
       recipe
-    );
+    )
+  }
+
+  delCategory(catID: string){
+    return this.http.delete(config.routes.category.delete(catID));
+  }
+
+  delQuestion(id: string){
+    return this.http.delete(config.routes.question.delete(id));
+  }
+
+  delAllQuestion(tid: string){
+    return this.http.delete(config.routes.question.deleteAll(tid));
+  }
+
+  delInstruction(id: string){
+    return this.http.delete(config.routes.instruction.delete(id));
+  }
+
+  delTest(id: string){
+    return this.http.delete(config.routes.test.delete(id));
   }
 
   postTest(test: TestOriginal, post: boolean) {
@@ -116,13 +133,12 @@ export class MainService {
     );
 
     let arr = [
-      this.auth.tryWithRefreshIfNecc(
-        config.routes.test.getTest(id),
-        pipe(recipe1)
-      ),
-      this.auth.tryWithRefreshIfNecc(
-        config.routes.category.getCategoryStates(),
-        pipe(recipe2)
+      this.http.get( config.routes.test.getTest(id)).pipe(
+        recipe1
+      )    
+      ,
+      this.http.get(config.routes.category.getCategoryStates()).pipe(
+        recipe2
       )
     ];
 
@@ -150,13 +166,11 @@ export class MainService {
     );
 
     let arr = [
-      this.auth.tryWithRefreshIfNecc(
-        config.routes.test.getTests(pNo),
-        pipe(recipe1)
+      this.http.get(config.routes.test.getTests(pNo)).pipe(
+        recipe1
       ),
-      this.auth.tryWithRefreshIfNecc(
-        config.routes.test.getTestsCount(),
-        pipe(recipe2)
+      this.http.get(config.routes.test.getTestsCount()).pipe(
+        recipe2
       )
     ];
 
@@ -181,10 +195,9 @@ export class MainService {
           data.questions
       )
     );
-    return this.auth.tryWithRefreshIfNecc(
-      config.routes.question.getQuestions(tid),
+    return  this.http.get(config.routes.question.getQuestions(tid)).pipe(
       recipe
-    );
+    )
   }
 
   postQuestion(question: QuestionOriginal, post: boolean) {
@@ -252,13 +265,11 @@ export class MainService {
     );
 
     let arr = [
-      this.auth.tryWithRefreshIfNecc(
-        config.routes.instruction.getInstruction(id),
-        pipe(recipe1)
+      this.http.get(config.routes.instruction.getInstruction(id)).pipe(
+        recipe1
       ),
-      this.auth.tryWithRefreshIfNecc(
-        config.routes.category.getCategoryStates(),
-        pipe(recipe2)
+      this.http.get(config.routes.category.getCategoryStates()).pipe(
+        recipe2
       )
     ];
 
@@ -284,10 +295,9 @@ export class MainService {
           data.instructions
       )
     );
-    return this.auth.tryWithRefreshIfNecc(
-      config.routes.instruction.getInstructionStates(),
+    return this.http.get(config.routes.instruction.getInstructionStates()).pipe(
       recipe
-    );
+    )
   }
 
   getAnswers(tid: string): Observable<Answer[] | string> {
@@ -298,10 +308,9 @@ export class MainService {
         else return of(null);
       })
     );
-    return this.auth.tryWithRefreshIfNecc(
-      config.routes.answer.getAnswers(tid),
+    return this.http.get(config.routes.answer.getAnswers(tid)).pipe(
       recipe
-    );
+    )
   }
 
   postAnswer(answer: Answer, post: boolean) {

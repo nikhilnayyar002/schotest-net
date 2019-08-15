@@ -46,8 +46,8 @@ export const verifyJwtToken: express.RequestHandler = (req, res, next) => {
       (err, decoded: { _id: string }) => {
         if (err)
           return res
-            .status(500)
-            .send({ status: false, message: "Authentication failed." });
+            .status(401)
+            .send({ status: false, message: "Authentication failed."});
         else {
           (<any>req)._id = decoded._id;
           next();

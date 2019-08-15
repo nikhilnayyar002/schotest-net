@@ -4,7 +4,7 @@ import config from "src/data/config";
 import { FormBuilder, Validators, FormControl } from "@angular/forms";
 import { MainService } from '../../main.service';
 import { Category } from 'src/app/modals/category';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: "app-category-editor",
@@ -29,7 +29,12 @@ export class CategoryEditorComponent {
     image:[""],
   });
 
-  constructor(private fb: FormBuilder, private ms:MainService, private route: ActivatedRoute)
+  constructor(
+    private fb: FormBuilder,
+    private ms:MainService,
+    private route: ActivatedRoute,
+    private router: Router
+    )
   // private store: Store<GLobalState>,
   // private router: Router,
   // private route: ActivatedRoute,
@@ -78,7 +83,16 @@ export class CategoryEditorComponent {
       }
     )
   }
-
+  remove() {
+    this.submitting = true
+    this.ms.delCategory(this.category._id).subscribe(
+      ()=> { 
+        this.submitting = false;
+        this.router.navigate([config.adminRoutes.adminCategories()])
+      },
+      ()=>this.submitting = false
+    )
+  }
   /**
    * CK Editor
    *

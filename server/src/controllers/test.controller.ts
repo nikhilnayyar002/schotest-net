@@ -31,7 +31,7 @@ export const getTest: express.RequestHandler = function(req, res, next) {
             test = simplifyMongoose<TestOriginal>(test);
             let testRes: TestWithFeatures = { ...test, questions };
             res.json({ status: true, test: testRes });
-          } else next(new Record404Exception());
+          } else res.json({ status: true, test });
         }
       ).sort({ section: "asc", sectionOrder: 1, _id: "asc" });
     else next(new Record404Exception());
