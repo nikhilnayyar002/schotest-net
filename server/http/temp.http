@@ -1,5 +1,11 @@
 
 ### Get category tests count
-POST  http://localhost:3000/images/upload
+GET  http://localhost:3000/images/img_1565979804636.jpeg
+
+### Get category tests count
+DELETE   http://localhost:3000/images/img_1565979804636.jpeg
+
+
+
 
 ### Get count

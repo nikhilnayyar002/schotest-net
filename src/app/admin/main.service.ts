@@ -343,11 +343,15 @@ export class MainService {
     );
   }
 
-  postImage(formData:FormData) {
+  postImage(formData:FormData, fileName:string) {
     const httpOptions = {
       //  /** No need to include Content-Type in Angular 4 */
       headers: new HttpHeaders()
     };
-    return this.http.post(config.routes.images.postImage(), formData, httpOptions) 
+    return this.http.post(config.routes.images.postImage(fileName), formData, httpOptions) 
+  }
+
+  delImage(id: string){
+    return this.http.delete(config.routes.images.delete(id));
   }
 }

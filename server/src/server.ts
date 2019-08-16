@@ -1,14 +1,17 @@
 import * as http from 'http';
 import * as debug from 'debug';
 import app from './app';
+import { Environment } from './config/config';
 
+
+const environment: Environment = <any>process.env;
 let deb = debug('server:server');
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(environment.PORT || '3000');
 app.set('port', port);
 
 /**

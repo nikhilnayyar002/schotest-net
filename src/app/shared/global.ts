@@ -177,16 +177,12 @@ export function createAccordianState() {
   * 
   * Returns @FileReader or @null
   */
- export function encodeImageToUrl(file:File) {
+ export function isValidImage(file:File) {
   let fileTypes = FILES.image
   if(file) {
-    let reader = new FileReader();
     let extension = file.name.split('.').pop().toLowerCase(); 
     let isSuccess = fileTypes.indexOf(extension) > -1;
-    if (isSuccess) { 
-      reader.readAsDataURL(file);
-      return reader;
-    }
+    return isSuccess
   }
   return null;
 }

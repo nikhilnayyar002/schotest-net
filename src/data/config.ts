@@ -64,8 +64,8 @@ let config = {
             getAnswers: tid => `${domain}/answers/all/${tid}`,
         },
         images:{
-            deleteImage: () => `${domain}/images/delete`,
-            postImage: () => `${domain}/images/upload`
+            delete: (id) =>`${domain}/images/${id}`,
+            postImage: (id) => `${domain}/images/${id}`
         }        
     },
     clientRoutes:{
@@ -127,6 +127,10 @@ let config = {
     backend:{
         tests:{
             testsPerPage:10
+        },
+        image:{
+            sizeLimit: 2 * 1024 * 1024,
+            resourceURL: (id) => `${domain}/images/${id}`
         }
     }
 };

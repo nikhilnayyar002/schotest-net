@@ -1,6 +1,10 @@
 import * as jwt from "jsonwebtoken";
 import * as express from "express";
 import { UserModal, User } from "../modal/user";
+import { Environment } from "./config";
+import * as multer from 'multer';
+
+const environment: Environment = <any>process.env;
 
 /** global types */
 
@@ -37,7 +41,7 @@ export const verifyJwtToken: express.RequestHandler = (req, res, next) => {
   else {
     jwt.verify(
       token,
-      process.env.JWT_SECRET,
+      environment.JWT_SECRET,
       /**
        * decoded ->  { _id: 1563274945715, iat: 1563773668, exp: 1563775468 }
        * _id -> userID because the generated jwt
@@ -80,3 +84,39 @@ export const checkAdminRoute:express.Handler = (req,res,next)=>{
         else next();
     })
 }
+
+/** 
+ * 
+ * Image upload support 
+ * 
+ * */
+
+const accepted_extensions = ['jpg', 'png', 'jpeg'];
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, 'uploads')
+    },
+    filename: function(req:express.Request, file, cb) {
+        cb(null, req.params.id)
+    }
+});
+export const imageUpload = multer({
+    storage: storage,
+    limits: { 
+        fileSize: 2 * 1024 * 1024,  // 5 MB upload limit
+        files: 1                    // 1 file
+    },
+    fileFilter: (req, file, cb) => {
+        // if the file extension is in our accepted list
+        if (
+          accepted_extensions.some(ext => file.originalname.endsWith("." + ext))
+          && file.mimetype &&  accepted_extensions.includes(file.mimetype.split('/')[1])
+        ) {
+            return cb(null, true);
+        }
+        // otherwise, return error
+        return cb(new Error('Only ' + accepted_extensions.join(", ") + ' files are allowed!'), false);
+    }
+}).single('image');
+
+

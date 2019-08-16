@@ -13,6 +13,7 @@ import { HttpException, verifyJwtToken } from './config/global';
 
 import "./config/passportConfig";
 import "./config/setupEnv"
+
 import { answerRouter } from './router/answer.router';
 import { questionRouter } from './router/question.router';
 import { instructionRouter } from './router/instruction.router';

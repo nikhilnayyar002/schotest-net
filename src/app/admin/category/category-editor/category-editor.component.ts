@@ -5,7 +5,7 @@ import { FormBuilder, Validators, FormControl } from "@angular/forms";
 import { MainService } from "../../main.service";
 import { Category } from "src/app/modals/category";
 import { ActivatedRoute, Router } from "@angular/router";
-import { encodeImageToUrl, FILES } from 'src/app/shared/global';
+import { isValidImage, FILES } from 'src/app/shared/global';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { pipe } from 'rxjs';
 
@@ -146,27 +146,49 @@ export class CategoryEditorComponent {
   }())
 
   imageError:string = null
-  imageURL:string = ''
+  imageProcessing:boolean = false
 
   encodeImage(element) {
-
-    let file = element.target.files[0];
-    if (file) {
-      let reader: FileReader = encodeImageToUrl.bind(this)(file);
-      if (!reader) {
+    this.imageProcessing = true
+    let file:File = element.target.files[0];
+ 
+      if (!isValidImage(file)) {
         this.imageError = "Invalid image provided. File Proccessing Failed."
         element.target.value = ""
-      } else
-        reader.onloadend = () => {
+        this.imageProcessing = false
+      } else {
+        let fileName = `img_${(new Date()).getTime()}.${file.type.split("/")[1]}`
+
+        /** uploading image file */
+        let formData:FormData = new FormData();
+        formData.append('image', file, file.name);
+        this.ms.postImage(formData, fileName).subscribe(()=>{
           this.imageError = null
           element.target.value = ""
-          this.imageURL = <string>(reader.result)
+          this.image.setValue(config.backend.image.resourceURL(fileName))
+          this.imageProcessing = false
+        },
+        (error)=> {
+          let m = error.error.message
+          this.imageError = m?m:"Image save failure. Backend error."
+          this.imageProcessing = false
+        })
 
-          let formData:FormData = new FormData();
-          formData.append('image', file, file.name);
-          this.ms.postImage(formData).subscribe()
-        
-        };
-    }
+      };
+    
+  }
+
+  removeImage() {
+    this.imageProcessing = false
+    this.ms.delImage((<string>this.image.value).replace(config.backend.image.resourceURL(''),''))
+    .subscribe(()=>{
+      this.imageError = ''
+      this.imageProcessing = false
+      this.image.setValue('')
+    },(error)=>{
+      let m = error.error.message
+      this.imageError = m?m:"Image save failure. Backend error."
+      this.imageProcessing = false
+    })
   }
 }

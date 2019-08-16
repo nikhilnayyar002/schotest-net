@@ -24,7 +24,7 @@
     </div>
     <!--Image-->
     <div class="input-container flex-column">
-      <label for="image">Image Url/Base64 <small>(?)</small></label>
+      <label for="image">Image Url <small>(?)</small></label>
       <input
       class="input-field bg-info col"
       type="text"
@@ -33,26 +33,29 @@
       autocomplete="off"
       formControlName="image"
     />      
-      <ng-container *ngIf="!image.value; else clearImage">
+      <ng-container *ngIf="!imageProcessing && !image.value; else clearImage">
         <input
           type="file"
           name="file"
           (change)="encodeImage($event)"
           [accept]="imageAccept"
         />
-        {{image.value}}
       </ng-container>
       <ng-template #clearImage>
         <div class="mb-1">
-          <img [src]="imageURL" class="image" *ngIf="image.value" />
+          <img [src]="image.value" class="image" *ngIf="image.value" />
         </div>
         <button
-          *ngIf="image.value.includes(configData.api.domain)"
+          *ngIf="!imageProcessing && image.value.includes(configData.api.domain)"
           class="btn btn-sm btn-secondary align-self-start"
+          (click)="removeImage()"
         >
           Remove
         </button>
       </ng-template>
+    </div>
+    <div *ngIf="imageProcessing" class="spinner-grow text-secondary mb-2" role="status">
+      <span class="sr-only">Loading...</span>
     </div>
     <div *ngIf="imageError" class="input-error">{{ imageError }}</div>
 
