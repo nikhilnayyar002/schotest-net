@@ -1,5 +1,6 @@
 import * as jwt from "jsonwebtoken";
 import * as express from "express";
+import { UserModal, User } from "../modal/user";
 
 /** global types */
 
@@ -49,6 +50,7 @@ export const verifyJwtToken: express.RequestHandler = (req, res, next) => {
             .status(401)
             .send({ status: false, message: "Authentication failed."});
         else {
+          /** save userID in req as req._id */
           (<any>req)._id = decoded._id;
           next();
         }
@@ -68,3 +70,13 @@ export function simplifyMongoose<T>(data: any): T {
   return data._doc;
 }
 
+export const checkAdminRoute:express.Handler = (req,res,next)=>{
+    UserModal.findById((<any>req)._id,(err,user:User)=>{
+        if(err) next(new HttpException())
+        if (!user)
+            return res.status(404).json({ status: false, message: 'User record not found.' });
+        else if(!user.isAdmin) 
+            return res.status(403).send({ status: false, message: "Acess Forbidden. Not an Admin"});
+        else next();
+    })
+}

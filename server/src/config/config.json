@@ -6,12 +6,12 @@
         "PORT": 3000,
         "MONGODB_URI": "mongodb://nikhilnayyar:dnaagent6@ds251507.mlab.com:51507/schotest",
         "JWT_SECRET": "SECRET#123",
-        "JWT_EXP": "10s"
+        "JWT_EXP": "30m"
     },
     "production": {
         "PORT": 80,
         "MONGODB_URI": "mongodb://nikhilnayyar:dnaagent6@ds251507.mlab.com:51507/schotest",
         "JWT_SECRET": "SECRET#123",
-        "JWT_EXP": "10s"
+        "JWT_EXP": "30m"
     }
 }

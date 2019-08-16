@@ -6,16 +6,16 @@ import { Answer, AnswerModal } from "../modal/answer";
 /**
  * Return @Answer
  */
-export const postAnswer: express.RequestHandler = function(req, res, next) {
-  let answer: Answer & mongoose.Document = <any>new AnswerModal(req.body);
-  answer.save((err, doc: Answer) => {
-    if (!err) res.json({ status: true, answer: doc });
-    else {
-      if (err.code) res.status(422).json({ status: false, message: err.code });
-      else return next(err);
-    }
-  });
-};
+// export const postAnswer: express.RequestHandler = function(req, res, next) {
+//   let answer: Answer & mongoose.Document = <any>new AnswerModal(req.body);
+//   answer.save((err, doc: Answer) => {
+//     if (!err) res.json({ status: true, answer: doc });
+//     else {
+//       if (err.code) res.status(422).json({ status: false, message: err.code });
+//       else return next(err);
+//     }
+//   });
+// };
 
 /**
  * Return @Answer
