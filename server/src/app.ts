@@ -16,6 +16,7 @@ import "./config/setupEnv"
 import { answerRouter } from './router/answer.router';
 import { questionRouter } from './router/question.router';
 import { instructionRouter } from './router/instruction.router';
+import { imageRouter } from './router/image.router';
 
 const environment: Environment = <any>process.env;
 
@@ -83,6 +84,7 @@ app.use('/userData', verifyJwtToken, UserDataRouter);
 app.use('/answers', verifyJwtToken, answerRouter);
 app.use('/questions', verifyJwtToken, questionRouter);
 app.use('/instructions', verifyJwtToken, instructionRouter)
+app.use('/images', imageRouter)
 app.use("**", invalidPath)
 
 function invalidPath(req,res, next) {

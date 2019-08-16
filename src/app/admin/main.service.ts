@@ -342,4 +342,12 @@ export class MainService {
       httpOptions
     );
   }
+
+  postImage(formData:FormData) {
+    const httpOptions = {
+      //  /** No need to include Content-Type in Angular 4 */
+      headers: new HttpHeaders()
+    };
+    return this.http.post(config.routes.images.postImage(), formData, httpOptions) 
+  }
 }

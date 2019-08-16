@@ -62,7 +62,11 @@ let config = {
             postAnswer: () => `${domain}/answers`,
             postAnswers: () => `${domain}/answers/all`,
             getAnswers: tid => `${domain}/answers/all/${tid}`,
-        }
+        },
+        images:{
+            deleteImage: () => `${domain}/images/delete`,
+            postImage: () => `${domain}/images/upload`
+        }        
     },
     clientRoutes:{
         root:()=> '/',

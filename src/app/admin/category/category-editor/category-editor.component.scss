@@ -19,3 +19,7 @@ label {
 .nik-gradient{
   background: linear-gradient(45deg, $primary-bg-light 22%, $primary-bg-color 70%);
 }
+.image {
+  max-width: 100%;
+  max-height: 150px;
+}
