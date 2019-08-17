@@ -100,7 +100,6 @@ let config = {
         relCategory:()=> './category',
         relTest:()=>  './test',
         relInstruction:()=> './instruction',
-        relUser:()=> './user',        
 
         /** AdminResolverService */
         adminCategories: ()=>"/admin/category",

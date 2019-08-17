@@ -5,15 +5,18 @@ import { FormBuilder, Validators, FormControl } from "@angular/forms";
 import { MainService } from "../../main.service";
 import { Category } from "src/app/modals/category";
 import { ActivatedRoute, Router } from "@angular/router";
-import { isValidImage, FILES } from 'src/app/shared/global';
+import { isValidImage, FILES, rtnInputAcceptVal } from 'src/app/shared/global';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { pipe } from 'rxjs';
+import { pipe, Observable, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { takeWhileAlive, AutoUnsubscribe } from 'take-while-alive';
 
 @Component({
   selector: "app-category-editor",
   templateUrl: "./category-editor.component.html",
   styleUrls: ["./category-editor.component.scss"]
 })
+@AutoUnsubscribe()
 export class CategoryEditorComponent {
   pageTitle: string;
   configData = config;
@@ -137,28 +140,21 @@ export class CategoryEditorComponent {
    * 
    * */
 
-  imageAccept:string = (function(){
-    "image/png, image/jpeg"
-    let accept = ''
-    FILES.image.forEach(t => accept+=`image/${t}, `)
-    accept = accept?accept.slice(0,accept.length - 2):"image/*"
-    return accept
-  }())
 
+  /** value for accept attribute of input */
+  imageAccept:string = rtnInputAcceptVal(FILES.image, "image")
+  /** IMp */
   imageError:string = null
   imageProcessing:boolean = false
-
   encodeImage(element) {
     this.imageProcessing = true
     let file:File = element.target.files[0];
- 
       if (!isValidImage(file)) {
         this.imageError = "Invalid image provided. File Proccessing Failed."
         element.target.value = ""
         this.imageProcessing = false
       } else {
-        let fileName = `img_${(new Date()).getTime()}.${file.type.split("/")[1]}`
-
+        let fileName = `cat_${(new Date()).getTime()}.${file.type.split("/")[1]}`
         /** uploading image file */
         let formData:FormData = new FormData();
         formData.append('image', file, file.name);
@@ -173,9 +169,7 @@ export class CategoryEditorComponent {
           this.imageError = m?m:"Image save failure. Backend error."
           this.imageProcessing = false
         })
-
       };
-    
   }
 
   removeImage() {

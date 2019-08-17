@@ -30,10 +30,6 @@ const routes: Routes = [
           {
             path:'instruction',
             loadChildren:() => import('./instruction/instruction.module').then(mod => mod.InstructionModule),
-          },
-          {
-            path:'user',
-            loadChildren:() => import('./user/user.module').then(mod => mod.UserModule),
           }
         ]
       }

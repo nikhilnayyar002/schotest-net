@@ -175,7 +175,7 @@ export function createAccordianState() {
 
  /**
   * 
-  * Returns @FileReader or @null
+  * Returns @boolean or @null
   */
  export function isValidImage(file:File) {
   let fileTypes = FILES.image
@@ -185,4 +185,11 @@ export function createAccordianState() {
     return isSuccess
   }
   return null;
+}
+
+export function rtnInputAcceptVal(exts:string[], type:string) {
+  let accept = ''
+  exts.forEach(t => accept+=`${type}/${t}, `)
+  accept = accept?accept.slice(0,accept.length - 2):`${type}/*`
+  return accept
 }

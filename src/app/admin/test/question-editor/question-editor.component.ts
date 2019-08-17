@@ -4,6 +4,7 @@ import { FormBuilder, Validators, FormControl, FormArray } from '@angular/forms'
 import { MainService } from '../../main.service';
 import config from 'src/data/config';
 import * as DocumentEditor from "@ckeditor/ckeditor5-build-decoupled-document";
+import { rtnInputAcceptVal, FILES, isValidImage } from 'src/app/shared/global';
 
 @Component({
   selector: 'app-question-editor',
@@ -159,6 +160,51 @@ export class QuestionEditorComponent implements OnInit {
       editor.ui.view.toolbar.element,
       editor.ui.view.editable.element
     );
+  }
+
+    /** value for accept attribute of input */
+  imageAccept:string = rtnInputAcceptVal(FILES.image, "image")
+  /** IMp */
+  imageError:string = null
+  imageProcessing:boolean = false
+  encodeImage(element) {
+    this.imageProcessing = true
+    let file:File = element.target.files[0];
+      if (!isValidImage(file)) {
+        this.imageError = "Invalid image provided. File Proccessing Failed."
+        element.target.value = ""
+        this.imageProcessing = false
+      } else {
+        let fileName = `que_${(new Date()).getTime()}.${file.type.split("/")[1]}`
+        /** uploading image file */
+        let formData:FormData = new FormData();
+        formData.append('image', file, file.name);
+        this.ms.postImage(formData, fileName).subscribe(()=>{
+          this.imageError = null
+          element.target.value = ""
+          this.image.setValue(config.backend.image.resourceURL(fileName))
+          this.imageProcessing = false
+        },
+        (error)=> {
+          let m = error.error.message
+          this.imageError = m?m:"Image save failure. Backend error."
+          this.imageProcessing = false
+        })
+      };
+  }
+
+  removeImage() {
+    this.imageProcessing = false
+    this.ms.delImage((<string>this.image.value).replace(config.backend.image.resourceURL(''),''))
+    .subscribe(()=>{
+      this.imageError = ''
+      this.imageProcessing = false
+      this.image.setValue('')
+    },(error)=>{
+      let m = error.error.message
+      this.imageError = m?m:"Image save failure. Backend error."
+      this.imageProcessing = false
+    })
   }
 
 }
