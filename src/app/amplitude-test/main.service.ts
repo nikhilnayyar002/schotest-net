@@ -4,7 +4,7 @@ import {
   HttpErrorResponse,
   HttpHeaders
 } from "@angular/common/http";
-import { Observable, throwError, pipe } from "rxjs";
+import { Observable, throwError, pipe, of } from "rxjs";
 import { catchError, tap, map, debounceTime } from "rxjs/operators";
 import config from "../../data/config";
 import { QuestionStateDB } from "./shared/indexDB";
@@ -93,7 +93,8 @@ export class MainService {
     let recipe = pipe(
       map(
         (data: { status: boolean; instruction: Instruction }) => data.instruction
-      )
+      ),
+      catchError(()=>of(null))
     );
     return this.http.get(config.routes.instruction.getInstructionByCategory(cid)).pipe(
       recipe

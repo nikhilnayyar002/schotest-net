@@ -30,7 +30,8 @@ export class MainService {
     let recipe = pipe(
       map(
         (data: { status: boolean; categories: Category[] }) => data.categories
-      )
+      ),
+      catchError(()=>of(null))
     );
     return this.http.get( config.routes.category.getCategories()).pipe(
       recipe
@@ -58,7 +59,8 @@ export class MainService {
 
   getCategory(catID: string): Observable<Category> {
     let recipe = pipe(
-      map((data: { status: boolean; category: Category }) => data.category)
+      map((data: { status: boolean; category: Category }) => data.category),
+      catchError(()=>of(null))
     );
     return this.http.get( config.routes.category.getCategory(catID)).pipe(
       recipe
@@ -69,7 +71,8 @@ export class MainService {
     let recipe = pipe(
       map(
         (data: { status: boolean; categories: Category[] }) => data.categories
-      )
+      ),
+      catchError(()=>of(null))
     );
     return this.http.get( config.routes.category.getCategoryStates()).pipe(
       recipe
@@ -124,11 +127,13 @@ export class MainService {
     id: string
   ): Observable<{ test: TestOriginal; categories: Category[] }> {
     let recipe1 = pipe(
-      map((data: { status: boolean; test: TestOriginal }) => data.test)
+      map((data: { status: boolean; test: TestOriginal }) => data.test),
+      catchError(()=>of(null))
     );
     let recipe2 = pipe(
       map(
-        (data: { status: boolean; categories: Category[] }) => data.categories
+        (data: { status: boolean; categories: Category[] }) => data.categories,
+        catchError(()=>of(null))
       )
     );
 
@@ -159,10 +164,12 @@ export class MainService {
 
   getTests(pNo: number): Observable<{ tests: TestOriginal[]; count: number }> {
     let recipe1 = pipe(
-      map((data: { status: boolean; tests: TestOriginal[] }) => data.tests)
+      map((data: { status: boolean; tests: TestOriginal[] }) => data.tests),
+      catchError(()=>of(null))
     );
     let recipe2 = pipe(
-      map((data: { status: boolean; count: number[] }) => data.count)
+      map((data: { status: boolean; count: number[] }) => data.count),
+      catchError(()=>of(null))
     );
 
     let arr = [
@@ -193,7 +200,8 @@ export class MainService {
       map(
         (data: { status: boolean; questions: QuestionOriginal[] }) =>
           data.questions
-      )
+      ),
+      catchError(()=>of(null))
     );
     return  this.http.get(config.routes.question.getQuestions(tid)).pipe(
       recipe
@@ -256,12 +264,14 @@ export class MainService {
       map(
         (data: { status: boolean; instruction: Instruction }) =>
           data.instruction
-      )
+      ),
+      catchError(()=>of(null))
     );
     let recipe2 = pipe(
       map(
         (data: { status: boolean; categories: Category[] }) => data.categories
-      )
+      ),
+      catchError(()=>of(null))
     );
 
     let arr = [
@@ -293,7 +303,8 @@ export class MainService {
       map(
         (data: { status: boolean; instructions: Instruction[] }) =>
           data.instructions
-      )
+      ),
+      catchError(()=>of(null))
     );
     return this.http.get(config.routes.instruction.getInstructionStates()).pipe(
       recipe

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, ComponentFactoryResolver, ViewChild, ElementRef } from '@angular/core';
+import { Component, ChangeDetectorRef, ComponentFactoryResolver, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { take } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 import { PageService } from '../page/page.service';
@@ -205,6 +205,13 @@ export class ParentComponent {
     this.store.dispatch(PauseTest({ time: this.test.time }))
     this.store.dispatch(PauseTestServer({ time: this.test.time }))
   }
+
+  @HostListener('window:beforeunload', [ '$event' ])
+  beforeUnloadHander(event) {
+     if(this.test && this.test.time)
+      this.store.dispatch(PauseTestServer({ time: this.test.time }))
+  }
+
 
   /**
    * toggle Full Screen

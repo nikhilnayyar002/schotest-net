@@ -1,8 +1,9 @@
 import { ChangeDetectorRef } from "@angular/core";
 import { HttpHeaders } from "@angular/common/http";
-import { UserProfile } from '../modals/user';
-import { QuestionOriginal } from '../amplitude-test/modals/question';
-import { Answers } from '../amplitude-test/modals/answer';
+import { UserProfile } from "../modals/user";
+import { QuestionOriginal } from "../amplitude-test/modals/question";
+import { Answers } from "../amplitude-test/modals/answer";
+import { AbstractControl, ValidatorFn } from "@angular/forms";
 
 export interface MediaQueryState {
   dispose: () => void;
@@ -17,15 +18,20 @@ export interface BackendStatus {
 }
 
 export interface Credentials {
+  fullName?:string;
   email: string;
   password: string;
-};
+}
 
 export interface QuestionsAnswers {
-  answers:Answers;
+  answers: Answers;
   questions: { [index: string]: QuestionOriginal };
 }
 
+export enum SignInState {
+  signIn = "Sign In",
+  signUp = "Sign Up"
+}
 
 export function createMediaQuery(
   queryStr,
@@ -54,7 +60,6 @@ export function createMediaQuery(
       setTimeout(() => mediaQueryFunction(mediaQueryObject), 0)
   };
 }
-
 
 /**
  * Toggle Full Screen
@@ -107,13 +112,17 @@ export function createSideBarStateOverlay(
   sidebar: HTMLElement,
   fixedOverlay: HTMLElement,
   mediaQueryState: MediaQueryState
-): (x: boolean, force: boolean, element:HTMLElement) => void {
-  return (x: boolean, force: boolean = null, element:HTMLElement) => {
+): (x: boolean, force: boolean, element: HTMLElement) => void {
+  return (x: boolean, force: boolean = null, element: HTMLElement) => {
     /** support for "li" being clicked when screen is small
      *  then one should close the sidebar.
      *  So add a click handlar to parent "ul".
      */
-    if(element && element.nodeName == "LI" && mediaQueryState.isMediaMatched()) {
+    if (
+      element &&
+      element.nodeName == "LI" &&
+      mediaQueryState.isMediaMatched()
+    ) {
       return openClose(true);
     }
     /**
@@ -147,49 +156,84 @@ export function createSideBarStateOverlay(
   };
 }
 
-
 /**
  * callback code for special accordian click.
  * Also does state management
  */
 export function createAccordianState() {
-  let prevAccorElem:HTMLElement=null,
-  callback = (elem:HTMLElement) => {
-    let ct = <HTMLElement>elem.querySelector(".card-status-container")
-    if(ct.style.transform == "rotate(90deg)")
-      ct.style.transform = "rotate(-90deg)"
-    else
-      ct.style.transform = "rotate(90deg)"
-    //code for prevAccorElem
-    if(prevAccorElem && prevAccorElem!=ct && prevAccorElem.style.transform == "rotate(90deg)")
-      prevAccorElem.style.transform = "rotate(-90deg)"
-    prevAccorElem = ct
-  }
+  let prevAccorElem: HTMLElement = null,
+    callback = (elem: HTMLElement) => {
+      let ct = <HTMLElement>elem.querySelector(".card-status-container");
+      if (ct.style.transform == "rotate(90deg)")
+        ct.style.transform = "rotate(-90deg)";
+      else ct.style.transform = "rotate(90deg)";
+      //code for prevAccorElem
+      if (
+        prevAccorElem &&
+        prevAccorElem != ct &&
+        prevAccorElem.style.transform == "rotate(90deg)"
+      )
+        prevAccorElem.style.transform = "rotate(-90deg)";
+      prevAccorElem = ct;
+    };
   return callback;
 }
 
- //filetype order should remain same
- export const FILES={
-  image: ["jpg","png","jpeg"]
- };
+//filetype order should remain same
+export const FILES = {
+  image: ["jpg", "png", "jpeg"]
+};
 
- /**
-  * 
-  * Returns @boolean or @null
-  */
- export function isValidImage(file:File) {
-  let fileTypes = FILES.image
-  if(file) {
-    let extension = file.name.split('.').pop().toLowerCase(); 
+/**
+ *
+ * Returns @boolean or @null
+ */
+export function isValidImage(file: File) {
+  let fileTypes = FILES.image;
+  if (file) {
+    let extension = file.name
+      .split(".")
+      .pop()
+      .toLowerCase();
     let isSuccess = fileTypes.indexOf(extension) > -1;
-    return isSuccess
+    return isSuccess;
   }
   return null;
 }
 
-export function rtnInputAcceptVal(exts:string[], type:string) {
-  let accept = ''
-  exts.forEach(t => accept+=`${type}/${t}, `)
-  accept = accept?accept.slice(0,accept.length - 2):`${type}/*`
-  return accept
+export function rtnInputAcceptVal(exts: string[], type: string) {
+  let accept = "";
+  exts.forEach(t => (accept += `${type}/${t}, `));
+  accept = accept ? accept.slice(0, accept.length - 2) : `${type}/*`;
+  return accept;
+}
+
+/** A hero's name can't match the given regular expression */
+export function passValidator(
+  regex: RegExp,
+  rtnSigningState: () => SignInState,
+  errorName:string
+): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    if (rtnSigningState() == SignInState.signUp) {
+      const forbidden = regex.test(control.value), errorObj={};
+      errorObj[errorName] = {value: control.value}
+      return !forbidden ? errorObj : null;
+    } else return null;
+  };
+}
+
+/** A hero's name can't match the given regular expression */
+export function requiredValidator(
+  rtnSigningState: () => SignInState,
+  errorName:string
+): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    if (rtnSigningState() == SignInState.signUp) {
+      const forbidden = control.value!=null?(<string>control.value).trim():null,
+      errorObj={};
+      errorObj[errorName] = {value: control.value}
+      return forbidden=="" ? errorObj : null;
+    } else return null;
+  };
 }

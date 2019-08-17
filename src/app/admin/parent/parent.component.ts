@@ -41,7 +41,7 @@ export class ParentComponent {
   @ViewChild("fixedOverlay", { static: false })
   private fixedOverlay: ElementRef;
   @ViewChild("sidebar", { static: false }) private sidebar: ElementRef;
-  user:Observable<UserProfile> = this.store.select(state => state.app.user);
+  user$:Observable<UserProfile> = this.store.select(state => state.app.user);
 
   mediaQueryState: MediaQueryState = createMediaQuery(
     "(max-width: 900px)",

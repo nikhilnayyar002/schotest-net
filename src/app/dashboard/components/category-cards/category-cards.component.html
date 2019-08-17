@@ -31,7 +31,7 @@
 
     </ng-container>
     <img
-      [src]="category.image"
+      [src]="category.image?category.image:'assets/img/no-image-available.png'"
       class="card-img-top"
       alt="..."
     />

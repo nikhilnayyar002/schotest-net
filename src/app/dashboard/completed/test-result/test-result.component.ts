@@ -11,7 +11,7 @@ import { ActivatedRoute } from "@angular/router";
 })
 export class TestResultComponent {
 
-  test: TestWithFeatures;
+  test: TestWithFeatures =null;
   res: { userTest: UserTest; questionsAnswers: QuestionsAnswers; };
   selectedOption: "overall" | "q&a" = "overall";
 
@@ -34,7 +34,9 @@ export class TestResultComponent {
     if(!this.res) return
     
     //test received from Parent Component through ParentService
-    let t = this.ps.tests.filter(test => test._id == this.route.snapshot.paramMap.get('id'))
+    let t = (this.ps.tests && this.ps.tests.length)?
+      this.ps.tests.filter(test => test._id == this.route.snapshot.paramMap.get('id')):[]
+
     if(!t.length) return
 
     //set test

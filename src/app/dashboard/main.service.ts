@@ -31,7 +31,8 @@ export class MainService {
     let recipe = pipe(
       map(
         (data: { status: boolean; categories: Category[] }) => data.categories
-      )
+      ),
+      catchError(()=>of(null))
     );
 
     return this.http.get(config.routes.category.getCategories()).pipe(
@@ -41,10 +42,12 @@ export class MainService {
 
   getTests(categoryID: string, pNo:number): Observable<{ tests: TestOriginal[]; count: number }> {
     let recipe1 = pipe(
-      map((data: { status: boolean; tests: TestOriginal[] }) => data.tests)
+      map((data: { status: boolean; tests: TestOriginal[] }) => data.tests),
+      catchError(()=>of(null))
     );
     let recipe2 = pipe(
-      map((data: { status: boolean; count: number[] }) => data.count)
+      map((data: { status: boolean; count: number[] }) => data.count),
+      catchError(()=>of(null))
     );
 
     let arr = [
@@ -81,7 +84,8 @@ export class MainService {
           let recipe = pipe(
             map(
               (data: { status: boolean; tests: TestWithFeaturesForUser[] }) => data.tests
-            )
+            ),
+            catchError(()=>of(null))
           );
           return this.http.get(config.routes.userData.getPausedTests(user.id)).pipe(
             recipe
@@ -99,7 +103,8 @@ export class MainService {
           let recipe = pipe(
             map(
               (data: { status: boolean; tests: TestWithFeaturesForUser[] }) => data.tests
-            )
+            ),
+            catchError(()=>of(null))
           );
           return this.http.get(config.routes.userData.getCompletedTests(user.id)).pipe(
             recipe
@@ -174,7 +179,8 @@ export class MainService {
             map(
               (data: { status: boolean; categories: Category[] }) =>
                 data.categories
-            )
+            ),
+            catchError(()=>of(null))
           );
           return this.http.get(config.routes.userData.getUserFavourites(user.id)).pipe(
             recipe
@@ -194,10 +200,12 @@ export class MainService {
           data.answers.forEach((answer)=>  answers[answer._id] = { value:answer.value, data:answer.data  })
         else answers = null
         return {questions, answers}
-      })
+      }),
+      catchError(()=>of(null))
     );
     let recipeForUserTest = pipe(
-      map((data: {status:boolean, test:UserTest}) => data.test)
+      map((data: {status:boolean, test:UserTest}) => data.test),
+      catchError(()=>of(null))
     );
 
     let arr = [

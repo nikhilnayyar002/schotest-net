@@ -16,7 +16,6 @@ export const register:express.RequestHandler = (req, res, next) => {
     user.email = userObj.email;
     user.password = userObj.password;
     user._id = (new Date()).getTime().toString();
-    user._id =  userObj._id;
     user.favourites = []
     user.tests = {}
     user.isAdmin = userObj.isAdmin?true:false

@@ -22,6 +22,7 @@ let config = {
         user:{
             authenticate:()=> `${domain}/auth/authenticate`,
             userProfile:()=>  `${domain}/auth/userProfile`,
+            register:()=>  `${domain}/auth/register`,
         },
         category:{
             getCategories: ()=>`${domain}/categories`,
@@ -40,6 +41,7 @@ let config = {
             getTestsCount: ()=> `${domain}/tests/count`,  
             getTests:(pNo)=> `${domain}/tests/all/${pNo}`,
             findTests:()=> `${domain}/tests/find`,
+            // findTestsForUser:()=> `${domain}/tests/find/foruser`,
             delete:(id)=>`${domain}/tests/${id}`,
         },
         question:{

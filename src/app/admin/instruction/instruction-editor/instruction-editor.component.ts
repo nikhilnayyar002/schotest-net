@@ -36,9 +36,8 @@ export class InstructionEditorComponent implements OnInit {
     private fb: FormBuilder,
     private ms: MainService,
     private route: ActivatedRoute,
-    private router: Router
-  ) // private store: Store<GLobalState>,
-  // private router: Router,
+    private router: Router // private store: Store<GLobalState>,
+  ) // private router: Router,
   // private route: ActivatedRoute,
   {}
 
@@ -107,14 +106,17 @@ export class InstructionEditorComponent implements OnInit {
   }
 
   remove() {
-    this.submitting = true;
-    this.ms.delInstruction(this.instruction._id).subscribe(
-      () => {
-        this.submitting = false;
-        this.router.navigate([config.adminRoutes.adminInstructions()]);
-      },
-      () => (this.submitting = false)
-    );
+    let t = window.confirm("Is it OK?");
+    if (t) {
+      this.submitting = true;
+      this.ms.delInstruction(this.instruction._id).subscribe(
+        () => {
+          this.submitting = false;
+          this.router.navigate([config.adminRoutes.adminInstructions()]);
+        },
+        () => (this.submitting = false)
+      );
+    }
   }
 
   /**

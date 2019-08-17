@@ -128,7 +128,7 @@ export const getTestsByCategory: express.RequestHandler = function(
   let catID = req.params.catID;
   let pNo = req.params.pNo;
   TestModal.find(
-    { catID },
+    { catID, isTestReady:true },
     null,
     { skip: (pNo - 1) * 10, limit: 10 },
     (err, tests) => {
@@ -184,7 +184,18 @@ export const getTests: express.RequestHandler = function(req, res, next) {
  * Return @TestOriginal_Arr
  */
 export const findTests: express.RequestHandler = function(req, res, next) {
-  TestModal.find({ name: { $regex: req.body.search, $options: "i" } }, function(
+  let obj = { name: { $regex: req.body.search, $options: "i" } };
+  findTestsComm(obj, req, res, next)
+};
+
+export const findTestsForUser: express.RequestHandler = function(req, res, next) {
+  let obj:any = { name: { $regex: req.body.search, $options: "i" } };
+  obj.isTestReady = true
+  findTestsComm(obj, req, res, next)
+};
+
+function findTestsComm(obj, req,res,next) {
+  TestModal.find(obj, function(
     err,
     tests: TestOriginal[]
   ) {
@@ -199,7 +210,7 @@ export const findTests: express.RequestHandler = function(req, res, next) {
       });
     else next(new Record404Exception());
   });
-};
+}
 
 
 /**

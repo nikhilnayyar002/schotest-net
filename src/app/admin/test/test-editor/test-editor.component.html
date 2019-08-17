@@ -3,7 +3,7 @@
 </h4>
 
 <div #pageContent class="page-content">
-  <form class="bg-primary form-container" [formGroup]="form">
+  <form  *ngIf="test !== null; else fetchingFailed"  class="bg-primary form-container" [formGroup]="form">
     <!--Title-->
     <div class="input-container flex-column">
       <label for="title">Title</label>
@@ -299,5 +299,8 @@
       <pre>{{ backendError }}</pre>
     </div>
   </form>
+  <ng-template #fetchingFailed>
+    <div class="text-danger py-3 px-2">Fetching Failed or no record found.</div>
+  </ng-template> 
 </div>
 <router-outlet></router-outlet>

@@ -1,7 +1,7 @@
 <!-- navbar -->
 <nav class="navbar bg-primary navbar-expand-lg shadow">
   <!-- logo-->
-  <a class="navbar-brand" [routerLink]=[configData.clientRoutes.login()]>
+  <a class="navbar-brand" [routerLink]="[configData.clientRoutes.login()]">
     <span id="nav-bar-logo">{{ configData.company.name }}</span>
   </a>
 </nav>
@@ -12,11 +12,41 @@
     <form class="bg-primary form-container" [formGroup]="form">
       <div class="slider">
         <div id="form-tab">
-          <span id="sign-in-btn" class="active">SignIn</span>
+          <span
+            class="text-secondary border-right border-info"
+            [class.text-secondary]="submitBtnText == SignInState.signIn"
+            (click)="setSignInState(SignInState.signIn)"
+            >SignIn</span
+          >
+          <span
+            class="text-secondary"
+            [class.text-secondary]="submitBtnText == SignInState.signUp"
+            (click)="setSignInState(SignInState.signUp)"
+            >SignUp</span
+          >
         </div>
 
-        <!--username-->
-        <div id="user-name" class="input-container">
+        <ng-container *ngIf="submitBtnText == SignInState.signUp">
+          <!--user-name-->
+          <div class="input-container">
+            <input
+              class="input-field bg-info"
+              type="text"
+              placeholder="user name"
+              name="usrnm"
+              formControlName="userName"
+            />
+          </div>
+          <div
+            *ngIf="userName.errors && (userName.dirty || userName.touched)"
+            class="input-error"
+          >
+            UserName is required.
+          </div>
+        </ng-container>
+
+        <!--email-->
+        <div class="input-container">
           <input
             class="input-field bg-info"
             type="text"
@@ -58,6 +88,15 @@
         >
           Password is required.
         </div>
+        <ul
+          *ngIf="psw.errors?.passSignUpValidator && (psw.dirty || psw.touched)"
+          id="password-error"
+          class="input-error"
+        >
+          <li>Length should between 8-20 characters</li>
+          <li>Should contain atleast one lowercase and uppercase character</li>
+          <li>Should contain atleast one special character</li>
+        </ul>
 
         <div class="d-flex justify-content-center">
           <button
@@ -65,21 +104,21 @@
             type="submit"
             class="btn btn-secondary"
             [disabled]="form.invalid"
-            (click)="submit()"
+            (click)="submitBtnText==SignInState.signIn?login():register()"
             *ngIf="!loggingIn"
           >
-            Login
+            {{submitBtnText}}
           </button>
-          <div *ngIf="loggingIn" class="spinner-grow text-secondary" role="status">
+          <div
+            *ngIf="loggingIn"
+            class="spinner-grow text-secondary"
+            role="status"
+          >
             <span class="sr-only">Loading...</span>
           </div>
         </div>
-        <div
-          *ngIf="backendError"
-          class="input-error"
-          style="margin-top: 15px;"
-        >
-          {{backendError}}
+        <div *ngIf="backendError" class="input-error" style="margin-top: 15px;">
+          {{ backendError }}
         </div>
       </div>
     </form>

@@ -60,9 +60,9 @@ export class TestEditorComponent implements OnInit {
           this.route.snapshot.data.data["categories"]
         );
     } else if (this.route.snapshot.data["categories"]) {
-        this.categories = this.categories.concat(
-          this.route.snapshot.data["categories"]
-        );
+      this.categories = this.categories.concat(
+        this.route.snapshot.data["categories"]
+      );
     }
     /** Display the values */
     if (this.test) {
@@ -127,8 +127,8 @@ export class TestEditorComponent implements OnInit {
     return this.form.get("sectionName") as FormControl;
   }
   removeSection(index: number) {
-    let t = window.confirm( 'Is it OK?')
-    if(t) this.sections.removeAt(index);
+    let t = window.confirm("Is it OK?");
+    if (t) this.sections.removeAt(index);
   }
 
   addSection() {
@@ -208,14 +208,16 @@ export class TestEditorComponent implements OnInit {
     );
   }
   remove() {
-    this.submitting = true
-    this.ms.delTest(this.test._id).subscribe(
-      ()=> { 
-        this.submitting = false;
-        this.router.navigate([config.adminRoutes.adminTests()])
-      },
-      ()=>this.submitting = false
-    )
+    let t = window.confirm("Is it OK?");
+    if (t) {
+      this.submitting = true;
+      this.ms.delTest(this.test._id).subscribe(
+        () => {
+          this.submitting = false;
+          this.router.navigate([config.adminRoutes.adminTests()]);
+        },
+        () => (this.submitting = false)
+      );
+    }
   }
-
 }

@@ -54,6 +54,16 @@ export class AuthService {
     return this.http.get<BackendStatus>(config.routes.user.userProfile());
   }
 
+  register(fullName:string, email: string, password: string): Observable<BackendStatus | Error> {
+    const httpOptions = {
+      headers: new HttpHeaders({ "Content-Type": "application/json" })
+    };
+    let credentials: Credentials = { fullName,email,password };
+    return this.http.post<BackendStatus>(config.routes.user.register(), credentials, httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   userProfileHandled() {
     return this.userProfile().pipe(catchError(this.handleError));
   }

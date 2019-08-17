@@ -70,9 +70,10 @@ export class AuthInterceptor implements HttpInterceptor {
                 })
               );
           } //throw back
-          else return throwError(error);
+          else {
+            return throwError(error)
+          }
         })
-        // catchError(()=> of(null))
       );
     } else return next.handle(req);
   }

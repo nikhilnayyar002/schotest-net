@@ -5,11 +5,11 @@ import { FormBuilder, Validators, FormControl } from "@angular/forms";
 import { MainService } from "../../main.service";
 import { Category } from "src/app/modals/category";
 import { ActivatedRoute, Router } from "@angular/router";
-import { isValidImage, FILES, rtnInputAcceptVal } from 'src/app/shared/global';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { pipe, Observable, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { takeWhileAlive, AutoUnsubscribe } from 'take-while-alive';
+import { isValidImage, FILES, rtnInputAcceptVal } from "src/app/shared/global";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { pipe, Observable, Subject } from "rxjs";
+import { debounceTime, distinctUntilChanged } from "rxjs/operators";
+import { takeWhileAlive, AutoUnsubscribe } from "take-while-alive";
 
 @Component({
   selector: "app-category-editor",
@@ -41,7 +41,7 @@ export class CategoryEditorComponent {
     private ms: MainService,
     private route: ActivatedRoute,
     private router: Router,
-    private http:HttpClient
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -101,14 +101,17 @@ export class CategoryEditorComponent {
     );
   }
   remove() {
-    this.submitting = true;
-    this.ms.delCategory(this.category._id).subscribe(
-      () => {
-        this.submitting = false;
-        this.router.navigate([config.adminRoutes.adminCategories()]);
-      },
-      () => (this.submitting = false)
-    );
+    let t = window.confirm("Is it OK?");
+    if (t) {
+      this.submitting = true;
+      this.ms.delCategory(this.category._id).subscribe(
+        () => {
+          this.submitting = false;
+          this.router.navigate([config.adminRoutes.adminCategories()]);
+        },
+        () => (this.submitting = false)
+      );
+    }
   }
   /**
    * CK Editor
@@ -135,54 +138,64 @@ export class CategoryEditorComponent {
   }
 
   /**
-   * 
+   *
    * Image upload workstation here
-   * 
+   *
    * */
 
-
   /** value for accept attribute of input */
-  imageAccept:string = rtnInputAcceptVal(FILES.image, "image")
+  imageAccept: string = rtnInputAcceptVal(FILES.image, "image");
   /** IMp */
-  imageError:string = null
-  imageProcessing:boolean = false
+  imageError: string = null;
+  imageProcessing: boolean = false;
   encodeImage(element) {
-    this.imageProcessing = true
-    let file:File = element.target.files[0];
-      if (!isValidImage(file)) {
-        this.imageError = "Invalid image provided. File Proccessing Failed."
-        element.target.value = ""
-        this.imageProcessing = false
-      } else {
-        let fileName = `cat_${(new Date()).getTime()}.${file.type.split("/")[1]}`
-        /** uploading image file */
-        let formData:FormData = new FormData();
-        formData.append('image', file, file.name);
-        this.ms.postImage(formData, fileName).subscribe(()=>{
-          this.imageError = null
-          element.target.value = ""
-          this.image.setValue(config.backend.image.resourceURL(fileName))
-          this.imageProcessing = false
+    this.imageProcessing = true;
+    let file: File = element.target.files[0];
+    if (!isValidImage(file)) {
+      this.imageError = "Invalid image provided. File Proccessing Failed.";
+      element.target.value = "";
+      this.imageProcessing = false;
+    } else {
+      let fileName = `cat_${new Date().getTime()}.${file.type.split("/")[1]}`;
+      /** uploading image file */
+      let formData: FormData = new FormData();
+      formData.append("image", file, file.name);
+      this.ms.postImage(formData, fileName).subscribe(
+        () => {
+          this.imageError = null;
+          element.target.value = "";
+          this.image.setValue(config.backend.image.resourceURL(fileName));
+          this.imageProcessing = false;
         },
-        (error)=> {
-          let m = error.error.message
-          this.imageError = m?m:"Image save failure. Backend error."
-          this.imageProcessing = false
-        })
-      };
+        error => {
+          let m = error.error.message;
+          this.imageError = m ? m : "Image save failure. Backend error.";
+          this.imageProcessing = false;
+        }
+      );
+    }
   }
 
   removeImage() {
-    this.imageProcessing = false
-    this.ms.delImage((<string>this.image.value).replace(config.backend.image.resourceURL(''),''))
-    .subscribe(()=>{
-      this.imageError = ''
-      this.imageProcessing = false
-      this.image.setValue('')
-    },(error)=>{
-      let m = error.error.message
-      this.imageError = m?m:"Image save failure. Backend error."
-      this.imageProcessing = false
-    })
+    this.imageProcessing = false;
+    this.ms
+      .delImage(
+        (<string>this.image.value).replace(
+          config.backend.image.resourceURL(""),
+          ""
+        )
+      )
+      .subscribe(
+        () => {
+          this.imageError = "";
+          this.imageProcessing = false;
+          this.image.setValue("");
+        },
+        error => {
+          let m = error.error.message;
+          this.imageError = m ? m : "Image save failure. Backend error.";
+          this.imageProcessing = false;
+        }
+      );
   }
 }

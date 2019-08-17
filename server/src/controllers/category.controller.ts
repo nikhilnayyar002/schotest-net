@@ -69,7 +69,7 @@ export const getCategories: express.RequestHandler = (req, res, next) => {
     if (err) {
       return next(err);
     }
-    if (categories) res.json({ status: true, categories: categories });
+    if (categories && categories.length) res.json({ status: true, categories: categories });
     else next(new Record404Exception());
   });
 };

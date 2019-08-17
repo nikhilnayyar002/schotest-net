@@ -24,7 +24,7 @@
       ></button>
       <div class="dropdown-menu p-2 bg-primary">
         <div class="user-name p-2 py-3 bg-primary">
-          {{ (user | async)?.fullName }}
+          {{ (user$ | async)?.fullName }}
         </div>
         <a
           class="dropdown-item bg-secondary"

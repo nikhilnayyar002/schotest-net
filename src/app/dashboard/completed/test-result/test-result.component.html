@@ -32,8 +32,7 @@
     >
       <span aria-hidden="true">&times;</span>
     </button>
-    <div *ngIf="test && res" class="bg-info p-2">
-
+    <div *ngIf="test && res.questionsAnswers; else fetchingFailed" class="bg-info p-2">
       <app-overall
         *ngIf="selectedOption == 'overall'; else questionsAndAnswers"
         [test]="test"
@@ -43,6 +42,10 @@
         <app-solution class="p-3"  [test]="test" [res]="res"></app-solution>
       </ng-template>
     </div>
+    <ng-template #fetchingFailed>
+      <div class="text-danger py-3 px-2">Either test fetch failed or answers are not prepared yet.</div>
+    </ng-template>
+    
   </div>
 </div>
 
