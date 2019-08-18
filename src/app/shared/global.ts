@@ -1,20 +1,13 @@
 import { ChangeDetectorRef } from "@angular/core";
-import { HttpHeaders } from "@angular/common/http";
-import { UserProfile } from "../modals/user";
 import { QuestionOriginal } from "../amplitude-test/modals/question";
 import { Answers } from "../amplitude-test/modals/answer";
 import { AbstractControl, ValidatorFn } from "@angular/forms";
+import { FILELISTS } from '../../../global/global';
 
 export interface MediaQueryState {
   dispose: () => void;
   isMediaMatched: () => boolean;
   runMediaQuery: () => void;
-}
-export interface BackendStatus {
-  status: boolean;
-  message?: string;
-  token?: string;
-  user?: UserProfile;
 }
 
 export interface Credentials {
@@ -179,17 +172,12 @@ export function createAccordianState() {
   return callback;
 }
 
-//filetype order should remain same
-export const FILES = {
-  image: ["jpg", "png", "jpeg"]
-};
-
 /**
  *
  * Returns @boolean or @null
  */
 export function isValidImage(file: File) {
-  let fileTypes = FILES.image;
+  let fileTypes = FILELISTS.image;
   if (file) {
     let extension = file.name
       .split(".")

@@ -46,25 +46,29 @@ export class AnswersComponent {
   }
 
   saveAnswer(answer: Answer) {
-      this.answers[this.answersMap[answer._id]] = answer;
+    this.answers[this.answersMap[answer._id]] = answer;
   }
 
   submit() {
-    this.submitting = true;
-    let answers = this.answers.filter(a => a!=null)
-    if(answers) {
-      this.ms.postAnswers(answers).subscribe(
-        () => {
-          this.submitting = false;
-          this.backendError = "";
-        },
-        error => {
-          this.submitting = false;
-          this.backendError = error.error.message;
-        }
-      );
-    } else {
-      this.submitting = true; this.backendError = "";
+    let t = window.confirm("Is it OK?");
+    if (t) {
+      this.submitting = true;
+      let answers = this.answers.filter(a => a != null);
+      if (answers) {
+        this.ms.postAnswers(answers).subscribe(
+          () => {
+            this.submitting = false;
+            this.backendError = "";
+          },
+          error => {
+            this.submitting = false;
+            this.backendError = error.error.message;
+          }
+        );
+      } else {
+        this.submitting = true;
+        this.backendError = "";
+      }
     }
   }
 }

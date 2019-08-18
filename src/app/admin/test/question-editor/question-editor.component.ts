@@ -17,7 +17,8 @@ import {
 import { MainService } from "../../main.service";
 import config from "src/data/config";
 import * as DocumentEditor from "@ckeditor/ckeditor5-build-decoupled-document";
-import { rtnInputAcceptVal, FILES, isValidImage } from "src/app/shared/global";
+import { rtnInputAcceptVal, isValidImage } from "src/app/shared/global";
+import {FILELISTS} from "../../../../../global/global"
 
 @Component({
   selector: "app-question-editor",
@@ -30,9 +31,7 @@ export class QuestionEditorComponent implements OnInit {
   backendError: string;
   submitting: boolean = false;
 
-  @ViewChild("pageContent", { static: false }) pageContent: ElementRef<
-    HTMLElement
-  >;
+  @ViewChild("pageContent", { static: false }) pageContent: ElementRef<HTMLElement>;
 
   //work as "edit" component
   @Input() question: QuestionOriginal;
@@ -115,9 +114,7 @@ export class QuestionEditorComponent implements OnInit {
 
   submit() {
     this.submitting = true;
-    let id = this.question
-      ? this.question._id
-      : new Date().getTime().toString();
+    let id = this.question? this.question._id: new Date().getTime().toString();
 
     let question: QuestionOriginal = {
       content: this.content.value,
@@ -128,9 +125,7 @@ export class QuestionEditorComponent implements OnInit {
       _id: id,
       section: this.selectedSection ? this.selectedSection.name : null,
       marks: this.marks.value,
-      sectionOrder: this.selectedSection
-        ? this.selectedSection.sectionOrder
-        : null,
+      sectionOrder: this.selectedSection? this.selectedSection.sectionOrder: null,
       tID: this.testID
     };
 
@@ -150,10 +145,7 @@ export class QuestionEditorComponent implements OnInit {
         this.submitting = false;
         this.backendError = error.error.message;
         setTimeout(() => {
-          this.pageContent.nativeElement.scrollTo(
-            0,
-            this.pageContent.nativeElement.scrollHeight
-          );
+          this.pageContent.nativeElement.scrollTo(0,this.pageContent.nativeElement.scrollHeight);
         }, 0);
       }
     );
@@ -197,7 +189,7 @@ export class QuestionEditorComponent implements OnInit {
   }
 
   /** value for accept attribute of input */
-  imageAccept: string = rtnInputAcceptVal(FILES.image, "image");
+  imageAccept: string = rtnInputAcceptVal(FILELISTS.image, "image");
   /** IMp */
   imageError: string = null;
   imageProcessing: boolean = false;
@@ -217,7 +209,7 @@ export class QuestionEditorComponent implements OnInit {
         () => {
           this.imageError = null;
           element.target.value = "";
-          this.image.setValue(config.backend.image.resourceURL(fileName));
+          this.image.setValue(`${config.globalConfig.imageRequestUrl}/${fileName}`);
           this.imageProcessing = false;
         },
         error => {
@@ -233,10 +225,7 @@ export class QuestionEditorComponent implements OnInit {
     this.imageProcessing = false;
     this.ms
       .delImage(
-        (<string>this.image.value).replace(
-          config.backend.image.resourceURL(""),
-          ""
-        )
+        (<string>this.image.value).replace(config.globalConfig.imageRequestUrl,"")
       )
       .subscribe(
         () => {

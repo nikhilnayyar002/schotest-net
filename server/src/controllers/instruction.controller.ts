@@ -4,18 +4,14 @@ import { Record404Exception, HttpException } from "../config/global";
 import { Instruction, InstructionModal } from "../modal/instruction";
 
 /**
- * Return @Instruction
+ * Return @message
  */
-export const postInstruction: express.RequestHandler = function(
-  req,
-  res,
-  next
-) {
+export const postInstruction: express.RequestHandler = function(req,res,next) {
   let instruction: Instruction & mongoose.Document = <any>(
     new InstructionModal(req.body)
   );
   instruction.save((err, doc: Instruction) => {
-    if (!err) res.json({ status: true, instruction: doc });
+    if (!err) res.json({ status: true, message: "Success" });
     else {
       if (err.code) res.status(422).json({ status: false, message: err.code });
       else return next(err);
@@ -29,9 +25,7 @@ export const postInstruction: express.RequestHandler = function(
 export const getInstruction: express.RequestHandler = function(req, res, next) {
   let id = req.params.id;
   InstructionModal.findById(id, (err, instruction: Instruction) => {
-    if (err) {
-      return next(err);
-    }
+    if (err) return next(err);
     if (instruction) res.json({ status: true, instruction });
     else next(new Record404Exception());
   });
@@ -40,20 +34,14 @@ export const getInstruction: express.RequestHandler = function(req, res, next) {
 /**
  * Return @message | @Instruction
  */
-export const updateInstruction: express.RequestHandler = function(
-  req,
-  res,
-  next
-) {
+export const updateInstruction: express.RequestHandler = function(req,res,next) {
   let instruction: Instruction = req.body;
 
   InstructionModal.updateOne(
     { _id: instruction._id },
     { ...instruction },
     function(err, doc) {
-      if (err) {
-        return next(err);
-      }
+      if (err) return next(err);
       if (doc) res.json({ status: true, message: "Success" });
       else next(new HttpException("Failed", 400));
     }
@@ -61,17 +49,11 @@ export const updateInstruction: express.RequestHandler = function(
 };
 
 /**
- * Return @Instruction_Arr
+ * Return @Instructions
  */
-export const getInstructionStates: express.RequestHandler = function(
-  req,
-  res,
-  next
-) {
+export const getInstructionStates: express.RequestHandler = function(req,res,next) {
   InstructionModal.find({}, function(err, instructions: Instruction[]) {
-    if (err) {
-      return next(err);
-    }
+    if (err) return next(err);
     if (instructions && instructions.length)
       res.json({
         status: true,
@@ -83,36 +65,11 @@ export const getInstructionStates: express.RequestHandler = function(
     else next(new Record404Exception());
   });
 };
-
 /**
- * Return @Instruction
+ * Return @Instructions
  */
-export const getInstructionState: express.RequestHandler = function(
-  req,
-  res,
-  next
-) {
-  let id = req.params.id;
-  InstructionModal.findById(id, function(err, instruction: Instruction) {
-    if (err) {
-      return next(err);
-    }
-    if (instruction)
-      res.json({
-        status: true,
-        instruction: { _id: instruction._id, name: instruction.name }
-      });
-    else next(new Record404Exception());
-  });
-};
-
-export const getInstructionByCategory: express.RequestHandler = function(
-  req,
-  res,
-  next
-) {
+export const getInstructionByCategory: express.RequestHandler = function(req,res,next) {
   let catID = req.params.catID;
-
   InstructionModal.find({ catID }, function(err, instructions: Instruction[]) {
     if (err) return next(err);
     if (instructions && instructions.length)

@@ -12,7 +12,7 @@ import { AuthService } from "../auth.service";
 import { Store } from "@ngrx/store";
 import { GLobalState } from "../shared/global.state";
 import { UserTest, TestOriginal } from "../amplitude-test/modals/test";
-import { BackendStatus, QuestionsAnswers } from "../shared/global";
+import {  QuestionsAnswers } from "../shared/global";
 import { SetAppState } from "../state/state.actions";
 import { QuestionOriginal } from "../amplitude-test/modals/question";
 import { Instruction } from "../modals/instruction";

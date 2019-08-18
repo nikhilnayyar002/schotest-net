@@ -1,75 +1,77 @@
+import { globalEnvironment} from '../../config/global.config'
+const globalConfig:globalEnvironment  = require('../../config/config.json')
 
-let domain = "http://localhost:3000"
 let config = {
-    api:{
-        domain:domain,
-    },
     company:{
         name:"Schotest",
         url:"https://schotest.com"
     },
     routes:{
         userData:{
-            getUserTest: (uid,id) => `${domain}/userData/${uid}/tests/${id}`,
-            postUserTestQ: uid => `${domain}/userData/${uid}/tests/q`,
-            postUserTestT: uid => `${domain}/userData/${uid}/tests/t`,
-            getPausedTests:(uid)=>`${domain}/userData/${uid}/tests/paused`,
-            getCompletedTests:(uid) => `${domain}/userData/${uid}/tests/completed`,
-            postUserFavourites:(uid) => `${domain}/userData/${uid}/favourites`,
-            delUserFavourites:(uid) => `${domain}/userData/${uid}/favourites/delete`,
-            getUserFavourites: (uid) =>  `${domain}/userData/${uid}/favourites`
+            getUserTest: (uid,id) => `${globalConfig.restAPI}/userData/${uid}/tests/${id}`,
+            postUserTestQ: uid => `${globalConfig.restAPI}/userData/${uid}/tests/q`,
+            postUserTestT: uid => `${globalConfig.restAPI}/userData/${uid}/tests/t`,
+            getPausedTests:(uid)=>`${globalConfig.restAPI}/userData/${uid}/tests/paused`,
+            getCompletedTests:(uid) => `${globalConfig.restAPI}/userData/${uid}/tests/completed`,
+            postUserFavourites:(uid) => `${globalConfig.restAPI}/userData/${uid}/favourites`,
+            delUserFavourites:(uid) => `${globalConfig.restAPI}/userData/${uid}/favourites/delete`,
+            getUserFavourites: (uid) =>  `${globalConfig.restAPI}/userData/${uid}/favourites`
         },
         user:{
-            authenticate:()=> `${domain}/auth/authenticate`,
-            userProfile:()=>  `${domain}/auth/userProfile`,
-            register:()=>  `${domain}/auth/register`,
+            authenticate:()=> `${globalConfig.restAPI}/auth/authenticate`,
+            userProfile:()=>  `${globalConfig.restAPI}/auth/userProfile`,
+            register:()=>  `${globalConfig.restAPI}/auth/register`,
         },
         category:{
-            getCategories: ()=>`${domain}/categories`,
-            postCategory: ()=>`${domain}/categories`,
-            getCategory:(cid)=>`${domain}/categories/${cid}`,
-            getCategoryStates: ()=>`${domain}/categories/states`,
-            delete:(cid)=>`${domain}/categories/${cid}`,
+            getCategories: ()=>`${globalConfig.restAPI}/categories`,
+            postCategory: ()=>`${globalConfig.restAPI}/categories`,
+            getCategory:(cid)=>`${globalConfig.restAPI}/categories/${cid}`,
+            getCategoryStates: ()=>`${globalConfig.restAPI}/categories/states`,
+            delete:(cid)=>`${globalConfig.restAPI}/categories/${cid}`,
         },
         test:{
-            postTest: () => `${domain}/tests`,
-            getTest: id => `${domain}/tests/${id}`,
-            getTestState: id => `${domain}/tests/${id}/state`,
-            getQuestionsAnswers: id =>  `${domain}/tests/${id}/completed`,
-            getTestsByCategory: (cid, pNo)=> `${domain}/tests/category/${cid}/${pNo}`,
-            getTestsByCategoryCount: (cid)=> `${domain}/tests/category/${cid}/count`,
-            getTestsCount: ()=> `${domain}/tests/count`,  
-            getTests:(pNo)=> `${domain}/tests/all/${pNo}`,
-            findTests:()=> `${domain}/tests/find`,
-            // findTestsForUser:()=> `${domain}/tests/find/foruser`,
-            delete:(id)=>`${domain}/tests/${id}`,
+            postTest: () => `${globalConfig.restAPI}/tests`,
+            getTest: id => `${globalConfig.restAPI}/tests/${id}`,
+            getTestState: id => `${globalConfig.restAPI}/tests/${id}/state`,
+            getQuestionsAnswers: id =>  `${globalConfig.restAPI}/tests/${id}/completed`,
+            getTestsByCategory: (cid, pNo)=> `${globalConfig.restAPI}/tests/category/${cid}/${pNo}`,
+            getTestsByCategoryCount: (cid)=> `${globalConfig.restAPI}/tests/category/${cid}/count`,
+            getTestsCount: ()=> `${globalConfig.restAPI}/tests/count`,  
+            getTests:(pNo)=> `${globalConfig.restAPI}/tests/all/${pNo}`,
+            findTests:()=> `${globalConfig.restAPI}/tests/find`,
+            delete:(id)=>`${globalConfig.restAPI}/tests/${id}`,
         },
         question:{
-            getQuestions: id => `${domain}/questions/test/${id}`,
-            postQuestion: () => `${domain}/questions`,
-            postQuestions: () => `${domain}/questions/all`,
-            getQuestion: id => `${domain}/questions/test/${id}`,
-            delete:(id)=>`${domain}/questions/${id}`, 
-            deleteAll:(tid)=>`${domain}/questions/all/${tid}`,                      
+            getQuestions: id => `${globalConfig.restAPI}/questions/test/${id}`,
+            postQuestion: () => `${globalConfig.restAPI}/questions`,
+            postQuestions: () => `${globalConfig.restAPI}/questions/all`,
+            getQuestion: id => `${globalConfig.restAPI}/questions/test/${id}`,
+            delete:(id)=>`${globalConfig.restAPI}/questions/${id}`, 
+            deleteAll:(tid)=>`${globalConfig.restAPI}/questions/all/${tid}`,                      
         },
         instruction:{
-            postInstruction: () => `${domain}/instructions`,
-            getInstruction: id => `${domain}/instructions/${id}`,
-            getInstructionStates: () => `${domain}/instructions/states`,
-            getInstructionState: (id) => `${domain}/instructions/${id}/state`,
-            getInstructionByCategory: (cid) => `${domain}/instructions/category/${cid}`,
-            delete:  id=> `${domain}/instructions/${id}` 
+            postInstruction: () => `${globalConfig.restAPI}/instructions`,
+            getInstruction: id => `${globalConfig.restAPI}/instructions/${id}`,
+            getInstructionStates: () => `${globalConfig.restAPI}/instructions/states`,
+            getInstructionByCategory: (cid) => `${globalConfig.restAPI}/instructions/category/${cid}`,
+            delete:  id=> `${globalConfig.restAPI}/instructions/${id}` 
         },
         answer:{
-            postAnswer: () => `${domain}/answers`,
-            postAnswers: () => `${domain}/answers/all`,
-            getAnswers: tid => `${domain}/answers/all/${tid}`,
+            postAnswer: () => `${globalConfig.restAPI}/answers`,
+            postAnswers: () => `${globalConfig.restAPI}/answers/all`,
+            getAnswers: tid => `${globalConfig.restAPI}/answers/all/${tid}`,
         },
         images:{
-            delete: (id) =>`${domain}/images/${id}`,
-            postImage: (id) => `${domain}/images/${id}`
+            delete: (id) =>`${globalConfig.restAPI}/images/${id}`,
+            postImage: (id) => `${globalConfig.restAPI}/images/${id}`
         }        
     },
+    /**
+     * The purpose of providing routes in config file
+     * is that if you change some route name etc
+     * you must also edit routes here and all components or services
+     * automatically get reflected changes.
+     */
     clientRoutes:{
         root:()=> '/',
         login:()=> '/login',
@@ -103,17 +105,20 @@ let config = {
         relTest:()=>  './test',
         relInstruction:()=> './instruction',
 
-        /** AdminResolverService */
-        adminCategories: ()=>"/admin/category",
-        adminEditCategory: (catID)=> `/admin/category/edit/${catID}`,
         adminTests:()=> "/admin/test",
+        testCreate:() => '/admin/test/create',
+        adminCategories: ()=>"/admin/category",
+        categoryCreate:() => '/admin/category/create',
+        adminInstructions:() => '/admin/instruction',
+        instructionCreate:() => '/admin/instruction/create',        
+
+        /** AdminResolverService */
         adminTestEdit:()=> "/admin/test/edit",
         adminEditTest:(id)=> `/admin/test/edit/${id}`,
-        categoryCreate:() => '/admin/category/create',
-        testCreate:() => '/admin/test/create',
-        adminInstructions:() => '/admin/instruction',
-        instructionCreate:() => '/admin/instruction/create',
-        adminEditInstruction: (id)=> `/admin/instruction/edit/${id}`
+        adminEditInstruction: (id)=> `/admin/instruction/edit/${id}`,
+        adminEditCategory: (catID)=> `/admin/category/edit/${catID}`,
+
+
     },
     ckEditor:{
         config:{
@@ -125,14 +130,6 @@ let config = {
             ]
         }
     },
-    backend:{
-        tests:{
-            testsPerPage:10
-        },
-        image:{
-            sizeLimit: 2 * 1024 * 1024,
-            resourceURL: (id) => `${domain}/images/${id}`
-        }
-    }
+    globalConfig
 };
 export default config;

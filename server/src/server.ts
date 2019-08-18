@@ -1,29 +1,26 @@
 import * as http from 'http';
 import * as debug from 'debug';
 import app from './app';
-import { Environment } from './config/config';
+
+import { processEnvironment } from "../../config/global.config";
+const environment: processEnvironment = <any>process.env;
 
 
-const environment: Environment = <any>process.env;
 let deb = debug('server:server');
-
 /**
  * Get port from environment and store in Express.
  */
-
-var port = normalizePort(environment.PORT || '3000');
+var port = normalizePort(environment.port || '3000');
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
-
 var server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
-
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
@@ -34,17 +31,14 @@ server.on('listening', onListening);
 
 function normalizePort(val) {
   var port = parseInt(val, 10);
-
   if (isNaN(port)) {
     // named pipe
     return val;
   }
-
   if (port >= 0) {
     // port number
     return port;
   }
-
   return false;
 }
 
@@ -56,7 +50,6 @@ function onError(error) {
   if (error.syscall !== 'listen') {
     throw error;
   }
-
   var bind = typeof port === 'string'
     ? 'Pipe ' + port
     : 'Port ' + port;

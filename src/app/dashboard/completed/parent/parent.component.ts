@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MainService } from '../../main.service';
 import { ActivatedRoute } from '@angular/router';
 import { createAccordianState } from 'src/app/shared/global';
 import { TestWithFeatures } from 'src/app/amplitude-test/modals/test';

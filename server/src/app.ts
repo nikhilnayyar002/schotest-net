@@ -4,35 +4,26 @@ import * as morgan from 'morgan'
 import * as cors from 'cors'
 import * as passport from 'passport'
 import * as mongoose from 'mongoose'
-import { Environment } from "./config/config";
+
+/** initialize by just importing */
+import "./config/passportConfig";
+import "./config/setupEnv"
+/** end */
+
 import { UserRouter } from './router/user.router';
 import { TestRouter } from './router/test.router';
 import { CategoryRouter } from './router/category.router';
 import { UserDataRouter } from './router/userData.router';
 import { HttpException, verifyJwtToken } from './config/global';
-
-import "./config/passportConfig";
-import "./config/setupEnv"
-
 import { answerRouter } from './router/answer.router';
 import { questionRouter } from './router/question.router';
 import { instructionRouter } from './router/instruction.router';
 import { imageRouter } from './router/image.router';
 
-const environment: Environment = <any>process.env;
-
-
-
-/**
- * setup dev environment (part 1)
- * 
- * Please setup your environment using as:
- * 1. make your file.
- * 2. Save it in setup folder.
- * 3. Run node setup/setup 
- */
-// require('dotenv').config()
-
+import { processEnvironment, globalEnvironment } from "../../config/global.config";
+import { getImage } from './controllers/image.controller';
+const environment: processEnvironment = <any>process.env;
+let config:globalEnvironment = require("../../config/config")
 
 mongoose.set('bufferCommands', false);
 //mongoose.set('bufferMaxEntries', 0);
@@ -41,7 +32,7 @@ mongoose.set('bufferCommands', false);
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useCreateIndex', true);
 
-mongoose.connect(environment.MONGODB_URI, (err) => {
+mongoose.connect(environment.mongoURI, (err) => {
     if (!err) { console.log('MongoDB connection succeeded.'); }
     else { console.log('Error in MongoDB connection : ' + JSON.stringify(err, undefined, 2)); }
 });
@@ -59,35 +50,37 @@ mongoose.connect(environment.MONGODB_URI, (err) => {
 // });
 
 let app = express();
+
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.disable('view cache');
 
-app.use(cors());
+/** allow cross-origin acess */
+if(!environment.isProduction) app.use(cors());
+
+/** use passport local strategy */
 app.use(passport.initialize());
 
-/**
- * pre-requesties
- */
 // app.all('*',function(req, res, next) {
 //   res.set('Access-Control-Allow-Origin', '*');
 //   res.set('Access-Control-Allow-Headers','Content-Type');
 //   next();
 // })
 
-app.use('/auth', UserRouter);
+app.use(`${config.restAPI}/auth`, UserRouter);
+app.use(`${config.restAPI}/tests`, verifyJwtToken, TestRouter);
+app.use(`${config.restAPI}/categories`, verifyJwtToken, CategoryRouter);
+app.use(`${config.restAPI}/userData`, verifyJwtToken, UserDataRouter);
+app.use(`${config.restAPI}/answers`, verifyJwtToken, answerRouter);
+app.use(`${config.restAPI}/questions`, verifyJwtToken, questionRouter);
+app.use(`${config.restAPI}/instructions`, verifyJwtToken, instructionRouter);
+app.use(`${config.restAPI}/images`, verifyJwtToken, imageRouter);
+app.use(`${config.imageRequestUrl}/:id`, getImage);
 
-app.use('/tests', verifyJwtToken, TestRouter);
-app.use('/categories', verifyJwtToken, CategoryRouter);
-app.use('/userData', verifyJwtToken, UserDataRouter);
-app.use('/answers', verifyJwtToken, answerRouter);
-app.use('/questions', verifyJwtToken, questionRouter);
-app.use('/instructions', verifyJwtToken, instructionRouter)
-app.use('/images', imageRouter)
+
 app.use("**", invalidPath)
-
 function invalidPath(req,res, next) {
   next(new HttpException("Invalid path",404))
 }

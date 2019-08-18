@@ -21,8 +21,7 @@ import config from 'src/data/config';
 export class AuthGuard implements CanActivate, CanActivateChild {
   constructor(
     private router: Router,
-    private store: Store<GLobalState>,
-    private auth:AuthService
+    private store: Store<GLobalState>
     ) {}
   canActivate(
     activatedRoute: ActivatedRouteSnapshot,
@@ -50,17 +49,6 @@ export class AuthGuard implements CanActivate, CanActivateChild {
           else subscriber.next(app.loggedIn);
         });
     });
-
-    //   if(this.auth.init) {
-    //     if(!this.auth.status) {
-    //       const tree: UrlTree =this.router.parseUrl('/home');
-    //       return tree;
-    //     }
-    // 	  return true;
-    //   }
-    //   else {
-    //    return this.auth.status$;
-    //   }
   }
   canActivateChild(
     route: ActivatedRouteSnapshot,

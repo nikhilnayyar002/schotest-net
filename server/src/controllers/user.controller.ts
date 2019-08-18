@@ -2,34 +2,30 @@ import * as mongoose from "mongoose";
 import * as passport from "passport";
 import * as express from "express";
 import { UserModal, User, UserProfile } from "../modal/user";
-import { CommonRes, HttpException } from "../config/global";
+import { HttpException } from "../config/global";
+import { BackendStatus } from '../../../global/global';
 
 /**
- * Return @User
+ * Return @message
  */
 export const register:express.RequestHandler = (req, res, next) => {
 
     let user:User & mongoose.Document = <any>new UserModal();
     let userObj:User = req.body
-
     user.fullName = userObj.fullName;
     user.email = userObj.email;
     user.password = userObj.password;
     user._id = (new Date()).getTime().toString();
     user.favourites = []
     user.tests = {}
-    user.isAdmin = userObj.isAdmin?true:false
-    
     user.save((err, doc:User) => {
-        if (!err)
-            res.send({ status:true, user:doc});
+        if (!err) res.json({ status:true, message:"success"});
         else {
             if (err.code == 11000)
-                res.status(422).send({ status:false, message:'Duplicate email adrress found.'});
+                res.status(422).json({ status:false, message:'Duplicate email adrress found.'});
             else
                 return next(err);
         }
-
     });
 }
 
@@ -38,7 +34,7 @@ export const register:express.RequestHandler = (req, res, next) => {
  */
 export const authenticate:express.RequestHandler = (req, res, next) => {
     // call for passport authentication
-    passport.authenticate('local', (err, user:User, info:CommonRes) => {       
+    passport.authenticate('local', (err, user:User, info:BackendStatus) => {       
         // error from passport middleware
         if (err) return res.status(500).json({ status:false, message: 'Please try again later.' });
         // registered user
@@ -63,8 +59,7 @@ export const userProfile:express.RequestHandler = (req, res, next) =>{
                     isAdmin:user.isAdmin
                 }
                 return res.status(200).json({ status: true, user :userProfile });
-            }
-                
+            }       
         }
     );
 }

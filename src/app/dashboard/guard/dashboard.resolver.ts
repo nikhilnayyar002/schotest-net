@@ -24,7 +24,6 @@ export class DashboardResolverService {
     }
     switch(state.url) {
       case config.clientRoutes.dashboardCategories() : return this.ms.getCategories()
-      // case config.clientRoutes.dashboardCategory(id) : return this.ms.getTests(id)
       case config.clientRoutes.dashboardPaused() : return this.ms.getPausedTests()     
       case config.clientRoutes.dashboardFavourites() : return this.ms.getFavouriteCategories()   
     } 

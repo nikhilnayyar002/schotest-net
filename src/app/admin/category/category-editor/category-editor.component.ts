@@ -5,11 +5,9 @@ import { FormBuilder, Validators, FormControl } from "@angular/forms";
 import { MainService } from "../../main.service";
 import { Category } from "src/app/modals/category";
 import { ActivatedRoute, Router } from "@angular/router";
-import { isValidImage, FILES, rtnInputAcceptVal } from "src/app/shared/global";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { pipe, Observable, Subject } from "rxjs";
-import { debounceTime, distinctUntilChanged } from "rxjs/operators";
-import { takeWhileAlive, AutoUnsubscribe } from "take-while-alive";
+import { isValidImage, rtnInputAcceptVal } from "src/app/shared/global";
+import { AutoUnsubscribe } from "take-while-alive";
+import { FILELISTS } from '../../../../../global/global';
 
 @Component({
   selector: "app-category-editor",
@@ -18,16 +16,15 @@ import { takeWhileAlive, AutoUnsubscribe } from "take-while-alive";
 })
 @AutoUnsubscribe()
 export class CategoryEditorComponent {
+
   pageTitle: string;
   configData = config;
   backendError: string;
   submitting: boolean = false;
 
-  @ViewChild("pageContent", { static: false }) pageContent: ElementRef<
-    HTMLElement
-  >;
+  @ViewChild("pageContent", { static: false }) pageContent: ElementRef<HTMLElement>;
 
-  //work as "edit" component
+  //to work as "edit" component beside "create"
   category: Category;
 
   form = this.fb.group({
@@ -40,8 +37,7 @@ export class CategoryEditorComponent {
     private fb: FormBuilder,
     private ms: MainService,
     private route: ActivatedRoute,
-    private router: Router,
-    private http: HttpClient
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -70,9 +66,7 @@ export class CategoryEditorComponent {
 
   submit() {
     this.submitting = true;
-    let id = this.category
-      ? this.category._id
-      : new Date().getTime().toString();
+    let id = this.category? this.category._id: new Date().getTime().toString();
     let category: Category = {
       name: this.title.value,
       lastUpdated: new Date(),
@@ -92,10 +86,7 @@ export class CategoryEditorComponent {
         this.backendError = "";
         this.backendError = error.error.message;
         setTimeout(() => {
-          this.pageContent.nativeElement.scrollTo(
-            0,
-            this.pageContent.nativeElement.scrollHeight
-          );
+          this.pageContent.nativeElement.scrollTo(0,this.pageContent.nativeElement.scrollHeight);
         }, 0);
       }
     );
@@ -130,24 +121,20 @@ export class CategoryEditorComponent {
   editorModal: string = "";
   editorConfig = config.ckEditor.config;
   onReady(editor): void {
-    // console.log(Array.from( editor.ui.componentFactory.names() ))
     editor.ui.view.editable.element.parentElement.insertBefore(
       editor.ui.view.toolbar.element,
       editor.ui.view.editable.element
     );
   }
 
-  /**
-   *
-   * Image upload workstation here
-   *
-   * */
+  // ******************************* Image upload workstation here
 
   /** value for accept attribute of input */
-  imageAccept: string = rtnInputAcceptVal(FILES.image, "image");
-  /** IMp */
+  imageAccept: string = rtnInputAcceptVal(FILELISTS.image, "image");
+  /** variables */
   imageError: string = null;
   imageProcessing: boolean = false;
+
   encodeImage(element) {
     this.imageProcessing = true;
     let file: File = element.target.files[0];
@@ -164,7 +151,7 @@ export class CategoryEditorComponent {
         () => {
           this.imageError = null;
           element.target.value = "";
-          this.image.setValue(config.backend.image.resourceURL(fileName));
+          this.image.setValue(`${config.globalConfig.imageRequestUrl}/${fileName}`);
           this.imageProcessing = false;
         },
         error => {
@@ -180,10 +167,7 @@ export class CategoryEditorComponent {
     this.imageProcessing = false;
     this.ms
       .delImage(
-        (<string>this.image.value).replace(
-          config.backend.image.resourceURL(""),
-          ""
-        )
+        (<string>this.image.value).replace(config.globalConfig.imageRequestUrl,"")
       )
       .subscribe(
         () => {

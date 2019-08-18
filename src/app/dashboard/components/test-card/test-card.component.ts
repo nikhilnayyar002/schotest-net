@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import config from 'src/data/config';
-import { createAccordianState } from 'src/app/shared/global';
 import { TestWithFeatures } from 'src/app/amplitude-test/modals/test';
 
 @Component({

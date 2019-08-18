@@ -48,7 +48,7 @@ export class AmplitudeTestResolverService {
       map((tests: (TestWithFeaturesForUser | UserTest)[]) => {
         let test = <TestWithFeaturesForUser>tests[0],
           userTest = <UserTest>tests[1];
-        if (userTest && userTest.isTestOver) test.isTestOver = true;
+          if (userTest && userTest.isTestOver) test.isTestOver = true;
         else if (userTest) {
           if (userTest.time != undefined || userTest.time != null)
             test.time = userTest.time;

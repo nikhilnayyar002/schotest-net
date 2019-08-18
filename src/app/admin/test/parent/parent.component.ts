@@ -17,7 +17,7 @@ import { debounceTime, distinctUntilChanged, switchMap } from "rxjs/operators";
 export class ParentComponent implements OnInit {
   config = config;
   pages: number[] = [];
-  testsLimit: number = config.backend.tests.testsPerPage;
+  testsLimit: number = config.globalConfig.noOfTestsPerPage
 
   tests: TestOriginal[] = [];
 

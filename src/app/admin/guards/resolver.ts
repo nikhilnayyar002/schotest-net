@@ -29,10 +29,6 @@ export class AdminResolverService {
         case config.adminRoutes.adminEditCategory(id) : return this.ms.getCategory(id)
         case config.adminRoutes.adminEditInstruction(id) : return this.ms.getInstruction(id)
         case config.adminRoutes.testCreate() : return this.ms.getCategoryStates()
-        // case config.adminRoutes.adminEditTest(id) : return this.ms.getTest(id)
-    //   case config.clientRoutes.dashboardCategory(id) : return this.ms.getTests(id)
-    //   case config.clientRoutes.dashboardPaused() : return this.ms.getPausedTests()     
-    //   case config.clientRoutes.dashboardFavourites() : return this.ms.getFavouriteCategories()   
     } 
   }
 

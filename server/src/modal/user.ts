@@ -1,9 +1,9 @@
 import * as mongoose from "mongoose";
 import * as bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
-import { Environment } from "../config/config";
-
-const environment: Environment = <any>process.env;
+import { processEnvironment } from "../../../config/global.config";
+import { UserTest } from './test';
+const environment: processEnvironment = <any>process.env;
 
 /** Typescript Modal  */
 
@@ -25,17 +25,9 @@ export interface User extends UserBase,UserFeatures{
   generateJwt: () => string;
 }
 
-export interface UserTest {
-  _id: string;
-  questions: { [index: string]: string };
-  time: number;
-  isTestOver:boolean;
-}
-
 export interface UserProfile extends UserBase, UserFeatures {
   id: string;
 }
-
 
 /** Mongoose Schema and Modal */
 
@@ -71,8 +63,8 @@ UserSchema.methods.verifyPassword = function(password) {
 };
 
 UserSchema.methods.generateJwt = function() {
-  return jwt.sign({ _id: this._id }, environment.JWT_SECRET, {
-    expiresIn: environment.JWT_EXP
+  return jwt.sign({ _id: this._id }, environment.jwtSecret, {
+    expiresIn: environment.jwtExp
   });
 };
 

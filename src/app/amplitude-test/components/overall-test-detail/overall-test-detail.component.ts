@@ -36,7 +36,6 @@ export class OverallTestDetailComponent implements OnInit {
           }
         for(let id in test.questions) {
           let t=this.tbDatas[test.questions[id].section]
-          console.log(test.questions[id].state)
           switch(test.questions[id].state) {
             case QuestionState.Answered: ++t.answered; break
             case QuestionState.Unanswered: ++t.unAnswered; break

@@ -33,7 +33,7 @@ export class TestEffect {
                 action.question._id,
                 action.question.answers[action.question.checkedAnswerIndex]
               )
-              .subscribe(null, error => console.log(error));
+              .subscribe(null, error => console.error(error));
           })
         )
       ),
@@ -53,7 +53,7 @@ export class TestEffect {
                 action.question._id,
                 null
               )
-              .subscribe(() => null, error => console.log(error));
+              .subscribe(() => null, error => console.error(error));
           })
         )
       ),
@@ -66,7 +66,6 @@ export class TestEffect {
         ofType(TestActions.PauseTestServer),
         tap(action =>
           this.store.pipe(take(1)).subscribe(globalState => {
-            console.log(2)
             this.store.dispatch(TestActions.TestSubmitting({submittingTest:true}))
             this.ms
               .updateTime(

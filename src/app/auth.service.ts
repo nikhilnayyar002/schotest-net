@@ -1,19 +1,8 @@
 import { Injectable } from "@angular/core";
-import {
-  HttpHeaders,
-  HttpClient,
-  HttpErrorResponse
-} from "@angular/common/http";
-import {
-  catchError,
-  switchMap,
-  switchMapTo,
-  take,
-  map,
-  retry
-} from "rxjs/operators";
+import {HttpHeaders,HttpClient,HttpErrorResponse} from "@angular/common/http";
+import {catchError,switchMap,map,retry} from "rxjs/operators";
 import { Observable, throwError, of, pipe } from "rxjs";
-import { BackendStatus, Credentials } from "./shared/global";
+import { Credentials } from "./shared/global";
 import { Store } from "@ngrx/store";
 import { GLobalState } from "./shared/global.state";
 import { SetAppState } from "./state/state.actions";
@@ -30,7 +19,7 @@ export class AuthService {
   lastUrlLoaded:string=config.clientRoutes.dashboard()
   queryParam:object = {};
 
-  authenticate(email: string, pass: string): Observable<BackendStatus | Error> {
+  authenticate(email: string, pass: string) {
     const httpOptions = {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     };
@@ -38,28 +27,28 @@ export class AuthService {
       email,
       password: pass
     };
-    return this.http.post<BackendStatus>(config.routes.user.authenticate(), credentials, httpOptions).pipe(
+    return this.http.post(config.routes.user.authenticate(), credentials, httpOptions).pipe(
       /**
        * Set the token in localstorage
        */
       switchMap(status => {
-        localStorage.setItem("token", status.token);
+        localStorage.setItem("token", (<any>status).token);
         return this.userProfile();
       }),
       catchError(this.handleError)
     );
   }
 
-  userProfile(): Observable<BackendStatus | Error> {
-    return this.http.get<BackendStatus>(config.routes.user.userProfile());
+  userProfile(){
+    return this.http.get(config.routes.user.userProfile());
   }
 
-  register(fullName:string, email: string, password: string): Observable<BackendStatus | Error> {
+  register(fullName:string, email: string, password: string) {
     const httpOptions = {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     };
     let credentials: Credentials = { fullName,email,password };
-    return this.http.post<BackendStatus>(config.routes.user.register(), credentials, httpOptions).pipe(
+    return this.http.post(config.routes.user.register(), credentials, httpOptions).pipe(
       catchError(this.handleError)
     );
   }
@@ -120,7 +109,7 @@ export class AuthService {
         appState.cred.email,
         appState.cred.password
       ).pipe(
-        map((status: BackendStatus) => {
+        map((status:any) => {
           this.store.dispatch(
             SetAppState({
               app: {

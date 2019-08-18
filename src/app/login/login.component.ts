@@ -3,7 +3,6 @@ import config from "src/data/config";
 import { FormBuilder, Validators, FormControl } from "@angular/forms";
 import { AuthService } from "../auth.service";
 import {
-  BackendStatus,
   passValidator,
   SignInState,
   requiredValidator
@@ -86,7 +85,7 @@ export class LoginComponent {
     this.auth
       .authenticate(this.email.value, this.psw.value)
       .subscribe(
-        (status: BackendStatus) => {
+        (status: any) => {
           this.loggingIn = false; /** set logged in to false */
           this.store.dispatch(
             SetAppState({
@@ -114,7 +113,7 @@ export class LoginComponent {
     this.auth
       .register(this.userName.value, this.email.value, this.psw.value)
       .subscribe(
-        (status: BackendStatus) => {
+        (status: any) => {
           this.loggingIn = false;
           this.backendError = '';
           this.submitBtnText = SignInState.signIn

@@ -16,7 +16,6 @@ export interface TestOriginal {
 export interface UserTestFeatures {
   time?: number;
   isTestOver?: boolean;
-  hasTestStarted?: boolean;
 }
 
 export interface UserTest {

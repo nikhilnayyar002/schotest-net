@@ -2,12 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { createAccordianState } from 'src/app/shared/global';
 import config from 'src/data/config';
-import { TestWithFeatures, TestOriginal } from 'src/app/amplitude-test/modals/test';
+import { TestOriginal } from 'src/app/amplitude-test/modals/test';
 import { MainService } from '../../main.service';
 import { takeWhileAlive, AutoUnsubscribe } from 'take-while-alive';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { Observable, Subject, of } from 'rxjs';
-
 
 @Component({
   selector: 'app-tests',
@@ -19,7 +16,7 @@ export class TestsComponent implements OnInit {
 
   config = config;
   pages: number[] = [];
-  testsLimit: number = config.backend.tests.testsPerPage;
+  testsLimit: number = config.globalConfig.noOfTestsPerPage;
 
   tests:TestOriginal[];
   constructor(

@@ -17,9 +17,7 @@ export class InstructionEditorComponent implements OnInit {
   configData = config;
   backendError: string;
   submitting: boolean = false;
-  @ViewChild("pageContent", { static: false }) pageContent: ElementRef<
-    HTMLElement
-  >;
+  @ViewChild("pageContent", { static: false }) pageContent: ElementRef<HTMLElement>;
 
   categories: Category[] = <any>[{ _id: null, name: "-----" }];
   selectedCategory: Category = <any>{};
@@ -36,9 +34,8 @@ export class InstructionEditorComponent implements OnInit {
     private fb: FormBuilder,
     private ms: MainService,
     private route: ActivatedRoute,
-    private router: Router // private store: Store<GLobalState>,
-  ) // private router: Router,
-  // private route: ActivatedRoute,
+    private router: Router 
+  )
   {}
 
   ngOnInit(): void {
@@ -75,9 +72,7 @@ export class InstructionEditorComponent implements OnInit {
 
   submit() {
     this.submitting = true;
-    let id = this.instruction
-      ? this.instruction._id
-      : new Date().getTime().toString();
+    let id = this.instruction? this.instruction._id: new Date().getTime().toString();
     let instruction: Instruction = {
       name: this.title.value,
       data: this.data.value,
@@ -88,18 +83,13 @@ export class InstructionEditorComponent implements OnInit {
       () => {
         this.submitting = false;
         this.backendError = "";
-        if (!this.instruction) {
-          this.form.reset();
-        }
+        if (!this.instruction) this.form.reset();
       },
       (error: any) => {
         this.submitting = false;
         this.backendError = error.error.message;
         setTimeout(() => {
-          this.pageContent.nativeElement.scrollTo(
-            0,
-            this.pageContent.nativeElement.scrollHeight
-          );
+          this.pageContent.nativeElement.scrollTo(0,this.pageContent.nativeElement.scrollHeight);
         }, 0);
       }
     );
@@ -136,7 +126,6 @@ export class InstructionEditorComponent implements OnInit {
   editorModal: string = "";
   editorConfig = config.ckEditor.config;
   onReady(editor): void {
-    // console.log(Array.from( editor.ui.componentFactory.names() ))
     editor.ui.view.editable.element.parentElement.insertBefore(
       editor.ui.view.toolbar.element,
       editor.ui.view.editable.element

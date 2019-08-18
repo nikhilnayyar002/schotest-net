@@ -2,6 +2,9 @@ import * as passport from 'passport';
 import * as localStrategy from 'passport-local';
 import { UserModal, User } from '../modal/user';
 
+/**
+ * Set up local strategy for passport to be used later for Authentication of user
+ */
 passport.use(
     new localStrategy.Strategy({ usernameField: 'email' },
         (username, password, done:any) => {

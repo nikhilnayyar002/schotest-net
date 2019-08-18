@@ -47,7 +47,7 @@
         </div>
         <button
           type="button"
-          *ngIf="!imageProcessing && image.value.includes(configData.api.domain)"
+          *ngIf="!imageProcessing && image.value.includes(configData.globalConfig.imageRequestUrl)"
           class="btn btn-sm btn-secondary align-self-start"
           (click)="removeImage()"
         >

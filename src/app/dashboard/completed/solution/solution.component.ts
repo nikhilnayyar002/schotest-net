@@ -40,9 +40,7 @@ export class SolutionComponent{
   setNextQuestion(id:string, side:'back'|'front') {
     let index
     if(side == 'front') {
-      console.log(this.questions.indexOf(id))
       index= this.questions.indexOf(id) != (this.questions.length - 1)?(this.questions.indexOf(id)+1):0
-      console.log(index)
     } else {
       index= this.questions.indexOf(id) != 0?(this.questions.indexOf(id)-1):(this.questions.length - 1)
     }

@@ -54,7 +54,6 @@ export class McqsComponent extends PageComponent{
 
   mark() {
     let state:QuestionState;
-    console.log(this.test.questions[this.id].checkedAnswerIndex)
     if(this.test.questions[this.id].checkedAnswerIndex) state=QuestionState.Markedanswered
     else state=QuestionState.Marked
     this.store.dispatch(SetQuestionState({state, id:this.id}))

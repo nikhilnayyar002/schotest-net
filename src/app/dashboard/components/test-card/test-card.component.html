@@ -34,14 +34,12 @@
       <span class="p-1 px-2 bg-info d-inline-block mr-2 mt-2 small rounded-sm"
         >Time: {{ test.oTime | timer }}</span
       >
-
-      <span *ngIf="test.isTestOver" class="p-1 px-2 bg-info d-inline-block mr-2 mt-2 small rounded-sm"
-        >Completed: {{ (test.oTime - test.time ) | timer }}</span
-      >
-      <span *ngIf="!test.isTestOver && test.hasTestStarted" class="p-1 px-2 bg-info d-inline-block mr-2 mt-2 small rounded-sm"
-        >Time Elapsed: {{ test.time | timer }}</span
-      >
-
+      <span *ngIf="test.time != undefined && test.time != null"
+        class="p-1 px-2 bg-info d-inline-block mr-2 mt-2 small rounded-sm"
+        >{{
+          test.isTestOver?"Completed: ":"Time Elapsed: "
+        }}{{ (test.oTime - test.time ) | timer }}
+      </span>
       <hr />
       <ng-container *ngIf="getSections(test) as sections">
         <p class="font-weight-bold">Sections:</p>
@@ -56,7 +54,7 @@
         class="btn btn-secondary"
       >
         {{ directingLabel ? directingLabel :(
-          test.hasTestStarted ? "Continue" : "Start" 
+          !test.isTestOver && test.time ? "Continue" : "Start" 
         ) }}
       </button>
       <ng-template #completedTemplate>

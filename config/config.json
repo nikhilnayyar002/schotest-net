@@ -1,0 +1,24 @@
+{
+    "restAPI": "/api",
+    "server":{
+      "dev":{
+          "isProduction":false,
+          "port":3000,
+          "mongoURI":"mongodb://nikhilnayyar:dnaagent6@ds251507.mlab.com:51507/schotest",
+          "jwtSecret":"SECRET#123",
+          "jwtExp": "30m"
+      },
+      "prod":{
+          "isProduction":true,
+          "port":80,
+          "mongoURI":"mongodb://nikhilnayyar:dnaagent6@ds251507.mlab.com:51507/schotest",
+          "jwtSecret":"SECRET#123",
+          "jwtExp": "30m"
+      },
+      "imageUploads": "/uploads",
+      "imageUploadSize": 2097152
+    },
+    "imageRequestUrl": "/public/images",
+    "imageFormDataName":"image",
+    "noOfTestsPerPage":10
+}

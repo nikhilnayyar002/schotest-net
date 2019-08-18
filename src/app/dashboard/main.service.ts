@@ -8,7 +8,7 @@ import { AuthService } from "../auth.service";
 import { Store } from "@ngrx/store";
 import { GLobalState } from "../shared/global.state";
 import {  UserTest, TestWithFeatures, TestWithFeaturesForUser, TestOriginal } from "../amplitude-test/modals/test";
-import { BackendStatus, QuestionsAnswers } from "../shared/global";
+import { QuestionsAnswers } from "../shared/global";
 import { SetAppState } from "../state/state.actions";
 import { QuestionOriginal } from '../amplitude-test/modals/question';
 import { Answer, Answers } from '../amplitude-test/modals/answer';
@@ -113,7 +113,7 @@ export class MainService {
       );
   }
 
-  postFavourites(cid: string): Observable<BackendStatus | Error> {
+  postFavourites(cid: string){
     const httpOptions = {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     };
@@ -124,7 +124,7 @@ export class MainService {
         take(1),
         switchMap(user =>
           this.http
-            .post<BackendStatus>(
+            .post(
               config.routes.userData.postUserFavourites(user.id),
               { id: cid },
               httpOptions
@@ -141,7 +141,7 @@ export class MainService {
       );
   }
 
-  delFavourites(cid: string): Observable<BackendStatus | Error> {
+  delFavourites(cid: string){
     const httpOptions = {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     };
@@ -152,7 +152,7 @@ export class MainService {
         take(1),
         switchMap(user =>
           this.http
-            .post<BackendStatus>(
+            .post(
               config.routes.userData.delUserFavourites(user.id),
               { id: cid },
               httpOptions

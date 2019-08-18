@@ -34,11 +34,8 @@ export function checkAndGetQuestionState(question: UserQuestion) {
  *
  */
 export function getNextQuestionIndex(questions:{[index:string]:UserQuestion}, id:string): string {
-
- 
   let keys = Object.keys(questions), 
     nextIndex = keys.indexOf(id) != (keys.length - 1)?(keys.indexOf(id)+1):0
-    console.log(keys[nextIndex])
    return keys[nextIndex]; 
 }
 

@@ -4,7 +4,6 @@ import { Store } from "@ngrx/store";
 import { GLobalState } from "../shared/global.state";
 import { take, switchMap, map, retry, catchError, tap } from "rxjs/operators";
 import { AuthService } from "../auth.service";
-import { BackendStatus } from "../shared/global";
 import { SetAppState } from "../state/state.actions";
 import { of, observable } from "rxjs";
 
@@ -38,7 +37,7 @@ export class LoginResolverService {
              * token is not expired use it.
              */
             return this.auth.userProfileHandled().pipe(
-              map((status: BackendStatus) => {
+              map((status: any) => {
                 this.store.dispatch(
                   SetAppState({
                     app: {

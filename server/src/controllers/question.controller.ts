@@ -5,14 +5,14 @@ import { QuestionOriginal, QuestionModal } from "../modal/question";
 import { AnswerModal } from "../modal/answer";
 
 /**
- * Return @Question
+ * Return @message
  */
 export const postQuestion: express.RequestHandler = function(req, res, next) {
   let question: QuestionOriginal & mongoose.Document = <any>(
     new QuestionModal(req.body)
   );
   question.save((err, question: QuestionOriginal) => {
-    if (!err) res.json({ status: true, question });
+    if (!err) res.json({ status: true,  message:"Success" });
     else {
       if (err.code) res.status(422).json({ status: false, message: err.code });
       else return next(err);
@@ -26,9 +26,7 @@ export const postQuestion: express.RequestHandler = function(req, res, next) {
 export const getQuestion: express.RequestHandler = function(req, res, next) {
   let id = req.params.qID;
   QuestionModal.findById(id, (err, question: QuestionOriginal) => {
-    if (err) {
-      return next(err);
-    }
+    if (err) return next(err);
     if (question) res.json({ status: true, question });
     else next(new Record404Exception());
   });
@@ -40,12 +38,12 @@ export const getQuestion: express.RequestHandler = function(req, res, next) {
 export const getQuestions: express.RequestHandler = function(req, res, next) {
   let tID = req.params.tID;
   QuestionModal.find({tID}, (err, questions: QuestionOriginal[]) => {
-    if (err) {
-      return next(err);
-    }
+    if (err) return next(err);
     if (questions && questions.length) res.json({ status: true, questions });
     else next(new Record404Exception());
-  }).sort({ section: 'asc', sectionOrder: 1, _id: 'asc' });
+  })
+  /** this sort query is in test and question controllers */
+  .sort({ section: 'asc', sectionOrder: 1, _id: 'asc' });
 };
 
 
@@ -53,7 +51,6 @@ export const getQuestions: express.RequestHandler = function(req, res, next) {
  * Return @message
  */
 export const postQuestions: express.RequestHandler = function(req, res, next) {
-
   QuestionModal.collection.insertMany(req.body, (err, result)=>{
     if (!err) res.json({ status: true, message:"Success" });
     else {
@@ -61,27 +58,22 @@ export const postQuestions: express.RequestHandler = function(req, res, next) {
       else return next(err);
     }
   })
-
 };
 
 /**
- * Return @message | @QuestionOriginal
+ * Return @message
  */
 export const updateQuestion: express.RequestHandler = function(req, res, next) {
   let question: QuestionOriginal = req.body;
-
   QuestionModal.updateOne(
     { _id: question._id },
     { ...question },
     function(err, doc) {
-      if (err) {
-        return next(err);
-      }
+      if (err) return next(err);
       if (doc) res.json({ status: true, message: "Success" });
       else next(new HttpException("Failed", 400));
     }
   );
-
 };
 
 /**
