@@ -18,15 +18,23 @@ export const register:express.RequestHandler = (req, res, next) => {
     user._id = (new Date()).getTime().toString();
     user.favourites = []
     user.tests = {}
-    user.save((err, doc:User) => {
-        if (!err) res.json({ status:true, message:"success"});
-        else {
-            if (err.code == 11000)
-                res.status(422).json({ status:false, message:'Duplicate email adrress found.'});
-            else
-                return next(err);
+
+    UserModal.estimatedDocumentCount((err, count) => {
+        if (!err) {
+            if(!count) user.isAdmin = true
+            user.save((err, doc:User) => {
+                if (!err) res.json({ status:true, message:"success"});
+                else {
+                    if (err.code == 11000)
+                        res.status(422).json({ status:false, message:'Duplicate email adrress found.'});
+                    else
+                        return next(err);
+                }
+            });            
         }
+        else next(err);
     });
+
 }
 
 /**

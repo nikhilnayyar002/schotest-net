@@ -37,7 +37,7 @@ export class ParentComponent implements OnInit {
           for (let i = 1; i <= pages; ++i) this.pages.push(i);
         }
         if (data.tests) this.tests = data.tests;
-        else data.tests = null;
+        else this.tests = null;
       });
     });
 

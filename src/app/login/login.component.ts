@@ -11,7 +11,9 @@ import { Store } from "@ngrx/store";
 import { GLobalState } from "../shared/global.state";
 import { SetAppState } from "../state/state.actions";
 import { Router, ActivatedRoute } from "@angular/router";
-import { take } from "rxjs/operators";
+import { EncrDecrService } from '../encr-decr.service';
+
+//*interfaces
 
 const passRegex = /(?=^.{8,20}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\s).*$/;
 
@@ -52,7 +54,8 @@ export class LoginComponent {
     private auth: AuthService,
     private store: Store<GLobalState>,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private encrDecr:EncrDecrService
   ) {
     /**
      * Resolving
@@ -75,15 +78,15 @@ export class LoginComponent {
   }
 
   setSignInState(state:SignInState) {
-    this.form.reset()
     this.submitBtnText = state
+    this.form.reset()
   }
-
 
   login() {
     this.loggingIn = true;
+    let encrPass = this.encrDecr.set(config.globalConfig.passwordSecret,this.psw.value );
     this.auth
-      .authenticate(this.email.value, this.psw.value)
+      .authenticate(this.email.value,encrPass)
       .subscribe(
         (status: any) => {
           this.loggingIn = false; /** set logged in to false */
@@ -110,8 +113,9 @@ export class LoginComponent {
 
   register() {
     this.loggingIn = true;
+    let encrPass = this.encrDecr.set(config.globalConfig.passwordSecret,this.psw.value );
     this.auth
-      .register(this.userName.value, this.email.value, this.psw.value)
+      .register(this.userName.value, this.email.value,encrPass)
       .subscribe(
         (status: any) => {
           this.loggingIn = false;

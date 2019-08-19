@@ -33,4 +33,6 @@ export interface globalEnvironment {
   imageFormDataName: string;
   /** no of test to display per page. Eg: 10 per page */
   noOfTestsPerPage: number;
+  /** use to encrypt password on client side and decrypt it on server side*/
+  passwordSecret:string;
 }

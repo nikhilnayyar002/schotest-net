@@ -218,10 +218,10 @@ export function requiredValidator(
 ): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
     if (rtnSigningState() == SignInState.signUp) {
-      const forbidden = control.value!=null?(<string>control.value).trim():null,
+      const forbidden = control.value!=null?(<string>control.value).trim():"",
       errorObj={};
       errorObj[errorName] = {value: control.value}
-      return forbidden=="" ? errorObj : null;
+      return !forbidden ? errorObj : null;
     } else return null;
   };
 }

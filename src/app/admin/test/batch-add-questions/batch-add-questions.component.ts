@@ -10,11 +10,13 @@ import { MainService } from "../../main.service";
 })
 export class BatchAddQuestionsComponent {
   questions: QuestionOriginal[] = [null];
+
   config = config;
   submitting = false;
   backendError: string;
   @Input() testID: string;
   @Output() closeForm = new EventEmitter<boolean>();
+  @Input() sections: { sectionOrder: number; name: string }[] = [];
 
   constructor(private ms: MainService) {}
 

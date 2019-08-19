@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as path from 'path';
 import * as morgan from 'morgan'
-import * as cors from 'cors'
+// import * as cors from 'cors'
 import * as passport from 'passport'
 import * as mongoose from 'mongoose'
 
@@ -58,7 +58,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.disable('view cache');
 
 /** allow cross-origin acess */
-if(!environment.isProduction) app.use(cors());
+// if(!environment.isProduction) app.use(cors());
 
 /** use passport local strategy */
 app.use(passport.initialize());
@@ -68,7 +68,6 @@ app.use(passport.initialize());
 //   res.set('Access-Control-Allow-Headers','Content-Type');
 //   next();
 // })
-
 app.use(`${config.restAPI}/auth`, UserRouter);
 app.use(`${config.restAPI}/tests`, verifyJwtToken, TestRouter);
 app.use(`${config.restAPI}/categories`, verifyJwtToken, CategoryRouter);

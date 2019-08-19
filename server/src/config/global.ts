@@ -4,14 +4,17 @@ import { UserModal, User } from "../modal/user";
 import * as multer from "multer";
 import * as path from "path";
 import * as fs from "fs";
-
+import * as cryptoJS from "crypto-js";
 
 import { FILELISTS } from "../../../global/global";
-import { processEnvironment, globalEnvironment } from "../../../config/global.config";
-let config:globalEnvironment = require("../../../config/config")
+import {
+  processEnvironment,
+  globalEnvironment
+} from "../../../config/global.config";
+let config: globalEnvironment = require("../../../config/config");
 const environment: processEnvironment = <any>process.env;
 
-//*interfaces 
+//*interfaces
 
 export class HttpException extends Error {
   status: number;
@@ -55,7 +58,8 @@ export const verifyJwtToken: express.RequestHandler = (req, res, next) => {
            * @Authentication_failed
            * */
           return res
-            .status(401).send({ status: false, message: "Authentication failed." });
+            .status(401)
+            .send({ status: false, message: "Authentication failed." });
         else {
           /** save userID in req as req._id */
           (<any>req)._id = decoded._id;
@@ -89,17 +93,15 @@ export const checkAdminRoute: express.Handler = (req, res, next) => {
       return res
         .status(404)
         .json({ status: false, message: "User record not found." });
-        /**
-         * @not_an_admin
-         */
-    else if (!user.isAdmin)
+    /**
+     * @not_an_admin
+     */ else if (!user.isAdmin)
       return res
         .status(403)
         .send({ status: false, message: "Acess Forbidden. Not an Admin" });
-        /**
-         * @proceed
-         */
-    else next();
+    /**
+     * @proceed
+     */ else next();
   });
 };
 
@@ -109,7 +111,10 @@ const storage = multer.diskStorage({
   destination: function(req, file, cb) {
     let dir = path.join(__dirname, `../..${config.server.imageUploads}`);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir);
-    cb(null, config.server.imageUploads.slice(1,config.server.imageUploads.length));
+    cb(
+      null,
+      config.server.imageUploads.slice(1, config.server.imageUploads.length)
+    );
   },
   filename: function(req: express.Request, file, cb) {
     /**
@@ -121,7 +126,7 @@ const storage = multer.diskStorage({
 export const imageUpload = multer({
   storage: storage,
   limits: {
-    fileSize: config.server.imageUploadSize, 
+    fileSize: config.server.imageUploadSize,
     files: 1 // 1 file
   },
   fileFilter: (req, file, cb) => {
@@ -135,10 +140,27 @@ export const imageUpload = multer({
     }
     // otherwise, return error
     return cb(
-      new Error(
-        "Only " + FILELISTS.image.join(", ") + " files are allowed!"
-      ),
+      new Error("Only " + FILELISTS.image.join(", ") + " files are allowed!"),
       false
     );
   }
 }).single(config.imageFormDataName);
+
+/**
+ * This function is copied from client side
+ * @param keys secret
+ * @param value value to be decrypted
+ */
+export function decryptValue(secret:string, value:string) {
+  return cryptoJS.AES.decrypt(value, secret).toString(cryptoJS.enc.Utf8)
+}
+
+export function rtnDecryptReqHandler(secret:string):express.RequestHandler {
+  return function(req,res,next) {
+    req.body.password = decryptValue(secret,req.body.password)
+    next()
+  }
+}
+
+
+

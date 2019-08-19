@@ -65,6 +65,7 @@
         *ngIf="addNewQuestions"
         (closeForm)="onCloseForm()"
         [testID]="test._id"
+        [sections]="sections"
       ></app-batch-add-questions>
 
       <app-answers

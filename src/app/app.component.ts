@@ -32,8 +32,7 @@ export class AppComponent {
 
   constructor(
     private router: Router,
-    private auth: AuthService,
-    private route: ActivatedRoute
+    private auth: AuthService
   ) {
     this.navStart = router.events.pipe(
       filter(evt => evt instanceof NavigationStart)

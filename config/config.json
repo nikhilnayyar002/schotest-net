@@ -20,5 +20,6 @@
     },
     "imageRequestUrl": "/public/images",
     "imageFormDataName":"image",
-    "noOfTestsPerPage":10
+    "noOfTestsPerPage":10,
+    "passwordSecret":"SECRET#123"
 }
