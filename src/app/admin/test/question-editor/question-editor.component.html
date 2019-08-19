@@ -93,11 +93,11 @@
           type="radio"
           name="isComprehension"
           [value]="true"
-          id="isComprehensionYes"
+          [id]="'isComprehensionYes'+qNo"     
           class="custom-control-input"
           formControlName="isComprehension"
         />
-        <label class="custom-control-label" for="isComprehensionYes">
+        <label class="custom-control-label" [attr.for]="'isComprehensionYes'+qNo">
           Yes
         </label>
       </div>
@@ -106,11 +106,11 @@
           type="radio"
           [value]="false"
           name="isComprehension"
-          id="isComprehensionNo"
+          [id]="'isComprehensionNo'+qNo"
           class="custom-control-input"
           formControlName="isComprehension"
         />
-        <label class="custom-control-label" for="isComprehensionNo">
+        <label class="custom-control-label" [attr.for]="'isComprehensionNo'+qNo">
           No
         </label>
       </div>

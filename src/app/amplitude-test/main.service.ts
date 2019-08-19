@@ -44,7 +44,10 @@ export class MainService {
   getUserTest(uid: string, id: string): Observable<UserTest> {
     return this.http.get(config.routes.userData.getUserTest(uid, id)).pipe(
       map((data: { status: boolean; test: UserTest }) => data.test),
-      catchError(this.handleError)
+      catchError((error)=>{
+        if(error.status == 404) return of(null)
+        else return this.handleError(error)
+      })
     );
   }
 

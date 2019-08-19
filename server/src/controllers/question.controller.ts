@@ -43,7 +43,7 @@ export const getQuestions: express.RequestHandler = function(req, res, next) {
     else next(new Record404Exception());
   })
   /** this sort query is in test and question controllers */
-  .sort({ section: 'asc', sectionOrder: 1, _id: 'asc' });
+  .sort({sectionOrder: 1,  section: 'asc', _id: 'asc' });
 };
 
 

@@ -57,6 +57,8 @@ export class AmplitudeTestResolverService {
               index = answer ? test.questions[i].answers.indexOf(answer) : null;
             test.questions[i].checkedAnswerIndex = index;
           }
+        } else {
+          test.time = test.oTime;
         }
         return test;
       }),
@@ -81,6 +83,7 @@ export class AmplitudeTestResolverService {
         /**
          * Error no test resolved
          */
+        console.log(2)
         this.store.dispatch(SetTest({ test:null }));
         return of(null);
       })

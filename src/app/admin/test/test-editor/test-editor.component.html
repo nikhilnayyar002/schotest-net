@@ -3,7 +3,7 @@
 </h4>
 
 <div #pageContent class="page-content">
-  <form  *ngIf="test !== null; else fetchingFailed"  class="bg-primary form-container" [formGroup]="form">
+  <form  *ngIf="test; else fetchingFailed"  class="bg-primary form-container" [formGroup]="form">
     <!--Title-->
     <div class="input-container flex-column">
       <label for="title">Title</label>

@@ -40,7 +40,9 @@ export class QuestionsComponent {
       }
       this.ms
         .getQuestions(this.test._id)
-        .subscribe(questions => (this.questions = questions));
+        .subscribe(
+          questions => (this.questions = questions)
+        );
     }
   }
 

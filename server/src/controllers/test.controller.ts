@@ -33,7 +33,7 @@ export const getTest: express.RequestHandler = function(req, res, next) {
         }
       )
       /** this sort query is in test and question controllers */
-      .sort({ section: "asc", sectionOrder: 1, _id: "asc" });
+      .sort({ sectionOrder: 1,  section: 'asc', _id: 'asc'  });
     }
     else next(new Record404Exception());
   });
@@ -82,7 +82,7 @@ export const getQuestionsAnswers: express.RequestHandler = function(req,res,next
         else next(new Record404Exception());
       });
     } else next(new Record404Exception());
-  });
+  }).sort({sectionOrder: 1,  section: 'asc', _id: 'asc' });
 };
 
 /**
