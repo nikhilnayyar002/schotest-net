@@ -48,10 +48,11 @@ export class AmplitudeTestResolverService {
       map((tests: (TestWithFeaturesForUser | UserTest)[]) => {
         let test = <TestWithFeaturesForUser>tests[0],
           userTest = <UserTest>tests[1];
-          if (userTest && userTest.isTestOver) test.isTestOver = true;
+        if (userTest && userTest.isTestOver) test.isTestOver = true;
         else if (userTest) {
-          if (userTest.time != undefined || userTest.time != null)
+          if (userTest.time != undefined && userTest.time != null)
             test.time = userTest.time;
+          else test.time = test.oTime;
           for (let i in userTest.questions) {
             let answer = userTest.questions[i],
               index = answer ? test.questions[i].answers.indexOf(answer) : null;
@@ -83,7 +84,7 @@ export class AmplitudeTestResolverService {
         /**
          * Error no test resolved
          */
-        this.store.dispatch(SetTest({ test:null }));
+        this.store.dispatch(SetTest({ test: null }));
         return of(null);
       })
     );

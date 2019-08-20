@@ -18,7 +18,9 @@ export const postImage: express.RequestHandler = function(req, res, next) {
  */
 export const getImage: express.RequestHandler = function(req, res, next) {
   let id = req.params.id
-  res.sendFile(path.join(__dirname, `../..${config.server.imageUploads}`, id));
+  res.sendFile(path.join(__dirname, `../..${config.server.imageUploads}`, id),(error)=>{
+    if(error) res.send("Error")
+  });
 };
 
 /**

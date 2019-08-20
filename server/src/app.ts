@@ -20,6 +20,9 @@ import { questionRouter } from './router/question.router';
 import { instructionRouter } from './router/instruction.router';
 import { imageRouter } from './router/image.router';
 
+var compression = require('compression');
+var helmet = require('helmet');
+
 import { processEnvironment, globalEnvironment } from "../../config/global.config";
 import { getImage } from './controllers/image.controller';
 const environment: processEnvironment = <any>process.env;
@@ -51,23 +54,27 @@ mongoose.connect(environment.mongoURI, (err) => {
 
 let app = express();
 
+app.use(compression());
+app.use(helmet());
+
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.disable('view cache');
 
-/** allow cross-origin acess */
-// if(!environment.isProduction) app.use(cors());
-
 /** use passport local strategy */
 app.use(passport.initialize());
+
+/** allow cross-origin acess */
+// if(!environment.isProduction) app.use(cors());
 
 // app.all('*',function(req, res, next) {
 //   res.set('Access-Control-Allow-Origin', '*');
 //   res.set('Access-Control-Allow-Headers','Content-Type');
 //   next();
 // })
+
 app.use(`${config.restAPI}/auth`, UserRouter);
 app.use(`${config.restAPI}/tests`, verifyJwtToken, TestRouter);
 app.use(`${config.restAPI}/categories`, verifyJwtToken, CategoryRouter);

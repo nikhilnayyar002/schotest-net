@@ -182,6 +182,9 @@ export class TestEditorComponent implements OnInit {
         this.backendError = "";
         if (!this.test) {
           this.form.reset();
+          while (this.sections.length !== 0) {
+            this.sections.removeAt(0)
+          }
         } else {
           /**
            * Refresh current route so that questions component get latest Fetched Test

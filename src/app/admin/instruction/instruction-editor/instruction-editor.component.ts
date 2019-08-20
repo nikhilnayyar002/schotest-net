@@ -39,13 +39,14 @@ export class InstructionEditorComponent implements OnInit {
   {}
 
   ngOnInit(): void {
-    if (this.route.snapshot.data.data) {
-      this.instruction = this.route.snapshot.data.data["instruction"];
-      if (this.route.snapshot.data.data["categories"])
-        this.categories = this.categories.concat(
-          this.route.snapshot.data.data["categories"]
-        );
+    if (this.route.snapshot.data.instruction) {
+      this.instruction = this.route.snapshot.data["instruction"];
     }
+    
+    this.ms.getCategoryStates().subscribe((categories)=>{
+      this.categories = this.categories.concat(categories);
+    })
+    
     /** Display the values */
     if (this.instruction) {
       this.pageTitle = "Edit " + this.instruction.name;

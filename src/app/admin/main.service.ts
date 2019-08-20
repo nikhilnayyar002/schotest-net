@@ -258,42 +258,16 @@ export class MainService {
   getInstruction(
     id: string
   ): Observable<{ instruction: Instruction; categories: Category[] }> {
-    let recipe1 = pipe(
+    let recipe = pipe(
       map(
         (data: { status: boolean; instruction: Instruction }) =>
           data.instruction
       ),
       catchError(()=>of(null))
     );
-    let recipe2 = pipe(
-      map(
-        (data: { status: boolean; categories: Category[] }) => data.categories
-      ),
-      catchError(()=>of(null))
-    );
-
-    let arr = [
-      this.http.get(config.routes.instruction.getInstruction(id)).pipe(
-        recipe1
-      ),
-      this.http.get(config.routes.category.getCategoryStates()).pipe(
-        recipe2
-      )
-    ];
-
-    return forkJoin(arr).pipe(
-      take(1),
-      map((datas: Array<Instruction | Category[]>) => {
-        let instruction = <Instruction>datas[0],
-          categories = <Category[]>datas[1];
-
-        return { instruction, categories };
-      }),
-      catchError(error => {
-        /** Probably not called. */
-        return of({ instruction:null, categories:null });
-      })
-    );
+    return this.http.get(config.routes.instruction.getInstruction(id)).pipe(
+      recipe
+    )
   }
 
   getInstructionStates(): Observable<Instruction[]> {

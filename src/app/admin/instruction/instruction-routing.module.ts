@@ -17,7 +17,7 @@ const routes: Routes = [
     path: 'edit/:id',
     component: InstructionEditorComponent,
     resolve:{
-      data:AdminResolverService
+      instruction:AdminResolverService
     }
   }
 ];
