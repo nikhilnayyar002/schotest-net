@@ -31,7 +31,6 @@ import { AdminModule } from './admin/admin.module';
 
     DashboardModule,
     AmplitudeTestModule,
-    AdminModule,
     AppRoutingModule
   ],
   providers: [
