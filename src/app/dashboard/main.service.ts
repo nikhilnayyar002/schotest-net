@@ -68,7 +68,7 @@ export class MainService {
       }),
       catchError(error => {
         /** Probably not called. */
-        return of(null);
+        return of({ tests:null, count:null });
       })
     );
   }
@@ -190,7 +190,7 @@ export class MainService {
   }
 
   getQuestionsAnswers(testID: string)
-  :Observable<{userTest:UserTest, questionsAnswers:QuestionsAnswers}|null>{
+  :Observable<{userTest:UserTest, questionsAnswers:QuestionsAnswers}>{
     let recipeForQandA = pipe(
       map((data: QuestionsAnswersRes) => {
         let questions:{ [index: string]: QuestionOriginal } = {}
@@ -212,11 +212,9 @@ export class MainService {
       this.store.select(s=>s.app.user).pipe(
         take(1),
         switchMap(user => 
-
           this.http.get(config.routes.userData.getUserTest(user.id, testID)).pipe(
             recipeForUserTest
           )
-
         )
       ),
       this.http.get(config.routes.test.getQuestionsAnswers(testID)).pipe(
@@ -230,7 +228,11 @@ export class MainService {
         let userTest=<UserTest>data[0], questionsAnswers=<QuestionsAnswers>data[1]
         if(!userTest || !questionsAnswers) return null
         return {  userTest, questionsAnswers}
-      })
+      }),
+      catchError(error => {
+        /** Probably not called. */
+        return of({ userTest:null, questionsAnswers:null });
+      })      
     )
     
   }

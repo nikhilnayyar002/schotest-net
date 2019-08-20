@@ -1,4 +1,5 @@
 import * as express from "express";
+import * as mongoose from "mongoose";
 import { Record404Exception, HttpException } from "../config/global";
 import { Answer, AnswerModal } from "../modal/answer";
 
@@ -11,6 +12,23 @@ export const getAnswer: express.RequestHandler = function(req, res, next) {
     if (err) return next(err);
     if (answer) res.json({ status: true, answer });
     else next(new Record404Exception());
+  });
+};
+
+
+/**
+ * Return @message
+ */
+export const postAnswer: express.RequestHandler = function(req, res, next) {
+  let answer: Answer & mongoose.Document = <any>(
+    new AnswerModal(req.body)
+  );
+  answer.save((err, answer: Answer) => {
+    if (!err) res.json({ status: true,  message:"Success" });
+    else {
+      if (err.code) res.status(422).json({ status: false, message: err.code });
+      else return next(err);
+    }
   });
 };
 
@@ -76,4 +94,14 @@ export const updateAnswers: express.RequestHandler = function(req, res, next) {
     .catch(err => {
       res.json({ status: false, message: "Failed" });
     });
+};
+
+
+/**
+ * Return @message
+ */
+export const delAnswers: express.RequestHandler = function(req, res, next) {
+  AnswerModal.deleteMany({tID:req.params.tID}).exec()
+  .then(() => res.json({ status: true, message:"Success" }))
+  .catch(()=> res.status(422).json({ status: false, message:"Failed" }))
 };

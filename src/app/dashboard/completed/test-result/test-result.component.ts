@@ -30,8 +30,11 @@ export class TestResultComponent {
      * */
     setTimeout(() => {
         //resolved response
-    this.res = this.route.snapshot.data.questionsAnswers
-    if(!this.res) return
+    let x: { userTest: UserTest; questionsAnswers: QuestionsAnswers; } = 
+      this.route.snapshot.data.questionsAnswers
+    if(!x) return
+    if(!x.userTest.questions) x.userTest.questions = {}
+    this.res = x
     
     //test received from Parent Component through ParentService
     let t = (this.ps.tests && this.ps.tests.length)?

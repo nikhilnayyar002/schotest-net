@@ -206,11 +206,11 @@ export class ParentComponent {
     this.store.dispatch(PauseTestServer({ time: this.test.time }))
   }
 
-  @HostListener('window:beforeunload', [ '$event' ])
-  beforeUnloadHander(event) {
-     if(this.test && this.test.time)
-      this.store.dispatch(PauseTestServer({ time: this.test.time }))
-  }
+  // @HostListener('window:beforeunload', [ '$event' ])
+  // beforeUnloadHander(event) {
+  //    if(this.test && this.test.time)
+  //     this.store.dispatch(PauseTestServer({ time: this.test.time }))
+  // }
 
 
   /**
@@ -223,12 +223,13 @@ export class ParentComponent {
 
   /** Submit test */
   submitTest(fromModal = false) {
-    this.stop();
-    this.store.dispatch(PauseTest({ time: this.test.time }))
-    this.store.dispatch(PauseTestServer({ time: this.test.time }))
-    if(!fromModal)
+    if(!fromModal) {
+      this.stop();
+      this.store.dispatch(PauseTest({ time: this.test.time }))
+      this.store.dispatch(PauseTestServer({ time: this.test.time }))
       /** Then open submit modal */
       this.pauseSubmitBtn.nativeElement.click();
+    }
     else {
       // this.store.dispatch(TestOver());
       this.store.dispatch(PauseTestServer({ time: this.test.time, isTestOver:true }))

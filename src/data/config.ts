@@ -60,6 +60,7 @@ let config = {
             postAnswer: () => `${globalConfig.restAPI}/answers`,
             postAnswers: () => `${globalConfig.restAPI}/answers/all`,
             getAnswers: tid => `${globalConfig.restAPI}/answers/all/${tid}`,
+            deleteAll:(tid)=>`${globalConfig.restAPI}/answers/all/${tid}`
         },
         images:{
             delete: (id) =>`${globalConfig.restAPI}/images/${id}`,

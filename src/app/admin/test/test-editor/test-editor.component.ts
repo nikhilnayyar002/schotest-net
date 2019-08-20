@@ -175,6 +175,7 @@ export class TestEditorComponent implements OnInit {
       isTestReady: this.isTestReady.value,
       catID: this.selectedCategory._id
     };
+    /** post the test */
     this.ms.postTest(test, !this.test).subscribe(
       () => {
         this.submitting = false;

@@ -63,7 +63,7 @@ export const getInstructionStates: express.RequestHandler = function(req,res,nex
         }))
       });
     else next(new Record404Exception());
-  });
+  }).sort({ _id: -1 });
 };
 /**
  * Return @Instructions

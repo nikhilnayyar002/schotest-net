@@ -16,7 +16,10 @@ export class OverallComponent implements OnInit {
     totalAttempt: 0,
     totalQuestions: 0,
     scoredMarks: 0,
-    totalMarks: 0
+    totalMarks: 0,
+
+    accuracy:0,
+    scored:0
   };
 
   isAllSet: boolean = false;
@@ -39,6 +42,13 @@ export class OverallComponent implements OnInit {
 
     //avoiding negative score
     if(this.overallProp.scoredMarks<0) this.overallProp.scoredMarks = 0
+
+    let t = this.overallProp;
+    t.accuracy =(t.totalCorrect / t.totalAttempt) * 100
+    if(!isNaN(t.accuracy)) t.accuracy = 0
+    t.scored = t.scoredMarks / t.totalMarks  * 100;
+    if(!isNaN(t.scored)) t.scored = 0
+
 
     //all done
     this.isAllSet = true;

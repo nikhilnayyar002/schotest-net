@@ -95,7 +95,7 @@ export class LoginComponent {
               app: {
                 user: status.user,
                 loggedIn: status.status,
-                cred: { email: this.email.value, password: this.psw.value }
+                cred: { email: this.email.value, password: encrPass }
               }
             })
           );

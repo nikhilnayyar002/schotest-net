@@ -10,6 +10,7 @@ import { QuestionModal, QuestionOriginal } from "../modal/question";
 import { AnswerModal, Answer } from "../modal/answer";
 
 import { globalEnvironment } from "../../../config/global.config";
+import { CategoryModal, Category } from "../modal/category";
 let config:globalEnvironment = require("../../../config/config")
 
 /**
@@ -43,7 +44,7 @@ export const getTest: express.RequestHandler = function(req, res, next) {
  * Return @message
  */
 export const postTest: express.RequestHandler = function(req, res, next) {
-  let test: TestOriginal & mongoose.Document = <any>new TestModal(req.body);
+  let test: TestOriginal & mongoose.Document = <any>new TestModal(req.body.test);
   test.save((err, doc: TestOriginal) => {
     if (!err) res.json({ status: true, message:"Success" });
     else {
@@ -57,10 +58,31 @@ export const postTest: express.RequestHandler = function(req, res, next) {
  * Return @message
  */
 export const updateTest: express.RequestHandler = function(req, res, next) {
-  let test: TestOriginal = req.body;
+  let test: TestOriginal = req.body.test;
   TestModal.updateOne({ _id: test._id }, { ...test }, function(err, doc) {
     if (err) return next(err);
-    if (doc) res.json({ status: true, message: "Success" });
+    if (doc) {
+      /**
+       * Update category lastUpdated date so that it reflects that new test is added
+       * when it is ready
+       */
+      if(test.catID && test.isTestReady) {
+        CategoryModal.findById(test.catID, (err, category: Category) => {
+          if (err) return next(err);
+          if (category) {
+            category.lastUpdated = req.body.localTime
+            CategoryModal.updateOne({ _id: category._id }, category, function(err,doc) {
+              if (err) return next(err);
+              if (doc) {
+                res.json({ status: true, message: "Success" });
+              }
+              else next(new HttpException("Failed", 400));
+            });
+          }
+          else next(new Record404Exception());
+        });    
+      } else res.json({ status: true, message:"Success" });
+    }
     else next(new HttpException("Failed", 400));
   });
 };
@@ -99,7 +121,7 @@ export const getTestsByCategory: express.RequestHandler = function(req,res,next)
       if (err) next(err);
       else if (tests && tests.length) res.json({ status: true, tests });
       else next(new Record404Exception());
-  });
+  }).sort({ _id: -1 });
 
 };
 
@@ -137,7 +159,7 @@ export const getTests: express.RequestHandler = function(req, res, next) {
       else if (tests && tests.length) res.json({ status: true, tests });
       else next(new Record404Exception());
     }
-  );
+  ).sort({ _id: -1 });
 };
 
 /**

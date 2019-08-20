@@ -9,18 +9,11 @@ import { Observable, pipe, forkJoin, of } from "rxjs";
 import { map, take, switchMap, tap, catchError } from "rxjs/operators";
 import config from "../../data/config";
 import { AuthService } from "../auth.service";
-import { Store } from "@ngrx/store";
-import { GLobalState } from "../shared/global.state";
-import { UserTest, TestOriginal } from "../amplitude-test/modals/test";
+import { TestOriginal } from "../amplitude-test/modals/test";
 import {  QuestionsAnswers } from "../shared/global";
-import { SetAppState } from "../state/state.actions";
 import { QuestionOriginal } from "../amplitude-test/modals/question";
 import { Instruction } from "../modals/instruction";
 import { Answer } from "../amplitude-test/modals/answer";
-
-interface QuestionsAnswersRes extends QuestionsAnswers {
-  status: boolean;
-}
 
 @Injectable()
 export class MainService {
@@ -91,6 +84,10 @@ export class MainService {
     return this.http.delete(config.routes.question.deleteAll(tid));
   }
 
+  delAllAnswer(tid: string){
+    return this.http.delete(config.routes.answer.deleteAll(tid));
+  }
+  
   delInstruction(id: string){
     return this.http.delete(config.routes.instruction.delete(id));
   }
@@ -103,11 +100,12 @@ export class MainService {
     const httpOptions = {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     };
+    let localTime = (new Date()).toJSON();
     if (post)
       /** new test */
-      return this.http.post(config.routes.test.postTest(), test, httpOptions);
+      return this.http.post(config.routes.test.postTest(),{test, localTime}, httpOptions);
     /** update category */ else
-      return this.http.put(config.routes.test.postTest(), test, httpOptions);
+      return this.http.put(config.routes.test.postTest(),{test, localTime}, httpOptions);
   }
 
   findTests(search: string) {
@@ -157,7 +155,7 @@ export class MainService {
       }),
       catchError(error => {
         /** Probably not called. */
-        return of(null);
+        return of({ test:null, categories:null });
       })
     );
   }
@@ -190,7 +188,7 @@ export class MainService {
       }),
       catchError(error => {
         /** Probably not called. */
-        return of(null);
+        return of({ tests:null, count:null });
       })
     );
   }
@@ -293,7 +291,7 @@ export class MainService {
       }),
       catchError(error => {
         /** Probably not called. */
-        return of(null);
+        return of({ instruction:null, categories:null });
       })
     );
   }

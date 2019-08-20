@@ -12,10 +12,10 @@
         <div
           class="progress-bar bg-secondary"
           role="progressbar"
-          [style.width]="(overallProp.totalCorrect / overallProp.totalAttempt) * 100 + '%'"
+          [style.width]="overallProp.accuracy + '%'"
         >
           <span class="ml-1"
-            >{{(overallProp.totalCorrect / overallProp.totalAttempt) * 100}}%</span
+            >{{overallProp.accuracy}}%</span
           >
         </div>
       </div>
@@ -40,7 +40,7 @@
         <div
           class="progress-bar bg-secondary"
           role="progressbar"
-          [style.width]="(overallProp.scoredMarks / overallProp.totalMarks) * 100 + '%'">
+          [style.width]="overallProp.scored + '%'">
           <span class="ml-1">{{overallProp.scoredMarks + " / " + overallProp.totalMarks}}</span>
         </div>
       </div>

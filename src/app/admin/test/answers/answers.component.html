@@ -21,7 +21,15 @@
       (click)="submit()"
       *ngIf="!submitting"
     >
-      Submit All
+      Submit
+    </button>
+    <button
+      type="button"
+      class="ml-2 btn btn-danger btn-sm"
+      (click)="remove()"
+      *ngIf="!submitting && isAnswersInDB"
+    >
+      Remove
     </button>
     <div *ngIf="submitting" class="spinner-grow text-secondary" role="status">
       <span class="sr-only">Loading...</span>

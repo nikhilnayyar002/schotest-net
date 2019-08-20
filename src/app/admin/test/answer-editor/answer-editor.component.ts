@@ -50,7 +50,10 @@ export class AnswerEditorComponent {
       this.correctOption = this.answer.value
       this.data.setValue(this.answer.data)
     }
-    else this.correctOption = this.options[0]
+    else {
+      this.correctOption = this.options[0]
+      this.data.setValue('')
+    }
   }
 
   get data() {return this.form.get("data") as FormControl;}
