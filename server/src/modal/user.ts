@@ -51,7 +51,7 @@ export const UserSchema = new mongoose.Schema<User & mongoose.Document>({
     type: String
   },
   favourites: { type: [String] },
-  tests: mongoose.SchemaTypes.Mixed,
+  tests: mongoose.Schema.Types.Mixed,
   isAdmin:{ type: Boolean }
 });
 

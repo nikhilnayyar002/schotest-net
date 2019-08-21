@@ -5,7 +5,6 @@ import app from './app';
 import { processEnvironment } from "../../config/global.config";
 const environment: processEnvironment = <any>process.env;
 
-
 let deb = debug('server:server');
 /**
  * Get port from environment and store in Express.

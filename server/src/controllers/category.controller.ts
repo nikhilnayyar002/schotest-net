@@ -10,10 +10,10 @@ export const postCategory: express.RequestHandler = function(req, res, next) {
   let category: Category = req.body;
   let cat: Category & mongoose.Document = <any>new CategoryModal(category);
   cat.save((err, doc: Category) => {
-    if (!err) res.json({ status: true, message: "Success" });
+    if (!err) return res.json({ status: true, message: "Success" });
     else {
-      if (err.code) res.status(422).json({ status: false, message: err.code });
-      else next(err);
+      if (err.code) return res.status(422).json({ status: false, message: err.code });
+      else return next(err);
     }
   });
 };
@@ -25,8 +25,8 @@ export const updateCategory: express.RequestHandler = function(req, res, next) {
   let category: Category = req.body;
   CategoryModal.updateOne({ _id: category._id }, { ...category }, function(err,doc) {
     if (err) return next(err);
-    if (doc) res.json({ status: true, message: "Success" });
-    else next(new HttpException("Failed", 400));
+    if (doc) return res.json({ status: true, message: "Success" });
+    else return next(new HttpException("Failed", 400));
   });
 };
 
@@ -37,8 +37,8 @@ export const getCategory: express.RequestHandler = function(req, res, next) {
   let categoryID = req.params.categoryID;
   CategoryModal.findById(categoryID, (err, category: Category) => {
     if (err) return next(err);
-    if (category) res.json({ status: true, category });
-    else next(new Record404Exception());
+    if (category) return res.json({ status: true, category });
+    else return next(new Record404Exception());
   });
 };
 
@@ -49,8 +49,8 @@ export const getCategories: express.RequestHandler = (req, res, next) => {
   CategoryModal.find({}, function(err, categories: Category[]) {
     if (err) return next(err)
     if (categories && categories.length)
-      res.json({ status: true, categories: categories });
-    else next(new Record404Exception());
+      return res.json({ status: true, categories: categories });
+    else return next(new Record404Exception());
   }).sort({ _id: -1 });
 };
 
@@ -61,11 +61,11 @@ export const getCategoryStates: express.RequestHandler = function(req,res,next) 
   CategoryModal.find({}, function(err, categories: Category[]) {
     if (err) return next(err);
     if (categories && categories.length)
-      res.json({
+      return res.json({
         status: true,
         categories: categories.map(cat => ({ _id: cat._id, name: cat.name }))
       });
-    else next(new Record404Exception());
+    else return next(new Record404Exception());
   });
 };
 

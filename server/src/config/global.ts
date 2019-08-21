@@ -14,7 +14,6 @@ import {
 let config: globalEnvironment = require("../../../config/config");
 const environment: processEnvironment = <any>process.env;
 
-//*interfaces
 
 export class HttpException extends Error {
   status: number;
@@ -31,15 +30,18 @@ export class Record404Exception extends HttpException {
   }
 }
 
-//functions
-
+/** 
+ *  A middleware that verifies the token and decode the user "_id"
+ *  out of JSON Web Token for further use.
+ */
 export const verifyJwtToken: express.RequestHandler = (req, res, next) => {
   let token: string;
+
   if ("authorization" in req.headers)
     token = (<string>req.headers["authorization"]).split(" ")[1];
 
   /**
-   * @no_authorization_header
+   * no_authorization_header
    * */
   if (!token)
     return res.status(403).send({ status: false, message: "Please Re-login" });
@@ -54,19 +56,11 @@ export const verifyJwtToken: express.RequestHandler = (req, res, next) => {
        */
       (err, decoded: { _id: string }) => {
         if (err)
-          /**
-           * @Authentication_failed
-           * */
-          return res
-            .status(401)
-            .send({ status: false, message: "Authentication failed." });
+          return res.status(401).send({ status: false, message: "Authentication failed." });
         else {
           /** save userID in req as req._id */
           (<any>req)._id = decoded._id;
-          /**
-           * @Proceed
-           * */
-          next();
+          return next();
         }
       }
     );
@@ -85,27 +79,22 @@ export function simplifyMongoose<T>(data: any): T {
 
 export const checkAdminRoute: express.Handler = (req, res, next) => {
   UserModal.findById((<any>req)._id, (err, user: User) => {
-    if (err) next(new HttpException());
+    if (err) return next(new HttpException());
     /**
      * @user_not_found
      */
     if (!user)
-      return res
-        .status(404)
-        .json({ status: false, message: "User record not found." });
+      return res.status(404).json({ status: false, message: "User record not found." });
     /**
      * @not_an_admin
-     */ else if (!user.isAdmin)
-      return res
-        .status(403)
-        .send({ status: false, message: "Acess Forbidden. Not an Admin" });
-    /**
-     * @proceed
-     */ else next();
+     */
+    else if (!user.isAdmin)
+      return res.status(403).send({ status: false, message: "Acess Forbidden. Not an Admin" });
+    else return next();
   });
 };
 
-//Image upload support
+// ***************************  Image upload support
 
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
@@ -113,6 +102,7 @@ const storage = multer.diskStorage({
     if (!fs.existsSync(dir)) fs.mkdirSync(dir);
     cb(
       null,
+      /** remove the "/" from "/path.." using string.slice() and pass it*/
       config.server.imageUploads.slice(1, config.server.imageUploads.length)
     );
   },
@@ -123,6 +113,7 @@ const storage = multer.diskStorage({
     cb(null, req.params.id);
   }
 });
+
 export const imageUpload = multer({
   storage: storage,
   limits: {

@@ -11,9 +11,9 @@ export const postInstruction: express.RequestHandler = function(req,res,next) {
     new InstructionModal(req.body)
   );
   instruction.save((err, doc: Instruction) => {
-    if (!err) res.json({ status: true, message: "Success" });
+    if (!err) return res.json({ status: true, message: "Success" });
     else {
-      if (err.code) res.status(422).json({ status: false, message: err.code });
+      if (err.code) return res.status(422).json({ status: false, message: err.code });
       else return next(err);
     }
   });
@@ -26,8 +26,8 @@ export const getInstruction: express.RequestHandler = function(req, res, next) {
   let id = req.params.id;
   InstructionModal.findById(id, (err, instruction: Instruction) => {
     if (err) return next(err);
-    if (instruction) res.json({ status: true, instruction });
-    else next(new Record404Exception());
+    if (instruction) return res.json({ status: true, instruction });
+    else return next(new Record404Exception());
   });
 };
 
@@ -42,8 +42,8 @@ export const updateInstruction: express.RequestHandler = function(req,res,next) 
     { ...instruction },
     function(err, doc) {
       if (err) return next(err);
-      if (doc) res.json({ status: true, message: "Success" });
-      else next(new HttpException("Failed", 400));
+      if (doc) return res.json({ status: true, message: "Success" });
+      else return next(new HttpException("Failed", 400));
     }
   );
 };
@@ -55,7 +55,7 @@ export const getInstructionStates: express.RequestHandler = function(req,res,nex
   InstructionModal.find({}, function(err, instructions: Instruction[]) {
     if (err) return next(err);
     if (instructions && instructions.length)
-      res.json({
+      return res.json({
         status: true,
         instructions: instructions.map(instruction => ({
           _id: instruction._id,
@@ -73,8 +73,8 @@ export const getInstructionByCategory: express.RequestHandler = function(req,res
   InstructionModal.find({ catID }, function(err, instructions: Instruction[]) {
     if (err) return next(err);
     if (instructions && instructions.length)
-      res.json({ status: true, instruction: instructions[0] });
-    else next(new Record404Exception());
+      return res.json({ status: true, instruction: instructions[0] });
+    else return next(new Record404Exception());
   });
 };
 

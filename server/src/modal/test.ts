@@ -39,7 +39,7 @@ export interface TestWithFeaturesForUser extends TestOriginal, UserTestFeatures 
 
 export const TestSchema = new mongoose.Schema<TestOriginal & mongoose.Document>({
   name: String,
-  sections: mongoose.SchemaTypes.Mixed,
+  sections: mongoose.Schema.Types.Mixed,
   oTime: { type: Number },
   detail: { type: String },
   _id: { type: String },

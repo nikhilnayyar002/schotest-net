@@ -12,9 +12,9 @@ export const postQuestion: express.RequestHandler = function(req, res, next) {
     new QuestionModal(req.body)
   );
   question.save((err, question: QuestionOriginal) => {
-    if (!err) res.json({ status: true,  message:"Success" });
+    if (!err) return res.json({ status: true,  message:"Success" });
     else {
-      if (err.code) res.status(422).json({ status: false, message: err.code });
+      if (err.code) return res.status(422).json({ status: false, message: err.code });
       else return next(err);
     }
   });
@@ -27,8 +27,8 @@ export const getQuestion: express.RequestHandler = function(req, res, next) {
   let id = req.params.qID;
   QuestionModal.findById(id, (err, question: QuestionOriginal) => {
     if (err) return next(err);
-    if (question) res.json({ status: true, question });
-    else next(new Record404Exception());
+    if (question) return res.json({ status: true, question });
+    else return next(new Record404Exception());
   });
 };
 
@@ -39,8 +39,8 @@ export const getQuestions: express.RequestHandler = function(req, res, next) {
   let tID = req.params.tID;
   QuestionModal.find({tID}, (err, questions: QuestionOriginal[]) => {
     if (err) return next(err);
-    if (questions && questions.length) res.json({ status: true, questions });
-    else next(new Record404Exception());
+    if (questions && questions.length) return res.json({ status: true, questions });
+    else return next(new Record404Exception());
   })
   /** this sort query is in test and question controllers */
   .sort({sectionOrder: 1,  section: 'asc', _id: 'asc' });
@@ -52,9 +52,9 @@ export const getQuestions: express.RequestHandler = function(req, res, next) {
  */
 export const postQuestions: express.RequestHandler = function(req, res, next) {
   QuestionModal.collection.insertMany(req.body, (err, result)=>{
-    if (!err) res.json({ status: true, message:"Success" });
+    if (!err) return res.json({ status: true, message:"Success" });
     else {
-      if (err.code) res.status(422).json({ status: false, message: err.code });
+      if (err.code) return res.status(422).json({ status: false, message: err.code });
       else return next(err);
     }
   })
@@ -70,8 +70,8 @@ export const updateQuestion: express.RequestHandler = function(req, res, next) {
     { ...question },
     function(err, doc) {
       if (err) return next(err);
-      if (doc) res.json({ status: true, message: "Success" });
-      else next(new HttpException("Failed", 400));
+      if (doc) return res.json({ status: true, message: "Success" });
+      else return next(new HttpException("Failed", 400));
     }
   );
 };

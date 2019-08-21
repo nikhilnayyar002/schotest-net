@@ -28,15 +28,15 @@ export const getTest: express.RequestHandler = function(req, res, next) {
           if (questions && questions.length) {
             test = simplifyMongoose<TestOriginal>(test);
             let testRes: TestWithFeatures = { ...test, questions };
-            res.json({ status: true, test: testRes });
+            return res.json({ status: true, test: testRes });
           }
-          else res.json({ status: true, test });
+          else return res.json({ status: true, test });
         }
       )
       /** this sort query is in test and question controllers */
       .sort({ sectionOrder: 1,  section: 'asc', _id: 'asc'  });
     }
-    else next(new Record404Exception());
+    else return next(new Record404Exception());
   });
 };
 
@@ -46,10 +46,10 @@ export const getTest: express.RequestHandler = function(req, res, next) {
 export const postTest: express.RequestHandler = function(req, res, next) {
   let test: TestOriginal & mongoose.Document = <any>new TestModal(req.body.test);
   test.save((err, doc: TestOriginal) => {
-    if (!err) res.json({ status: true, message:"Success" });
+    if (!err) return res.json({ status: true, message:"Success" });
     else {
-      if (err.code) res.status(422).json({ status: false, message: err.code });
-      else next(err);
+      if (err.code) return res.status(422).json({ status: false, message: err.code });
+      else return next(err);
     }
   });
 };
@@ -73,17 +73,15 @@ export const updateTest: express.RequestHandler = function(req, res, next) {
             category.lastUpdated = req.body.localTime
             CategoryModal.updateOne({ _id: category._id }, category, function(err,doc) {
               if (err) return next(err);
-              if (doc) {
-                res.json({ status: true, message: "Success" });
-              }
+              if (doc) return res.json({ status: true, message: "Success" });
               else next(new HttpException("Failed", 400));
             });
           }
-          else next(new Record404Exception());
+          else return next(new Record404Exception());
         });    
-      } else res.json({ status: true, message:"Success" });
+      } else return res.json({ status: true, message:"Success" });
     }
-    else next(new HttpException("Failed", 400));
+    else return next(new HttpException("Failed", 400));
   });
 };
 
@@ -100,10 +98,10 @@ export const getQuestionsAnswers: express.RequestHandler = function(req,res,next
       /** Let us obtain @answers */
       AnswerModal.find({ tID }, (err, answers: Answer[]) => {
         if (err) return next(err);
-        if (answers && answers.length) res.json({ status: true, answers, questions });
-        else next(new Record404Exception());
+        if (answers && answers.length) return res.json({ status: true, answers, questions });
+        else return next(new Record404Exception());
       });
-    } else next(new Record404Exception());
+    } else return next(new Record404Exception());
   }).sort({sectionOrder: 1,  section: 'asc', _id: 'asc' });
 };
 
@@ -118,9 +116,9 @@ export const getTestsByCategory: express.RequestHandler = function(req,res,next)
     null,
     { skip: (pNo - 1) * config.noOfTestsPerPage, limit: config.noOfTestsPerPage },
     (err, tests) => {
-      if (err) next(err);
-      else if (tests && tests.length) res.json({ status: true, tests });
-      else next(new Record404Exception());
+      if (err) return next(err);
+      else if (tests && tests.length) return res.json({ status: true, tests });
+      else return next(new Record404Exception());
   }).sort({ _id: -1 });
 
 };
@@ -131,8 +129,8 @@ export const getTestsByCategory: express.RequestHandler = function(req,res,next)
 export const getTestsByCategoryCount: express.RequestHandler = function(req, res, next) {
   let catID = req.params.catID;
   TestModal.countDocuments({ catID, isTestReady:true }, (err, count) => {
-    if (!err) res.json({ status: true, count });
-    else next(err);
+    if (!err) return res.json({ status: true, count });
+    else return next(err);
   });
 };
 
@@ -141,8 +139,8 @@ export const getTestsByCategoryCount: express.RequestHandler = function(req, res
  */
 export const getTestsCount: express.RequestHandler = function(req, res, next) {
   TestModal.estimatedDocumentCount((err, count) => {
-    if (!err) res.json({ status: true, count });
-    else next(err);
+    if (!err) return res.json({ status: true, count });
+    else return next(err);
   });
 };
 
@@ -155,9 +153,9 @@ export const getTests: express.RequestHandler = function(req, res, next) {
     {},null,
     { skip: (pNo - 1) * config.noOfTestsPerPage, limit: config.noOfTestsPerPage}
     ,(err, tests) => {
-      if (err) next(err);
-      else if (tests && tests.length) res.json({ status: true, tests });
-      else next(new Record404Exception());
+      if (err) return next(err);
+      else if (tests && tests.length) return res.json({ status: true, tests });
+      else return next(new Record404Exception());
     }
   ).sort({ _id: -1 });
 };
@@ -168,16 +166,16 @@ export const getTests: express.RequestHandler = function(req, res, next) {
 export const findTests: express.RequestHandler = function(req, res, next) {
   let obj = { name: { $regex: req.body.search, $options: "i" } };
   TestModal.find(obj, function(err,tests: TestOriginal[]) {
-    if (err) next(err);
+    if (err) return next(err);
     else if (tests && tests.length)
-      res.json({
+      return res.json({
         status: true,
         tests: tests.map(test => ({
           _id: test._id,
           name: test.name
         }))
       });
-    else next(new Record404Exception());
+    else return next(new Record404Exception());
   });
 };
 

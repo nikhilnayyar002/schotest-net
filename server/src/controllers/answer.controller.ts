@@ -10,8 +10,8 @@ export const getAnswer: express.RequestHandler = function(req, res, next) {
   let id = req.params.qID;
   AnswerModal.findById(id, (err, answer: Answer) => {
     if (err) return next(err);
-    if (answer) res.json({ status: true, answer });
-    else next(new Record404Exception());
+    if (answer) return res.json({ status: true, answer });
+    else return next(new Record404Exception());
   });
 };
 
@@ -24,9 +24,9 @@ export const postAnswer: express.RequestHandler = function(req, res, next) {
     new AnswerModal(req.body)
   );
   answer.save((err, answer: Answer) => {
-    if (!err) res.json({ status: true,  message:"Success" });
+    if (!err) return res.json({ status: true,  message:"Success" });
     else {
-      if (err.code) res.status(422).json({ status: false, message: err.code });
+      if (err.code) return res.status(422).json({ status: false, message: err.code });
       else return next(err);
     }
   });
@@ -39,8 +39,8 @@ export const getAnswers: express.RequestHandler = function(req, res, next) {
   let tID = req.params.tID;
   AnswerModal.find({ tID }, (err, answers: Answer[]) => {
     if (err) return next(err);
-    if (answers && answers.length) res.json({ status: true, answers });
-    else next(new Record404Exception());
+    if (answers && answers.length) return res.json({ status: true, answers });
+    else return next(new Record404Exception());
   });
 };
 
@@ -51,7 +51,7 @@ export const postAnswers: express.RequestHandler = function(req, res, next) {
   AnswerModal.collection.insertMany(req.body, (err, result) => {
     if (!err) return res.json({ status: true, message: "Success" });
     else {
-      if (err.code) res.status(422).json({ status: false, message: err.code });
+      if (err.code) return res.status(422).json({ status: false, message: err.code });
       else return next(err);
     }
   });
@@ -64,8 +64,8 @@ export const updateAnswer: express.RequestHandler = function(req, res, next) {
   let answer: Answer = req.body;
   AnswerModal.updateOne({ _id: answer._id }, { ...answer }, function(err, doc) {
     if (err) return next(err);
-    if (doc) res.json({ status: true, message: "Success" });
-    else next(new HttpException("Failed", 400));
+    if (doc) return res.json({ status: true, message: "Success" });
+    else return next(new HttpException("Failed", 400));
   });
 };
 
@@ -88,14 +88,9 @@ export const updateAnswers: express.RequestHandler = function(req, res, next) {
 
   AnswerModal.collection
     .bulkWrite(bulkOps)
-    .then(bulkWriteOpResult => {
-      res.json({ status: true, message: "Success" });
-    })
-    .catch(err => {
-      res.json({ status: false, message: "Failed" });
-    });
+    .then(bulkWriteOpResult => res.json({ status: true, message: "Success" }))
+    .catch(err => res.json({ status: false, message: "Failed" }));
 };
-
 
 /**
  * Return @message

@@ -10,14 +10,14 @@ import { TestModal, TestWithFeatures, TestOriginal, UserTest } from "../modal/te
 export const getUserData: express.RequestHandler = (req, res, next) => {
   let id = req.params.userID;
   UserModal.findById(id, function(err, user: User) {
-    if (err) next(err);
+    if (err) return next(err);
     else if (user) {
       let userRes:UserFeatures = {
         favourites: user.favourites, tests: user.tests, isAdmin:user.isAdmin
       }
-      res.json({ status: true, user: userRes});
+      return res.json({ status: true, user: userRes});
     }
-    else next(new Record404Exception());
+    else return next(new Record404Exception());
   });
 };
 
@@ -31,8 +31,8 @@ export const postUserFavourites: express.RequestHandler = (req, res, next) => {
     { $push: { favourites: req.body.id } },
     function(err, doc) {
       if (err) return next(err);
-      if (doc) res.json({ status: true, message: "Success" });
-      else next(new HttpException("Failed", 400));
+      if (doc) return res.json({ status: true, message: "Success" });
+      else return next(new HttpException("Failed", 400));
     }
   );
 };
@@ -45,8 +45,8 @@ export const delUserFavourites: express.RequestHandler = (req, res, next) => {
   UserModal.updateOne({ _id: id },{ $pull: { favourites: req.body.id } },
     function(err, doc) {
       if (err) return next(err);
-      if (doc) res.json({ status: true, message: "Success" });
-      else next(new HttpException("Failed", 400));
+      if (doc) return res.json({ status: true, message: "Success" });
+      else return next(new HttpException("Failed", 400));
     }
   );
 };
@@ -59,7 +59,7 @@ export const getUserTests: express.RequestHandler = (req, res, next) => {
   UserModal.findById(id, function(err, user: User) {
     if (err) return next(err);
     if (user) return res.json({ status: true, tests: user.tests });
-    else next(new Record404Exception());
+    else return next(new Record404Exception());
   });
 };
 
@@ -72,7 +72,7 @@ export const getUserTest: express.RequestHandler = (req, res, next) => {
     if (err) return next(err);
     if (user && user.tests && user.tests[tID]) 
       return res.json({ status: true, test: user.tests[tID] });
-    else next(new Record404Exception());
+    else return next(new Record404Exception());
   });
 };
 
@@ -91,9 +91,9 @@ export const postUserTestQ: express.RequestHandler = (req, res, next) => {
       UserModal.updateOne({ _id: id }, { $set: newObj }, function(err, doc) {
         if (err) return next(err);
         if (doc) return res.json({ status: true, message: "Success" });
-        else next(new HttpException("Failed", 400));
+        else return next(new HttpException("Failed", 400));
       });
-    } else next(new Record404Exception());
+    } else return next(new Record404Exception());
   });
 };
 
@@ -112,9 +112,9 @@ export const postUserTestT: express.RequestHandler = (req, res, next) => {
       UserModal.updateOne({ _id: id }, { $set: newObj }, function(err, doc) {
         if (err) return next(err);
         if (doc) return res.json({ status: true, message: "Success" });
-        else next(new HttpException("Failed", 400));
+        else return next(new HttpException("Failed", 400));
       });
-    } else next(new Record404Exception());
+    } else return next(new Record404Exception());
   });
 };
 
@@ -122,18 +122,14 @@ export const postUserTestT: express.RequestHandler = (req, res, next) => {
  *  returns @TestWithFeatures
  */
 export const getPausedTests: express.RequestHandler = (req, res, next) => {
-  return commonCompAndPaus(req, res, next, 
-    test => !test.isTestOver
-  );
+  return commonCompAndPaus(req, res, next, test => !test.isTestOver);
 };
 
 /**
  *  returns @TestWithFeatures
  */
 export const getCompletedTests: express.RequestHandler = (req, res, next) => {
-  return commonCompAndPaus(req, res, next,
-    test => test.isTestOver
-  );
+  return commonCompAndPaus(req, res, next, test => test.isTestOver);
 };
 
 function commonCompAndPaus(
@@ -164,9 +160,9 @@ function commonCompAndPaus(
               tests[i].isTestOver = t.isTestOver;
             }
           }
-          res.json({ status: true, tests: tests });
+          return res.json({ status: true, tests: tests });
         }
-        else next(new Record404Exception());
+        else return next(new Record404Exception());
       })
       .catch(err => next(new HttpException("Please try again later.")));
     }
@@ -189,12 +185,12 @@ export const getUserFavourites: express.RequestHandler = (req, res, next) => {
       .then((categories:Category[]) => {
         categories = categories.filter(t => t!=null)
         if (categories.length && !categories.includes(null))
-          res.json({ status: true, categories });
-        else next(new Record404Exception());
+          return res.json({ status: true, categories });
+        else return next(new Record404Exception());
       })
       .catch(err => next(new HttpException("Please try again later.")));
     } 
-    else next(new Record404Exception());
+    else return next(new Record404Exception());
   });
 };
 
