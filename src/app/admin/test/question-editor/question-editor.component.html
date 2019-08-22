@@ -177,7 +177,8 @@
         <button
           type="button"
           class="btn btn-secondary ml-2 btn-sm"
-          (click)="addAnswer()"
+          appDebounceClick 
+          (debounceClick)="addAnswer()" [debounceTime]="500"
           [disabled]="answer.value ? false : true"
         >
           Add

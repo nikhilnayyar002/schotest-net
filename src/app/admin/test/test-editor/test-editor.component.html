@@ -146,7 +146,8 @@
         <button
           type="button"
           class="btn btn-secondary ml-2 btn-sm"
-          (click)="addSection()"
+          appDebounceClick 
+          (debounceClick)="addSection()" [debounceTime]="500"
           [disabled]="sectionName.errors || sectionOrder.errors ? true : false"
         >
           Add

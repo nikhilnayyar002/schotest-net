@@ -44,7 +44,7 @@ export class OverallComponent implements OnInit {
     if(this.overallProp.scoredMarks<0) this.overallProp.scoredMarks = 0
 
     let t = this.overallProp;
-    t.accuracy =(t.totalCorrect / t.totalAttempt) * 100
+    t.accuracy =Math.round((t.totalCorrect / t.totalAttempt) * 100)
     if(isNaN(t.accuracy)) t.accuracy = 0
     t.scored = t.scoredMarks / t.totalMarks  * 100;
     if(isNaN(t.scored)) t.scored = 0
