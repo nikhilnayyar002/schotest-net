@@ -109,21 +109,26 @@ export class AuthService {
         appState.cred.email,
         appState.cred.password
       ).pipe(
-        map((status:any) => {
-          this.store.dispatch(
-            SetAppState({
-              app: {
-                user: status.user,
-                loggedIn: status.status
-              }
-            })
-          );
-          return true;
-        }),
+        catchError(()=>throwReloginError.bind(this)()),
         retry(1)
       );
-    else return throwError({ login:true });
+    else return throwReloginError.bind(this)()
+
+    function throwReloginError() {
+      this.store.dispatch(
+        SetAppState({
+          app: {
+            user: null,
+            loggedIn: false,
+            cred: null
+          }
+        })
+      );
+      return throwError({ login:true });
+    }
   }
+
+
   
 
 }
