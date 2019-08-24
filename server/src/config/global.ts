@@ -11,7 +11,7 @@ import {
   processEnvironment,
   globalEnvironment
 } from "../../../config/global.config";
-let config: globalEnvironment = require("../../../config/config");
+let config: globalEnvironment = require("../../../config/config.json");
 const environment: processEnvironment = <any>process.env;
 
 
@@ -103,7 +103,7 @@ const storage = multer.diskStorage({
     cb(
       null,
       /** remove the "/" from "/path.." using string.slice() and pass it*/
-      config.server.imageUploads.slice(1, config.server.imageUploads.length)
+      dir
     );
   },
   filename: function(req: express.Request, file, cb) {

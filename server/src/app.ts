@@ -1,43 +1,51 @@
-import * as express from 'express';
-import * as path from 'path';
-import * as morgan from 'morgan'
+import * as express from "express";
+import * as path from "path";
+import * as morgan from "morgan";
 // import * as cors from 'cors'
-import * as passport from 'passport'
-import * as mongoose from 'mongoose'
+import * as passport from "passport";
+import * as mongoose from "mongoose";
 
 /** initialize by just importing */
 import "./config/passportConfig";
-import "./config/setupEnv"
+import "./config/setupEnv";
 /** end */
 
-import { UserRouter } from './router/user.router';
-import { TestRouter } from './router/test.router';
-import { CategoryRouter } from './router/category.router';
-import { UserDataRouter } from './router/userData.router';
-import { HttpException, verifyJwtToken } from './config/global';
-import { answerRouter } from './router/answer.router';
-import { questionRouter } from './router/question.router';
-import { instructionRouter } from './router/instruction.router';
-import { imageRouter } from './router/image.router';
+import { UserRouter } from "./router/user.router";
+import { TestRouter } from "./router/test.router";
+import { CategoryRouter } from "./router/category.router";
+import { UserDataRouter } from "./router/userData.router";
+import { HttpException, verifyJwtToken } from "./config/global";
+import { answerRouter } from "./router/answer.router";
+import { questionRouter } from "./router/question.router";
+import { instructionRouter } from "./router/instruction.router";
+import { imageRouter } from "./router/image.router";
 
-var compression = require('compression');
-var helmet = require('helmet');
+var compression = require("compression");
+var helmet = require("helmet");
 
-import { processEnvironment, globalEnvironment } from "../../config/global.config";
-import { getImage } from './controllers/image.controller';
+import {
+  processEnvironment,
+  globalEnvironment
+} from "../../config/global.config";
+import { getImage } from "./controllers/image.controller";
 const environment: processEnvironment = <any>process.env;
-let config:globalEnvironment = require("../../config/config")
+let config: globalEnvironment = require("../../config/config");
 
-mongoose.set('bufferCommands', false);
+mongoose.set("bufferCommands", false);
 //mongoose.set('bufferMaxEntries', 0);
 
 /** Depreciation warnings */
-mongoose.set('useNewUrlParser', true);
-mongoose.set('useCreateIndex', true);
+mongoose.set("useNewUrlParser", true);
+mongoose.set("useCreateIndex", true);
 
-mongoose.connect(environment.mongoURI, (err) => {
-    if (!err) { console.log('MongoDB connection succeeded.'); }
-    else { console.log('Error in MongoDB connection : ' + JSON.stringify(err, undefined, 2)); }
+mongoose.connect(environment.mongoURI, err => {
+  if (!err) {
+    console.log("MongoDB connection succeeded.");
+  } else {
+    console.log(
+      "Error in MongoDB connection : " + JSON.stringify(err, undefined, 2)
+    );
+  }
 });
 
 // mongoose.connection.on('connected', function(){
@@ -54,14 +62,27 @@ mongoose.connect(environment.mongoURI, (err) => {
 
 let app = express();
 
+
+// app.enable("trust proxy");
+// app.use(function(req, res, next) {
+//   if (req.secure) {
+//     // request was via https, so do no special handling
+//     next();
+//   } else {
+//     res.redirect(req.hostname);
+//   }
+// });
+
+
+
 app.use(compression());
 app.use(helmet());
 
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public')));
-app.disable('view cache');
+app.use(express.static(path.join(__dirname, "public")));
+app.disable("view cache");
 
 /** use passport local strategy */
 app.use(passport.initialize());
@@ -85,21 +106,31 @@ app.use(`${config.restAPI}/instructions`, verifyJwtToken, instructionRouter);
 app.use(`${config.restAPI}/images`, verifyJwtToken, imageRouter);
 app.use(`${config.imageRequestUrl}/:id`, getImage);
 
+// app.use(express.static(path.join(__dirname, "build")));
 
-app.use("**", invalidPath)
-function invalidPath(req,res, next) {
-  next(new HttpException("Invalid path",404))
+// app.get("/*", function(req, res, next) {
+//   if (!req.path.includes(config.restAPI))
+//     res.sendFile(path.join(__dirname, "build", "index.html"));
+//   else next();
+// });
+
+app.use("**", invalidPath);
+function invalidPath(req, res, next) {
+  next(new HttpException("Invalid path", 404));
 }
 
 /**
  * error handler
  */
 function errorMiddleware(
-  error: HttpException, req: express.Request, res: express.Response, next: express.NextFunction
-  ) {
+  error: HttpException,
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) {
   const status = error.status || 500;
-  const message = error.message || 'Something went wrong';
-  res.status(status).json({status:false, message})
+  const message = error.message || "Something went wrong";
+  res.status(status).json({ status: false, message });
 }
 
 app.use(errorMiddleware);

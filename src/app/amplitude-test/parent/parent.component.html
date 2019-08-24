@@ -19,7 +19,7 @@
       #fullScreenBtn
       type="button"
       class="btn btn-sm mr-2 btn-secondary"
-      [style.display]="!mediaMatch ? 'block' : 'none'"
+      [style.display]="!mediaQueryState.isMediaMatched() ? 'block' : 'none'"
       (click)="toggleFullScreen()"
     >
       Full Screen

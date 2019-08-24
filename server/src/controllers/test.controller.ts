@@ -11,7 +11,7 @@ import { AnswerModal, Answer } from "../modal/answer";
 
 import { globalEnvironment } from "../../../config/global.config";
 import { CategoryModal, Category } from "../modal/category";
-let config:globalEnvironment = require("../../../config/config")
+let config:globalEnvironment = require("../../../config/config.json")
 
 /**
  * Return @TestWithFeatures | @TestOriginal

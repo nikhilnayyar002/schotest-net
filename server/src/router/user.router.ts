@@ -4,7 +4,7 @@ import * as userCtl from '../controllers/user.controller';
 import { verifyJwtToken, rtnDecryptReqHandler } from '../config/global';
 
 import {globalEnvironment} from "../../../config/global.config";
-let config: globalEnvironment = require("../../../config/config");
+let config: globalEnvironment = require("../../../config/config.json");
 
 let router:express.Router = express.Router();
 

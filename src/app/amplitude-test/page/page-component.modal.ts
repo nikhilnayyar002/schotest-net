@@ -2,7 +2,7 @@ import { Output, EventEmitter } from '@angular/core';
 
 export class PageComponent {
    @Output() closeEvent=new EventEmitter<boolean>();
-   protected closeTheComponent() {
+   public closeTheComponent() {
     this.closeEvent.emit(true);
    }
 }

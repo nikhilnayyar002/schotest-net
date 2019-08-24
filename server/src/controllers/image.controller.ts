@@ -3,7 +3,7 @@ import * as path from "path";
 import * as fs from "fs";
 import { Record404Exception, HttpException } from "../config/global";
 import { globalEnvironment } from "../../../config/global.config";
-let config:globalEnvironment = require("../../../config/config")
+let config:globalEnvironment = require("../../../config/config.json")
 
 /**
  * Return @message
