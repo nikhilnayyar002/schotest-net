@@ -9,7 +9,7 @@ import { MainService } from "../../main.service";
   styleUrls: ["./batch-add-questions.component.scss"]
 })
 export class BatchAddQuestionsComponent {
-  questions: QuestionOriginal[] = [null];
+  questions: QuestionOriginal[] = [];
 
   config = config;
   submitting = false;
@@ -23,6 +23,24 @@ export class BatchAddQuestionsComponent {
   saveQuestion(index: number, question: QuestionOriginal) {
     this.questions[index] = question;
   }
+
+  addQuestion() {
+    let id = new Date().getTime().toString();
+    let question: QuestionOriginal = {
+      content:'',
+      image: '',
+      isComprehension: false,
+      comprehensionContent:'',
+      answers: [],
+      _id: id,
+      section: null,
+      marks: null,
+      sectionOrder: null,
+      tID: this.testID
+    };
+    this.questions.push(question)
+  }
+
   removeQuestion(index: number) {
     let t = window.confirm("Is it OK?");
     if (t) this.questions.splice(index, 1); // i is index(number)

@@ -13,17 +13,14 @@ export enum QuestionState {
  * This method is to be called before @setQuestionSelected
  */
 export function checkAndGetQuestionState(question: UserQuestion) {
-  let state: QuestionState = QuestionState.Markedanswered;
-  if(question.state == undefined) state= QuestionState.Unanswered
+  let state: QuestionState = question.state;
   if (question.checkedAnswerIndex != null) {
-    if (question.state == QuestionState.Marked)
+    if(question.state == QuestionState.Marked)
       state = QuestionState.Markedanswered;
-    else if (question.state != QuestionState.Markedanswered)
+    else if (question.state != QuestionState.Markedanswered && question.state != QuestionState.Answered)
       state = QuestionState.Answered;
   } else {
-    if (question.state == QuestionState.Markedanswered)
-      state = QuestionState.Marked;
-    else if (question.state != QuestionState.Marked)
+    if(question.state != QuestionState.Marked)
       state = QuestionState.Unanswered;
   }
   return state;

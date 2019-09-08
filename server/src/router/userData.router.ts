@@ -8,12 +8,12 @@ let router:express.Router = express.Router();
 router.all("*",(req,res,next)=>{
     let userID = req.params.userID
     UserModal.findById((<any>req)._id,(err,user:User)=>{
-        if(err) next(new HttpException())
+        if(err) return next(new HttpException())
         if (!user)
             return res.status(404).json({ status: false, message: 'User record not found.' });
         else if(user._id ! = userID) 
             return res.status(403).send({ status: false, message: "Acess Forbidden. Invalid User Acess."});
-        else next();
+        else return next();
     })
 })
 

@@ -4,6 +4,10 @@
   <a class="navbar-brand" [routerLink]="[configData.clientRoutes.login()]">
     <span id="nav-bar-logo">{{ configData.company.name }}</span>
   </a>
+
+  <button class="btn btn-secondary btn-sm ml-auto" data-toggle="modal" data-target="#syllabusModal">
+    About
+  </button>
 </nav>
 
 <div class="row no-gutters">
@@ -12,108 +16,56 @@
     <form class="bg-primary form-container" [formGroup]="form">
       <div class="slider">
         <div id="form-tab">
-          <span
-            class="text-secondary border-right border-info"
+          <span class="text-secondary border-right border-info"
             [class.text-secondary]="submitBtnText == SignInState.signIn"
-            (click)="setSignInState(SignInState.signIn)"
-            >SignIn</span
-          >
-          <span
-            class="text-secondary"
-            [class.text-secondary]="submitBtnText == SignInState.signUp"
-            (click)="setSignInState(SignInState.signUp)"
-            >SignUp</span
-          >
+            (click)="setSignInState(SignInState.signIn)">SignIn</span>
+          <span class="text-secondary" [class.text-secondary]="submitBtnText == SignInState.signUp"
+            (click)="setSignInState(SignInState.signUp)">SignUp</span>
         </div>
 
         <ng-container *ngIf="submitBtnText == SignInState.signUp">
           <!--user-name-->
           <div class="input-container">
-            <input
-              class="input-field bg-info"
-              type="text"
-              placeholder="user name"
-              name="usrnm"
-              formControlName="userName"
-            />
+            <input class="input-field bg-info" type="text" placeholder="user name" name="usrnm"
+              formControlName="userName" />
           </div>
-          <div
-            *ngIf="userName.errors && (userName.dirty || userName.touched)"
-            class="input-error"
-          >
+          <div *ngIf="userName.errors && (userName.dirty || userName.touched)" class="input-error">
             UserName is required.
           </div>
         </ng-container>
 
         <!--email-->
         <div class="input-container">
-          <input
-            class="input-field bg-info"
-            type="text"
-            placeholder="email"
-            name="email"
-            formControlName="email"
-          />
+          <input class="input-field bg-info" type="text" placeholder="email" name="email" formControlName="email" />
         </div>
         <ng-container *ngIf="email.invalid && (email.dirty || email.touched)">
-          <div
-            *ngIf="email.errors.required"
-            id="email-error"
-            class="input-error"
-          >
+          <div *ngIf="email.errors.required" id="email-error" class="input-error">
             Email is required.
           </div>
-          <div
-            *ngIf="!email.errors.required && email.errors.email"
-            id="email-error"
-            class="input-error"
-          >
+          <div *ngIf="!email.errors.required && email.errors.email" id="email-error" class="input-error">
             Email is Incorrect
           </div>
         </ng-container>
 
         <div class="input-container">
-          <input
-            class="input-field bg-info"
-            type="password"
-            placeholder="password"
-            name="psw"
-            formControlName="psw"
-          />
+          <input class="input-field bg-info" type="password" placeholder="password" name="psw" formControlName="psw" />
         </div>
-        <div
-          *ngIf="psw.errors && (psw.dirty || psw.touched)"
-          id="password-error"
-          class="input-error"
-        >
+        <div *ngIf="psw.errors && (psw.dirty || psw.touched)" id="password-error" class="input-error">
           Password is required.
         </div>
-        <ul
-          *ngIf="psw.errors?.passSignUpValidator && (psw.dirty || psw.touched)"
-          id="password-error"
-          class="input-error"
-        >
+        <ul *ngIf="psw.errors?.passSignUpValidator && (psw.dirty || psw.touched)" id="password-error"
+          class="input-error">
           <li>Length should between 8-20 characters</li>
           <li>Should contain atleast one lowercase and uppercase character</li>
           <li>Should contain atleast one special character</li>
         </ul>
 
         <div class="d-flex justify-content-center">
-          <button
-            id="submit-btn"
-            type="submit"
-            class="btn btn-secondary"
-            [disabled]="form.invalid"
-            (click)="submitBtnText==SignInState.signIn?login():register()"
-            *ngIf="!loggingIn"
-          >
+          <button id="submit-btn" type="submit" class="btn btn-secondary" [disabled]="form.invalid"
+            (click)="submitBtnText==SignInState.signIn?login():register()" *ngIf="!loggingIn">
             {{submitBtnText}}
           </button>
-          <div
-            *ngIf="loggingIn"
-            class="spinner-grow text-secondary"
-            role="status"
-          >
+          <div *ngIf="loggingIn" class="spinner-grow text-secondary" role="status">
             <span class="sr-only">Loading...</span>
           </div>
         </div>
@@ -122,5 +74,45 @@
         </div>
       </div>
     </form>
+  </div>
+</div>
+
+
+<!-- About modal-->
+<div class="modal fade" id="syllabusModal" tabindex="-1" role="dialog" aria-labelledby="syllabusModalTitle"
+  aria-hidden="true">
+  <div class="modal-lg modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content bg-info">
+      <div class="modal-header">
+        <h4 class="modal-title font-weight-light" id="syllabusModalTitle">Exam Module Web Application</h4>
+      </div>
+      <div class="modal-body">
+        <p>This application is designed for exam preparation through category based online
+          tests. This application includes Admin and Dashboard View. Currently there is only one administrator (the
+          developer).
+          <br> <br>
+          All new features integration has been stopped. Only bug fixes are implemented for this app.
+          Anyone using this app can report the problem at email address:
+          <br> <br>
+          <b>nikhilnayyar002@gmail.com</b>
+        </p>
+        <br>
+        <br>
+        <br>
+        <div class="d-inline-flex">
+          <img class="small-image mr-2" src="https://avatars1.githubusercontent.com/u/38173563?s=460&v=4" alt="img">
+          <div>
+            <p class="mb-0"><b>Developer</b></p>
+            <span>Nikhil Nayyar</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
   </div>
 </div>

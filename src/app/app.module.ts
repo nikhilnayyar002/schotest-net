@@ -15,6 +15,8 @@ import { appReducer } from './state/state.reducer';
 import { httpInterceptorProviders } from './interceptors';
 // import { RequestCache, RequestCacheWithMap } from './request-cache.service';
 import { AdminModule } from './admin/admin.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,8 @@ import { AdminModule } from './admin/admin.module';
 
     DashboardModule,
     AmplitudeTestModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     /**
