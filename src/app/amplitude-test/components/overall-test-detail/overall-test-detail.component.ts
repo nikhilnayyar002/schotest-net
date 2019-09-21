@@ -44,6 +44,7 @@ export class OverallTestDetailComponent implements OnInit {
             case QuestionState.Unvisited: ++t.unVisited; break
             default :  ++t.unVisited; break
           }
+          ++t.questions;
         }
         this.sections = Object.keys(test.sections);
       }

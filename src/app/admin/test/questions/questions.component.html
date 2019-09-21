@@ -10,12 +10,12 @@
     >
       <span aria-hidden="true">&times;</span>
     </button>
-    <div class="head d-flex align-items-center">
+    <div class="head d-flex align-items-center flex-wrap">
       <h3 class="mr-1 mb-0">Questions</h3>
       <p class="m-0 mt-2 mr-3">({{ test?.name }})</p>
       <button
         type="button"
-        class="btn btn-secondary btn-sm mr-2"
+        class="btn btn-secondary btn-sm m-1"
         *ngIf="!addNewQuestions && !addAnswers"
         (click)="addNewQuestion = !addNewQuestion; editQuestion.question = null"
       >
@@ -23,7 +23,7 @@
       </button>
       <button
         type="button"
-        class="btn btn-secondary btn-sm mr-2"
+        class="btn btn-secondary btn-sm m-1"
         *ngIf="!addNewQuestion && !addAnswers"
         (click)="addNewQuestions = !addNewQuestions"
       >
@@ -31,7 +31,7 @@
       </button>
       <button
         type="button"
-        class="btn btn-danger btn-sm mr-2"
+        class="btn btn-danger btn-sm m-1"
         (click)="remove()"
         *ngIf=" questions && !deleting && !addNewQuestion && !addAnswers && !addNewQuestions"
       >
