@@ -62,18 +62,16 @@ mongoose.connect(environment.mongoURI, err => {
 
 let app = express();
 
-
-// app.enable("trust proxy");
-// app.use(function(req, res, next) {
-//   if (req.secure) {
-//     // request was via https, so do no special handling
-//     next();
-//   } else {
-//     res.redirect(req.hostname);
-//   }
-// });
-
-
+// If an incoming request uses a protocol other than HTTPS,
+// redirect that request to the same url but with HTTPS
+const forceSSL = function() {
+  return function(req, res, next) {
+    if (req.headers["x-forwarded-proto"] !== "https") {
+      return res.redirect(["https://", req.get("Host"), req.url].join(""));
+    }
+    next();
+  };
+};
 
 app.use(compression());
 app.use(helmet());
@@ -81,8 +79,8 @@ app.use(helmet());
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, "public")));
-app.disable("view cache");
+// app.use(express.static(path.join(__dirname, "public")));
+// app.disable("view cache");
 
 /** use passport local strategy */
 app.use(passport.initialize());
