@@ -10,4 +10,4 @@ const envConfig = config.server[env=='development'?"dev":"prod"]
 Object.keys(envConfig).forEach(key => process.env[key] = envConfig[key]);
 
 /** if externally ort was provided set to it. */
-if(port) process.env.PORT = port
+if(port) process.env.port = port
