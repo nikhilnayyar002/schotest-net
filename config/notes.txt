@@ -1,0 +1,1 @@
+/api & /public are values in config.json & proxy.config.json

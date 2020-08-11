@@ -44,7 +44,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
           else if(activatedRoute.data["iam"]=="admin") {
             if(app.user.isAdmin) subscriber.next(true);
             else
-              this.router.navigate([config.clientRoutes.login()], {skipLocationChange:true});
+              this.router.navigate([config.clientRoutes.dashboard()]);
           }
           /** its all ok */
           else subscriber.next(true);

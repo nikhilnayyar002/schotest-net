@@ -64,7 +64,7 @@ export class AuthInterceptor implements HttpInterceptor {
                 catchError(error => {
                   if (error && error.login) {
                     /** Please relogin. This case most probably won't show up*/
-                    this.router.navigate([config.clientRoutes.login()]);
+                    this.router.navigate([config.clientRoutes.login()], {skipLocationChange: true});
                   }
                   return of(null);
                 })
